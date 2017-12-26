@@ -64,13 +64,13 @@ def lodur_get_appellliste(req_session):
 	# Do the POST request for the table with the information
 	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data).content
 
-	tbl = etree.HTML(html_page).xpath('//*[@id="mann_tab"]')
-	tbl_rows = iter(tbl)
-	tbl_headers = [col.text for col in next(tbl_rows)]
-	for row in tbl_rows:
-	    values = [col.text for col in row]
-	    print(dict(zip(tbl_headers,values)))
+	tbl_tree = html.fromstring(html_page)
+	for tbl in tbl_tree('//*[@id="mann_tab"]'):
+	    print("-- TABLE FOUND -- ")
+	    tab = tbl.xpath('.//tbody/tr/td//text()')
+	    print(tab)
 	
+	print('-- DONE --')
 	#return res tbl.xpath('.//tbody/tr/td//text()')
         
 def lodur_get_userdata(req_session):
