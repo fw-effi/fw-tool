@@ -1,6 +1,6 @@
 import requests
 from flask import Response
-from lxml import html
+from lxml import html, etree
 
 def lodur_login(username,password,sess_login):
 	""" Login User in Lodur. Use the Username and Password from the Webform
@@ -64,13 +64,14 @@ def lodur_get_appellliste(req_session):
 	# Do the POST request for the table with the information
 	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data).content
 
-	tbl_tree = html.fromstring(html_page.encode('utf-8'))
-        
-	for tbl in tbl_tree.xpath('//*[@id="mann_tab"]'): 
-	    elements = tbl.xpath('.//tbody/tr/td//text()')
-	    print(elements)
+	tbl = etree.HTML(html_page).find('//*[@id="mann_tab"]')
+        tbl_rows = iter(tbl)
+	tbl_headers = [col.text for col in next(tbl_rows)]
+	for row in rows:
+	    values = [col.text for col in row]
+	    print dict(zip(tbl_headers,values))
 	
-	#return res
+	#return res tbl.xpath('.//tbody/tr/td//text()')
         
 def lodur_get_userdata(req_session):
 	""" Get the Userdata (like First-, Lastname and E-Mail Address) from the Lodur start page
