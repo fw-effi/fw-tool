@@ -62,7 +62,7 @@ def lodur_get_appellliste(req_session):
 	}
 	
 	# Do the POST request for the table with the information
-	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data, headers={'User-Agent':'Mozilla/5.0'}, stream=True)
+	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data).content
 
 	tbl_tree = html.fromstring(html_page)
         
