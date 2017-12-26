@@ -69,7 +69,7 @@ def lodur_get_appellliste(req_session):
 	tbl_headers = [col.text for col in next(tbl_rows)]
 	for row in rows:
 	    values = [col.text for col in row]
-	    print dict(zip(tbl_headers,values))
+	    print(dict(zip(tbl_headers,values)))
 	
 	#return res tbl.xpath('.//tbody/tr/td//text()')
         
