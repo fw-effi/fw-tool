@@ -66,9 +66,9 @@ def lodur_get_appellliste(req_session):
 
 	tbl_tree = html.fromstring(html_page)
         
-        for tbl in tbl_tree.xpath('//*[@id="mann_tab"]'): 
+	for tbl in tbl_tree.xpath('//*[@id="mann_tab"]'): 
 	    elements = tbl.xpath('.//tbody/tr/td//text()')
-            print(elements)
+	    print(elements)
 	
 	#return res
         
