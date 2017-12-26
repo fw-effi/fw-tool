@@ -65,7 +65,7 @@ def lodur_get_appellliste(req_session):
 	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data).content
 
 	tbl_tree = html.fromstring(html_page)
-	for tbl in tbl_tree('//*[@id="mann_tab"]'):
+	for tbl in tbl_tree.xpath('//*[@id="mann_tab"]'):
 	    print("-- TABLE FOUND -- ")
 	    tab = tbl.xpath('.//tbody/tr/td//text()')
 	    print(tab)
