@@ -67,7 +67,7 @@ def lodur_get_appellliste(req_session):
 	tbl = etree.HTML(html_page).xpath('//*[@id="mann_tab"]')
 	tbl_rows = iter(tbl)
 	tbl_headers = [col.text for col in next(tbl_rows)]
-	for row in rows:
+	for row in tbl_rows:
 	    values = [col.text for col in row]
 	    print(dict(zip(tbl_headers,values)))
 	
