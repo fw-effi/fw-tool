@@ -64,10 +64,10 @@ def lodur_get_appellliste(req_session):
 	# Do the POST request for the table with the information
 	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data, headers={'User-Agent':'Mozilla/5.0'}, stream=True)
 
-        tbl_tree = html.fromstring(html_page)
+	tbl_tree = html.fromstring(html_page)
         
         for tbl in tbl_tree.xpath('//*[@id="mann_tab"]'): 
-            elements = tbl.xpath('.//tbody/tr/td//text()')
+	    elements = tbl.xpath('.//tbody/tr/td//text()')
             print(elements)
 	
 	#return res
