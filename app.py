@@ -87,9 +87,13 @@ def get_excel_alarm_group():
 		#If not loggedin redirect it to the login page
 		return render_template("admin/pages/login.html")
 	else:
-		page = render_template("admin/pages/excel_alarm_person.html", user=_user)
-		pdfkit.from_string(page, 'pdfs/file.pdf')
-		return page
+		#page = render_template("admin/pages/excel_alarm_person.html", user=_user)
+		pdf = pdfkit.from_string("Hello World!", False)
+		res = Response(pdf)
+		res.headers['Content-Disposition'] = 'attachment; filename=test.pdf'
+		res.mimetype='application/pdf'
+		
+		return res
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
