@@ -87,7 +87,7 @@ def get_excel_alarm_group():
 		#If not loggedin redirect it to the login page
 		return render_template("admin/pages/login.html")
 	else:
-            lodur_get_appellliste()
+            lodur_get_appellliste(_session)
             #page = render_template("admin/pages/excel_alarm_person.html", user=_user)
             pdf = pdfkit.from_string("Hello World!", False)
             res = Response(pdf)
