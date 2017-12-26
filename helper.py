@@ -64,7 +64,7 @@ def lodur_get_appellliste(req_session):
 	# Do the POST request for the table with the information
 	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data).content
 
-	tbl = etree.HTML(html_page).find('//*[@id="mann_tab"]')
+	tbl = etree.HTML(html_page).xpath('//*[@id="mann_tab"]')
 	tbl_rows = iter(tbl)
 	tbl_headers = [col.text for col in next(tbl_rows)]
 	for row in rows:
