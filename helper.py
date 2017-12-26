@@ -33,7 +33,7 @@ def lodur_login(username,password,sess_login):
 	
 	return result
 
-def lodur_list_alarm(req_session):
+def lodur_get_appellliste(req_session):
 	""" Get the excel list from Lodur used for the 'Appellblaetter'
 
 	Keyword arguments:
@@ -62,13 +62,16 @@ def lodur_list_alarm(req_session):
 	}
 	
 	# Do the POST request for the table with the information
-	req_data = req_session.post('https://lodur-zh.ch/iel/xlsgateway.php?modul=25&what=353&xls=1&format=1', data=post_data, headers={'User-Agent':'Mozilla/5.0'}, stream=True)
+	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data, headers={'User-Agent':'Mozilla/5.0'}, stream=True)
 
-	res = Response(req_data.raw)
-	res.headers['Content-Disposition'] = 'attachment; filename=alarmliste.txt'
-	res.mimetype='application/vnd.ms-excel; charset: ISO-8859-1'
+        tbl_tree = html.fromstring(html_page)
+        
+        for table in tbl_tree.xpath('//*[@id="mann_tab"]'):
+            header = [text(th) for th in table.xpath('//th')]
+
+	print(header)
 	
-	return res
+	#return res
         
 def lodur_get_userdata(req_session):
 	""" Get the Userdata (like First-, Lastname and E-Mail Address) from the Lodur start page

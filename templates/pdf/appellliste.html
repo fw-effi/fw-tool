@@ -1,7 +1,49 @@
 <html>
 <head>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: calibri
+        }
+        table {
+            border-collapse: collapse
+        }
+        
+        table, th, td {
+            border: 1px solid black;
+        }
+        
+    </style>
 </head>
 <body>
-<table>
-
+    <div style="position: absolute; left: 50%"><strong>Absenzkontrolle vom</strong></div>
+    <div style="position: absolute; left: 100px; top: 20px;"><h2>KA 1</h2></div>
+    <div style="position: absolute; top: 100px; width: 100%">
+    <table width="100%">
+        <tr style="vertical-align: bottom">
+            <th rowspan="2" width="5%"><strong>Grad</strong></th>
+            <th rowspan="2" width="11%"><strong>Nachname</strong></th>
+            <th rowspan="2" width="11%"><strong>Vorname</strong></th>
+            <th colspan="3" class="header-anwesend"><strong>Anwesend</strong><br /><font size="2px" style="font-weight: normal">ja=komplett oder von-bis</font></th>
+            <th rowspan="2"><strong>Bemerkung</strong></th>
+        </tr>
+        <tr>
+            <th width="3%">ja</th>
+            <th width="6%">Von</th>
+            <th width="6%">Bis</th>
+        </tr>
+        {% for adf in adfs %}
+        <tr>
+            <td>{{ adf.grad }}</td>
+            <td>{{ adf.name }}</td>
+            <td>{{ adf.vorname }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+</body>
+</html>
