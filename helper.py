@@ -96,6 +96,7 @@ def lodur_get_appellliste(req_session):
 	    if 'KA 3' in gruppe:
 	        result["ka3"].append({"grad":grad,"name":name,"vorname":vorname})
 
+	print(result)
 	return result
 
 def lodur_get_userdata(req_session):
