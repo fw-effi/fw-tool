@@ -1,3 +1,5 @@
+{% set grad_of = ['Hptm', 'Oblt', 'Lt'] %}
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -19,7 +21,7 @@
     <div style="position: absolute; left: 50%"><strong>Absenzkontrolle vom</strong></div>
     <div style="position: absolute; left: 100px; top: 20px;"><h2>KA 1</h2></div>
     <div style="position: absolute; top: 100px; width: 100%">
-    <table width="100%">
+    <table width="90%">
         <tr style="vertical-align: bottom">
             <th rowspan="2" width="5%"><strong>Grad</strong></th>
             <th rowspan="2" width="11%"><strong>Nachname</strong></th>
@@ -33,17 +35,19 @@
             <th width="6%">Bis</th>
         </tr>
         {% for adf in adfs %}
-	{% if 'KA 1' in adf.gruppe %}
-        <tr>
-            <td>{{ adf.grad }}</td>
-            <td>{{ adf.name }}</td>
-            <td>{{ adf.vorname }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-	{% endif %}
+	    {% if 'KA 1' in adf.gruppe %}
+		{% if adf.grad in grad_of %}
+		    <tr>
+			<td>{{ adf.grad }}</td>
+			<td>{{ adf.name }}</td>
+			<td>{{ adf.vorname }}</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		    </tr>
+		{% endif %}
+	    {% endif %}
         {% endfor %}
     </table>
     </div>
