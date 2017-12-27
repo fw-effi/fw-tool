@@ -36,7 +36,7 @@
         </tr>
         {% for adf in adfs %}
 	    {% if 'KA 1' in adf.gruppe %}
-		{% if adf.grad in grad_of %}
+		{% if 'Hptm' in adf.grad or 'Oblt' in adf.grad or 'Lt' in adf.grad %}
 		    <tr>
 			<td>{{ adf.grad }}</td>
 			<td>{{ adf.name }}</td>
