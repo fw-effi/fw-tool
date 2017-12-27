@@ -65,10 +65,21 @@ def lodur_get_appellliste(req_session):
 	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data)
 	html_page.encoding = 'latin-1'
 
-	result = []
-
-	#soup = BeautifulSoup(html_page.content, "lxml")
-	#soup.prettify('utf-8')
+	result = {}
+	result.update({"ka1":[]})
+	result.update({"ka2":[]})
+	result.update({"ka3":[]})
+	result.update({"ka4":[]})
+	result.update({"ka5":[]})
+	result.update({"ka6":[]})
+	result.update({"bag1":[]})
+	result.update({"bag2":[]})
+	result.update({"bag3":[]})
+	result.update({"konf":[]})
+	result.update({"adl":[]})
+	result.update({"srt":[]})
+	result.update({"va":[]})
+	result.update({"san":[]})
 
 	tbl_root = lxml.html.fromstring(html_page.content)
 
@@ -77,8 +88,13 @@ def lodur_get_appellliste(req_session):
 	    name = row.xpath('.//td[2]//text()')[0]
 	    vorname = row.xpath('.//td[3]//text()')[0]
 	    gruppe = row.xpath('.//td[4]//text()')[0]
-
-	    result.append({"grad":grad,"name":name,"vorname":vorname,"gruppe":gruppe})
+	    
+	    if 'KA 1' in gruppe:
+		result["ka1"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'KA 2' in gruppe:
+		result["ka2"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'KA 3' in gruppe:
+		result["ka3"].append({"grad":grad,"name":name,"vorname":vorname})
 
 	return result
 
