@@ -33,6 +33,7 @@
             <th width="6%">Bis</th>
         </tr>
         {% for adf in adfs %}
+	{% if 'KA 1' in adf.gruppe %}
         <tr>
             <td>{{ adf.grad }}</td>
             <td>{{ adf.name }}</td>
@@ -42,6 +43,7 @@
             <td></td>
             <td></td>
         </tr>
+	{% endif %}
         {% endfor %}
     </table>
     </div>

@@ -1,6 +1,6 @@
 import requests
+import lxml.html
 from flask import Response
-from lxml import html, etree
 
 def lodur_login(username,password,sess_login):
 	""" Login User in Lodur. Use the Username and Password from the Webform
@@ -62,17 +62,26 @@ def lodur_get_appellliste(req_session):
 	}
 	
 	# Do the POST request for the table with the information
-	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data).content
+	html_page = req_session.post('https://lodur-zh.ch/iel/index.php?modul=25&what=339&anz=1', data=post_data)
+	html_page.encoding = 'latin-1'
 
-	tbl_tree = html.fromstring(html_page)
-	for tbl in tbl_tree.xpath('//*[@id="mann_tab"]'):
-	    print("-- TABLE FOUND -- ")
-	    tab = tbl.xpath('.//tbody/tr/td//text()')
-	    print(tab)
-	
-	print('-- DONE --')
-	#return res tbl.xpath('.//tbody/tr/td//text()')
-        
+	result = []
+
+	#soup = BeautifulSoup(html_page.content, "lxml")
+	#soup.prettify('utf-8')
+
+	tbl_root = lxml.html.fromstring(html_page.content)
+
+	for row in tbl_root.xpath('//*[@id="mann_tab"]/tbody/tr'):
+	    grad = row.xpath('.//td[1]//text()')[0]
+	    name = row.xpath('.//td[2]//text()')[0]
+	    vorname = row.xpath('.//td[3]//text()')[0]
+	    gruppe = row.xpath('.//td[4]//text()')[0]
+
+	    result.append({"grad":grad,"name":name,"vorname":vorname,"gruppe":gruppe})
+
+	return result
+
 def lodur_get_userdata(req_session):
 	""" Get the Userdata (like First-, Lastname and E-Mail Address) from the Lodur start page
 
@@ -82,7 +91,7 @@ def lodur_get_userdata(req_session):
 
 	html_page = req_session.get('https://lodur-zh.ch/iel').content
 
-	tbl_tree = html.fromstring(html_page)
+	tbl_tree = lxml.html.fromstring(html_page)
 	name = tbl_tree.xpath('//*[@id="adf_info_tbl"]/tbody/tr[1]/td/text()')
 	mail = tbl_tree.xpath('//*[@id="adf_info_tbl"]/tbody/tr[4]/td/span[2]/text()')
 
