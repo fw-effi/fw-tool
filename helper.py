@@ -90,11 +90,11 @@ def lodur_get_appellliste(req_session):
 	    gruppe = row.xpath('.//td[4]//text()')[0]
 	    
 	    if 'KA 1' in gruppe:
-		result["ka1"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["ka1"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'KA 2' in gruppe:
-		result["ka2"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["ka2"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'KA 3' in gruppe:
-		result["ka3"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["ka3"].append({"grad":grad,"name":name,"vorname":vorname})
 
 	return result
 
