@@ -37,6 +37,64 @@
         {% for adf in adfs %}
 	    {% if 'KA 1' in adf.gruppe %}
 		{% if 'Hptm' in adf.grad or 'Oblt' in adf.grad or 'Lt' in adf.grad %}
+		    <tr style="height: 10px">
+			<td>{{ adf.grad }}</td>
+			<td>{{ adf.name }}</td>
+			<td>{{ adf.vorname }}</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		    </tr>
+		{% endif %}
+		<tr>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		</tr>
+		<tr>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		</tr>
+		{% if 'Wm' in adf.grad or 'Kpl' in adf.grad %}
+		    <tr>
+			<td>{{ adf.grad }}</td>
+			<td>{{ adf.name }}</td>
+			<td>{{ adf.vorname }}</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		    </tr>
+		{% endif %}
+		<tr>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		</tr>
+		<tr>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		</tr>
+		{% if 'Sdt' in adf.grad %}
 		    <tr>
 			<td>{{ adf.grad }}</td>
 			<td>{{ adf.name }}</td>
