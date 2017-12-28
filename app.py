@@ -90,12 +90,12 @@ def get_excel_alarm_group():
 	else:
             pdfcontent = lodur_get_appellliste(_session)
             page = render_template("pdf/appellliste.html",adfs = pdfcontent)
-            #pdf = pdfkit.from_string(page, False)
-            #res = Response(pdf)
-            #res.headers['Content-Disposition'] = 'attachment; filename=test.pdf'
-            #res.mimetype='application/pdf'
+            pdf = pdfkit.from_string(page, False)
+            res = Response(pdf)
+            res.headers['Content-Disposition'] = 'attachment; filename=test.pdf'
+            res.mimetype='application/pdf'
 	
-	return page
+	return res
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
