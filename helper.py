@@ -115,7 +115,7 @@ def lodur_get_appellliste(req_session):
 	        result["va"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'ADL' in gruppe:
 	        result["adl"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'Sanitätsabteilung' in gruppe:
+	    if u'Sanitätsabteilung' in gruppe:
 	        result["san"].append({"grad":grad,"name":name,"vorname":vorname})
 
 	return result
