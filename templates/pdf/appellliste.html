@@ -37,7 +37,7 @@
         </tr>
         {% for adf in adfs.ka1 %}
 	    {% if 'Hptm' in adf.grad or 'Oblt' in adf.grad or 'Lt' in adf.grad %}
-		<tr style="height: 25px">
+		<tr>
 		    <td>{{ adf.grad }}</td>
 		    <td>{{ adf.name }}</td>
 		    <td>{{ adf.vorname }}</td>
@@ -68,7 +68,7 @@
 	</tr>
 	{% for adf in adfs.ka1 %}    
 	    {% if 'Wm' in adf.grad or 'Kpl' in adf.grad %}
-		<tr style="height: 25px">
+		<tr>
 		    <td>{{ adf.grad }}</td>
 		    <td>{{ adf.name }}</td>
 		    <td>{{ adf.vorname }}</td>
@@ -99,7 +99,7 @@
 	</tr>
 	{% for adf in adfs.ka1 %}
 	    {% if 'Sdt' in adf.grad %}
-		<tr style="height: 25px">
+		<tr>
 		    <td>{{ adf.grad }}</td>
 		    <td>{{ adf.name }}</td>
 		    <td>{{ adf.vorname }}</td>
