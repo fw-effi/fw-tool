@@ -8,6 +8,7 @@ import sys
 import pdfkit
 from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort
+from flask_debugtoolbar import DebugToolbarExtension
 from helper import *
 
 app = Flask(__name__)
@@ -98,5 +99,6 @@ def get_excel_alarm_group():
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
+	toolbar = DebugToolbarExtension(app)
 	app.run(debug=True,host='0.0.0.0',port=80)
 
