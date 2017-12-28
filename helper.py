@@ -67,7 +67,20 @@ def lodur_get_appellliste(req_session):
 
 	result = {}
 	result.update({'ka1': []})
-
+	result.update({'ka2': []})
+	result.update({'ka3': []})
+	result.update({'ka4': []})
+	result.update({'ka5': []})
+	result.update({'ka6': []})
+	result.update({'bag1': []})
+	result.update({'bag2': []})
+	result.update({'bag3': []})
+	result.update({'konf': []})
+	result.update({'adl': []})
+	result.update({'srt': []})
+	result.update({'va': []})
+	result.update({'san': []})
+	
 	tbl_root = lxml.html.fromstring(html_page.content)
 
 	for row in tbl_root.xpath('//*[@id="mann_tab"]/tbody/tr'):
@@ -78,12 +91,33 @@ def lodur_get_appellliste(req_session):
 	    
 	    if 'KA 1' in gruppe:
 	        result["ka1"].append({"grad":grad,"name":name,"vorname":vorname})
-	    #if 'KA 2' in gruppe:
-	    #    result["ka2"].append({"grad":grad,"name":name,"vorname":vorname})
-	    #if 'KA 3' in gruppe:
-	    #    result["ka3"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'KA 2' in gruppe:
+	        result["ka2"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'KA 3' in gruppe:
+	        result["ka3"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'KA 4' in gruppe:
+	        result["ka4"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'KA 5' in gruppe:
+	        result["ka5"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'KA 6' in gruppe:
+	        result["ka6"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'Bag 1' in gruppe:
+	        result["bag1"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'Bag 2' in gruppe:
+	        result["bag2"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'Bag 3' in gruppe:
+	        result["bag3"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'Konf Gr' in gruppe:
+	        result["konf"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'SRT' in gruppe:
+	        result["srt"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'Verkehrsabteilung' in gruppe:
+	        result["va"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'ADL' in gruppe:
+	        result["adl"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'Sanitätsabteilung' in gruppe:
+	        result["san"].append({"grad":grad,"name":name,"vorname":vorname})
 
-	print(result)
 	return result
 
 def lodur_get_userdata(req_session):

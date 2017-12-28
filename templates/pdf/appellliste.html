@@ -13,6 +13,9 @@
             border: 1px solid black;
         }
         
+	tr {
+	    height: 25px;
+	}
     </style>
 </head>
 <body>
@@ -33,77 +36,98 @@
             <th width="6%">Bis</th>
         </tr>
         {% for adf in adfs.ka1 %}
-	    {{ adf.grad|pprint }}
-		{% if 'Hptm' in adf.grad or 'Oblt' in adf.grad or 'Lt' in adf.grad %}
-		    <tr style="height: 10px">
-			<td>{{ adf.grad }}</td>
-			<td>{{ adf.name }}</td>
-			<td>{{ adf.vorname }}</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		    </tr>
-		{% endif %}
-		<tr>
-		    <td></td>
-		    <td></td>
-		    <td></td>
+	    {% if 'Hptm' in adf.grad or 'Oblt' in adf.grad or 'Lt' in adf.grad %}
+		<tr style="height: 25px">
+		    <td>{{ adf.grad }}</td>
+		    <td>{{ adf.name }}</td>
+		    <td>{{ adf.vorname }}</td>
 		    <td></td>
 		    <td></td>
 		    <td></td>
 		    <td></td>
 		</tr>
-		<tr>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		</tr>
-		{% if 'Wm' in adf.grad or 'Kpl' in adf.grad %}
-		    <tr>
-			<td>{{ adf.grad }}</td>
-			<td>{{ adf.name }}</td>
-			<td>{{ adf.vorname }}</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		    </tr>
-		{% endif %}
-		<tr>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		</tr>
-		<tr>
-		    <td></td>
-		    <td></td>
-		    <td></td>
+	    {% endif %}
+	{% endfor %}
+	<tr>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	</tr>
+	{% for adf in adfs.ka1 %}    
+	    {% if 'Wm' in adf.grad or 'Kpl' in adf.grad %}
+		<tr style="height: 25px">
+		    <td>{{ adf.grad }}</td>
+		    <td>{{ adf.name }}</td>
+		    <td>{{ adf.vorname }}</td>
 		    <td></td>
 		    <td></td>
 		    <td></td>
 		    <td></td>
 		</tr>
-		{% if 'Sdt' in adf.grad %}
-		    <tr>
-			<td>{{ adf.grad }}</td>
-			<td>{{ adf.name }}</td>
-			<td>{{ adf.vorname }}</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		    </tr>
-		{% endif %}
-        {% endfor %}
+	    {% endif %}
+	{% endfor %}
+	<tr>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	</tr>
+	{% for adf in adfs.ka1 %}
+	    {% if 'Sdt' in adf.grad %}
+		<tr style="height: 25px">
+		    <td>{{ adf.grad }}</td>
+		    <td>{{ adf.name }}</td>
+		    <td>{{ adf.vorname }}</td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		</tr>
+	    {% endif %}
+	{% endfor %}
+	<tr>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	</tr>
     </table>
     </div>
 </body>
