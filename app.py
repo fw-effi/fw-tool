@@ -90,7 +90,7 @@ def get_excel_alarm_group():
 	else:
             pdfcontent = lodur_get_appellliste(_session)
             page = render_template("pdf/appellliste.html",adfs = pdfcontent)
-            pdf = pdfkit.from_string(page, False)
+            pdf = pdfkit.from_string(page, False, {'--header-html':'pdf/appelliste-header.html'})
             res = Response(pdf)
             res.headers['Content-Disposition'] = 'attachment; filename=test.pdf'
             res.mimetype='application/pdf'
