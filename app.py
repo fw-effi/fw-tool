@@ -83,7 +83,7 @@ def get_page_report_alarmgruppe():
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
 	app.register_blueprint(pdf_pages)
-	app.debug = True
+	app.debug = False
 	toolbar = DebugToolbarExtension(app)
-	app.run(debug=True,host='0.0.0.0',port=80)
+	app.run(host='0.0.0.0',port=80)
 
