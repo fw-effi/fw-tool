@@ -36,10 +36,8 @@ def do_admin_login():
 	Keyword Arguments:
 	none
 	"""
-	global appSettings._session
-	global appSettings._user
 	
-	appSettings_session = requests.session()
+	appSettings._session = requests.session()
 	login = lodur_login(request.form['username'],request.form['password'],appSettings._session)
 
 	if login['result']:
@@ -84,7 +82,6 @@ def get_page_report_alarmgruppe():
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
-	app.register_blueprint(pdf_pages)
 	app.debug = True
 	toolbar = DebugToolbarExtension(app)
 	app.run(debug=True,host='0.0.0.0',port=80)
