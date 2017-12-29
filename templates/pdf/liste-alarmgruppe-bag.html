@@ -48,17 +48,15 @@
             <th width="6%">Bis</th>
         </tr>
         {% for adf in adfs.bag1 %}
-	    {% if 'Hptm' in adf.grad or 'Oblt' in adf.grad or 'Lt' in adf.grad %}
-		<tr>
-		    <td>{{ adf.grad }}</td>
-		    <td>{{ adf.name }}</td>
-		    <td>{{ adf.vorname }}</td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		</tr>
-	    {% endif %}
+	    <tr>
+		<td>{{ adf.grad }}</td>
+		<td>{{ adf.name }}</td>
+		<td>{{ adf.vorname }}</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	    </tr>
 	{% endfor %}
 	<tr>
 	    <td></td>
@@ -69,18 +67,16 @@
 	    <td></td>
 	    <td></td>
 	</tr>
-	{% for adf in adfs %}    
-	    {% if 'Wm' in adf.grad or 'Kpl' in adf.grad %}
-		<tr>
-		    <td>{{ adf.grad }}</td>
-		    <td>{{ adf.name }}</td>
-		    <td>{{ adf.vorname }}</td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		</tr>
-	    {% endif %}
+	{% for adf in adfs.bag2 %}
+	    <tr>
+		<td>{{ adf.grad }}</td>
+		<td>{{ adf.name }}</td>
+		<td>{{ adf.vorname }}</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	    </tr>
 	{% endfor %}
 	<tr>
 	    <td></td>
@@ -91,18 +87,16 @@
 	    <td></td>
 	    <td></td>
 	</tr>
-	{% for adf in adfs %}
-	    {% if 'Sdt' in adf.grad %}
-		<tr>
-		    <td>{{ adf.grad }}</td>
-		    <td>{{ adf.name }}</td>
-		    <td>{{ adf.vorname }}</td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		</tr>
-	    {% endif %}
+	{% for adf in adfs.bag3 %}
+	    <tr>
+		<td>{{ adf.grad }}</td>
+		<td>{{ adf.name }}</td>
+		<td>{{ adf.vorname }}</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	    </tr>
 	{% endfor %}
 	<tr>
 	    <td></td>
