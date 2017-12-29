@@ -8,7 +8,7 @@ from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort
 from flask_debugtoolbar import DebugToolbarExtension
 from helperLodur import *
-from helperPDF import *
+from helperPDF.pdf_pages import pdf_pages
 
 app = Flask(__name__)
 _session = requests.session()
@@ -85,6 +85,7 @@ def get_page_report_alarmgruppe():
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
+	app.register_blueprint(pdf_pages)
 	app.debug = True
 	toolbar = DebugToolbarExtension(app)
 	app.run(debug=True,host='0.0.0.0',port=80)
