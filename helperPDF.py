@@ -1,13 +1,13 @@
 import pdfkit
 from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, abort
+from flask import Blueprint,render_template, abort
 
 pdf_pages = Blueprint('pdf_pages',__name__,template_folder='templates')
 
 @pdf_pages.route("/pdf/alarmgruppe/<gruppe>", methods=['GET'])
 def pdf_get_alarmgruppe(gruppe):
 
-	if not session.get("logged_in"):
+	if not _session.get("logged_in"):
 		#If not loggedin redirect it to the login page
 		return render_template("admin/pages/login.html")
 	else:
