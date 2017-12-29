@@ -48,6 +48,7 @@
             <th width="6%">Bis</th>
         </tr>
         {% for adf in adfs.bag1 %}
+	    {% if not adf in adfs.konf %}
 	    <tr>
 		<td>{{ adf.grad }}</td>
 		<td>{{ adf.name }}</td>
@@ -57,6 +58,7 @@
 		<td></td>
 		<td></td>
 	    </tr>
+	    {% endif %}
 	{% endfor %}
 	<tr>
 	    <td></td>
