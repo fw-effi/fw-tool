@@ -40,6 +40,7 @@
     </div>
     <div style="position: absolute; top: 85px; width: 100%">
     <table width="98%">
+	<thead>
         <tr style="vertical-align: bottom">
             <th rowspan="2" width="5%"><strong>Grad</strong></th>
             <th rowspan="2" width="15%"><strong>Nachname</strong></th>
@@ -52,6 +53,8 @@
             <th width="6%">Von</th>
             <th width="6%">Bis</th>
         </tr>
+	</thead>
+	<tbody>
 	{% for adf in adfs.konf %}
 	    <tr>
 		<td>{{ adf.grad }}</td>
@@ -147,6 +150,7 @@
 	    <td></td>
 	    <td></td>
 	</tr>
+	</tbody>
     </table>
     </div>
 </body>
