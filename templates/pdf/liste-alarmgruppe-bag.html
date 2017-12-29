@@ -47,8 +47,7 @@
             <th width="6%">Von</th>
             <th width="6%">Bis</th>
         </tr>
-        {% for adf in adfs.bag1 %}
-	    {% if not adf in adfs.konf %}
+	{% for adf in adfs.konf %}
 	    <tr>
 		<td>{{ adf.grad }}</td>
 		<td>{{ adf.name }}</td>
@@ -58,6 +57,18 @@
 		<td></td>
 		<td></td>
 	    </tr>
+	{% endfor %}
+        {% for adf in adfs.bag1 %}
+	    {% if not adf in adfs.konf %}
+		<tr>
+		    <td>{{ adf.grad }}</td>
+		    <td>{{ adf.name }}</td>
+		    <td>{{ adf.vorname }}</td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		</tr>
 	    {% endif %}
 	{% endfor %}
 	<tr>
@@ -70,15 +81,17 @@
 	    <td></td>
 	</tr>
 	{% for adf in adfs.bag2 %}
-	    <tr>
-		<td>{{ adf.grad }}</td>
-		<td>{{ adf.name }}</td>
-		<td>{{ adf.vorname }}</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	    </tr>
+	    {% if not adf in adfs.konf %}
+		<tr>
+		    <td>{{ adf.grad }}</td>
+		    <td>{{ adf.name }}</td>
+		    <td>{{ adf.vorname }}</td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		</tr>
+	    {% endif %}
 	{% endfor %}
 	<tr>
 	    <td></td>
@@ -90,15 +103,17 @@
 	    <td></td>
 	</tr>
 	{% for adf in adfs.bag3 %}
-	    <tr>
-		<td>{{ adf.grad }}</td>
-		<td>{{ adf.name }}</td>
-		<td>{{ adf.vorname }}</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	    </tr>
+	    {% if not adf in adfs.konf %}
+		<tr>
+		    <td>{{ adf.grad }}</td>
+		    <td>{{ adf.name }}</td>
+		    <td>{{ adf.vorname }}</td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		</tr>
+	    {% endif %}
 	{% endfor %}
 	<tr>
 	    <td></td>
