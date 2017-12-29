@@ -1,18 +1,16 @@
 import pdfkit
-from flask import Flask
-from flask import Blueprint,render_template, abort
-from appSettings import *
+import appSettings
+import helperLodur
+import requests
+import flask
+from flask import Blueprint,Flask, flash, redirect, render_template, request, session, abort
 
-pdf_pages = Blueprint('pdf_pages',__name__,template_folder='templates')
+pdf_pages = Blueprint('pdf_pages',__name__)
 
 @pdf_pages.route("/pdf/alarmgruppe/<gruppe>", methods=['GET'])
 def pdf_get_alarmgruppe(gruppe):
 
-	if not _session.get("logged_in"):
-		#If not loggedin redirect it to the login page
-		return render_template("admin/pages/login.html")
-	else:
-            pdfcontent = lodur_get_appellliste(_session)
+            pdfcontent = helperLodur.lodur_get_appellliste(appSettings._session)
 	    
             page = {
 		'ka1': render_template("pdf/liste-alarmgruppe.html",adfs = pdfcontent["ka1"],gruppe = "KA 1"),
@@ -24,8 +22,8 @@ def pdf_get_alarmgruppe(gruppe):
 	    }[gruppe]
 
             pdf = pdfkit.from_string(page, False)
-            res = Response(pdf)
+            res = flask.Response(pdf)
             res.headers['Content-Disposition'] = 'attachment; filename=test.pdf'
             res.mimetype='application/pdf'
 	
-	return res
+            return res

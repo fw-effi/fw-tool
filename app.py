@@ -4,10 +4,10 @@ import cookiejar
 import json
 import sys
 import pdfkit
+import appSettings
 from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort
 from flask_debugtoolbar import DebugToolbarExtension
-from appSettings import *
 from helperLodur import *
 from helperPDF import pdf_pages
 
@@ -36,11 +36,11 @@ def do_admin_login():
 	Keyword Arguments:
 	none
 	"""
-	global _session
-	global _user
+	global appSettings._session
+	global appSettings._user
 	
-	_session = requests.session()
-	login = lodur_login(request.form['username'],request.form['password'],_session)
+	appSettings_session = requests.session()
+	login = lodur_login(request.form['username'],request.form['password'],appSettings._session)
 
 	if login['result']:
 		# If the result value from the response array are true, set the session state and go to the homepage
