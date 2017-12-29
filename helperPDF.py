@@ -1,6 +1,7 @@
 import pdfkit
 from flask import Flask
 from flask import Blueprint,render_template, abort
+from appSettings import *
 
 pdf_pages = Blueprint('pdf_pages',__name__,template_folder='templates')
 

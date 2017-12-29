@@ -7,12 +7,11 @@ import pdfkit
 from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort
 from flask_debugtoolbar import DebugToolbarExtension
+from appSettings import *
 from helperLodur import *
 from helperPDF import pdf_pages
 
 app = Flask(__name__)
-_session = requests.session()
-_user = None
 
 @app.route("/")
 def home():
