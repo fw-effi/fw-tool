@@ -7,8 +7,8 @@ import pdfkit
 from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort
 from flask_debugtoolbar import DebugToolbarExtension
-from helper_lodur import *
-from helper_pdf import *
+from helperLodur import *
+from helperPDF import *
 
 app = Flask(__name__)
 _session = requests.session()
