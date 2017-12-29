@@ -1,6 +1,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="pdfkit-header-html" content="./static/pdf/liste-header.html">
+    <meta name="pdfkit-footer-html" content="./static/pdf/liste-footer.html">
     <style>
         body {
             font-family: calibri
@@ -14,13 +16,23 @@
         }
         
 	tr {
-	    height: 30px;
+	    height: 28px;
 	}
     </style>
 </head>
 <body>
-    <div style="position: absolute; left: 35%; top: 20px"><strong>Absenzkontrolle vom: __________________</strong></div>
-    <div style="position: absolute; left: 100px; top: 20px;"><h2>{{ gruppe }}</h2></div>
+    <div style="position: absolute; top: 20px; widht=100%;">
+        <table width="98%" style="border: none;">
+	    <tr style="border: none;">
+		<td width="35%" style="border: none;">
+		    <h2 style="text-align: center">{{ gruppe }}</h2>
+		</td>
+		<td style="border: none;">
+		    <strong>Absenzkontrolle vom: __________________</strong>
+		</td>
+	    </tr>
+	</table>
+    </div>
     <div style="position: absolute; top: 85px; width: 100%">
     <table width="98%">
         <tr style="vertical-align: bottom">
