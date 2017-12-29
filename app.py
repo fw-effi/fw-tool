@@ -1,5 +1,3 @@
-#!/usr/env/python
-
 import os
 import urllib.parse
 import cookiejar
@@ -9,7 +7,8 @@ import pdfkit
 from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort
 from flask_debugtoolbar import DebugToolbarExtension
-from helper import *
+from helper_lodur import *
+from helper_pdf import *
 
 app = Flask(__name__)
 _session = requests.session()
@@ -70,8 +69,8 @@ def do_admin_logout():
 	return render_template("/admin/pages/login.html", error="Logout erfolgreich!")
 
 
-@app.route("/download/excel/alarm_group", methods=['GET'])
-def do_excel_alarm_group():
+@app.route("/page/reports/alarmgruppe", methods=['GET'])
+def get_page_report_alarmgruppe():
 	""" Get Excel List with Alarmgroups per Person
 	"""
 
@@ -79,24 +78,10 @@ def do_excel_alarm_group():
 		#If not loggedin redirect it to the login page
 		return render_template("admin/pages/login.html")
 	else:
-		return render_template("admin/pages/excel_alarm_person.html", user=_user)
+		return render_template("admin/pages/report_alarmgruppe.html", user=_user)
 
-@app.route("/test/pdf", methods=['GET'])
-def get_excel_alarm_group():
 
-	if not session.get("logged_in"):
-		#If not loggedin redirect it to the login page
-		return render_template("admin/pages/login.html")
-	else:
-            pdfcontent = lodur_get_appellliste(_session)
-            page = render_template("pdf/liste-alarmgruppe.html",adfs = pdfcontent["ka1"],gruppe = "KA 1")
 
-            pdf = pdfkit.from_string(page, False)
-            res = Response(pdf)
-            res.headers['Content-Disposition'] = 'attachment; filename=test.pdf'
-            res.mimetype='application/pdf'
-	
-	return res
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
