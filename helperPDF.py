@@ -23,7 +23,7 @@ def pdf_get_alarmgruppe(gruppe):
 
             pdf = pdfkit.from_string(page, False)
             res = flask.Response(pdf)
-            res.headers['Content-Disposition'] = 'attachment; filename=test.pdf'
+            res.headers['Content-Disposition'] = 'attachment; filename=' + str(gruppe) + '.pdf'
             res.mimetype='application/pdf'
 	
             return res

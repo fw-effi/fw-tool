@@ -26,7 +26,7 @@ def home():
 		#If not loggedin redirect it to the login page
 		return render_template("admin/pages/login.html")
 	else:
-		return render_template("admin/index.html", user=_user)
+		return render_template("admin/index.html", user=appSettings._user)
 
 @app.route("/login", methods=['POST'])
 def do_admin_login():
@@ -44,10 +44,10 @@ def do_admin_login():
 		# If the result value from the response array are true, set the session state and go to the homepage
 		session['logged_in'] = True
 		# Save the session variable in the global variable
-		_session = login['session']
+		appSettings._session = login['session']
 
 		# Save User information in global variable
-		_user = lodur_get_userdata(_session)
+		appSettings._user = lodur_get_userdata(appSettings._session)
 		
 		return home()
 	else:
@@ -75,13 +75,14 @@ def get_page_report_alarmgruppe():
 		#If not loggedin redirect it to the login page
 		return render_template("admin/pages/login.html")
 	else:
-		return render_template("admin/pages/report_alarmgruppe.html", user=_user)
+		return render_template("admin/pages/report_alarmgruppe.html", user=appSettings._user)
 
 
 
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
+	app.register_blueprint(pdf_pages)
 	app.debug = True
 	toolbar = DebugToolbarExtension(app)
 	app.run(debug=True,host='0.0.0.0',port=80)
