@@ -72,9 +72,7 @@ def lodur_get_appellliste(req_session):
 	result.update({'ka4': []})
 	result.update({'ka5': []})
 	result.update({'ka6': []})
-	result.update({'bag1': []})
-	result.update({'bag2': []})
-	result.update({'bag3': []})
+	result.update({'bag': {'bag1':[],'bag2':[],'bag3':[],'konf':[]}})
 	result.update({'konf': []})
 	result.update({'adl': []})
 	result.update({'srt': []})
@@ -102,13 +100,13 @@ def lodur_get_appellliste(req_session):
 	    if 'KA 6' in gruppe:
 	        result["ka6"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'Bag 1' in gruppe:
-	        result["bag1"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["bag"]["bag1"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'Bag 2' in gruppe:
-	        result["bag2"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["bag"]["bag2"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'Bag 3' in gruppe:
-	        result["bag3"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["bag"]["bag3"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'Konf Gr' in gruppe:
-	        result["konf"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["bag"]["konf"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'SRT' in gruppe:
 	        result["srt"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'Verkehrsabteilung' in gruppe:
