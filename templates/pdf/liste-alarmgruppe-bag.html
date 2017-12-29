@@ -18,6 +18,11 @@
 	tr {
 	    height: 28px;
 	}
+	
+	/* Page Breaks */
+	.pb_before { page-break-before:always !important; }
+	.pb_after  { page-break-after:always !important; }
+	.pbi_avoid { page-break-inside:avoid !important; }
     </style>
 </head>
 <body>
@@ -58,6 +63,15 @@
 		<td></td>
 	    </tr>
 	{% endfor %}
+	<tr>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	</tr>
         {% for adf in adfs.bag1 %}
 	    {% if not adf in adfs.konf %}
 		<tr>
@@ -115,7 +129,7 @@
 		</tr>
 	    {% endif %}
 	{% endfor %}
-	<tr>
+	<tr class="pb_before">
 	    <td></td>
 	    <td></td>
 	    <td></td>
@@ -124,25 +138,7 @@
 	    <td></td>
 	    <td></td>
 	</tr>
-	<tr>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	</tr>
-	<tr>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	</tr>
-	<tr>
+	<tr class="pb_before">
 	    <td></td>
 	    <td></td>
 	    <td></td>
