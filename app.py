@@ -68,17 +68,25 @@ def do_admin_logout():
 
 @app.route("/page/reports/alarmgruppe", methods=['GET'])
 def get_page_report_alarmgruppe():
-	""" Get Excel List with Alarmgroups per Person
+	""" Load Page
 	"""
 
 	if not session.get("logged_in"):
-		#If not loggedin redirect it to the login page
-		return render_template("admin/pages/login.html")
+	    #If not loggedin redirect it to the login page
+	    return render_template("admin/pages/login.html")
 	else:
-		return render_template("admin/pages/report_alarmgruppe.html", user=appSettings._user)
+	    return render_template("admin/pages/report_alarmgruppe.html", user=appSettings._user)
 
+@app.route("/page/settings/push", methods=['GET'])
+def get_page_report_alarmgruppe():
+	""" Load Page
+	"""
 
-
+	if not session.get("logged_in"):
+	    #If not loggedin redirect it to the login page
+	    return render_template("admin/pages/login.html")
+	else:
+	    return render_template("admin/pages/settings_push.html", user=appSettings._user)
 
 if __name__ == "__main__":
 	app.secret_key = os.urandom(12)
