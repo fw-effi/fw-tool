@@ -1,0 +1,71 @@
+{% extends "admin/layout.html" %} 
+{% block content %}
+<div class="block-header">
+	<h2>PUSH MELDUNGEN</h2>
+</div>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="card">
+			<div class="header">
+				<h2>AKTIVIEREN</h2>
+				<small></small>
+			</div>
+			<div class="body">
+			    <p>Mit dieser Funktion können Push Meldungen für dieses Gerät aktiviert / deaktiviert werden. <br/>
+				Aktuell werden folgende Meldungen unterstützt:
+			    <ul>
+				<li>Einsatzalarme</li>
+			    </ul>
+			    <blockquote class="m-b-25">
+                                <p>Beim Aktivieren wird eine Geräte Berechtigung angefordert. Diese muss angenommen werden!</p>
+                            </blockquote>
+			    <button type="button" id="btnActivate" class="btn btn-success waves-effect">AKTIVIEREN</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+    navigator.serviceWorker.register('/static/js/push.js')
+	.then(function(registration) {
+	    console.log('Service worker successfully registered.');
+    })
+	.catch(function(err) {
+	    $('#btnActivate').addClass('disabled');
+	    console.error('Unable to register service worker.', err);
+    });
+    
+    function askPermission() {
+	return new Promise(function(resolve, reject) {
+	    const permissionResult = Notification.requestPermission(function(result) {
+	      resolve(result);
+	    });
+
+	    if (permissionResult) {
+	      permissionResult.then(resolve, reject);
+	    }
+	})
+	.then(function(permissionResult) {
+	    if (permissionResult !== 'granted') {
+	      throw new Error('We weren\'t granted permission.');
+	    }
+	});
+    }
+    
+    function activateNotification() {
+	return navigator.serviceWorker.register('/static/js/push.js')
+	.then(function(registration) {
+	    const subscribeOptions = {
+		userVisibleOnly: true,
+		applicationServerKey: urlBase64ToUint8Array(
+			'AAAA18RlHwU:APA91bFD4A34fghpCv1UJ1UQagdpIjPa_9FNAM_lqOJGkCcYVcXHhW1asd9iOM_UA0v6cVVgE8HLY3U2AG3eU53gaEnbMxUMqG2JfNjY8tlOCSpuSB77ldSDTpNFbroz5PbnMf8_vWhU'
+		)
+	    };
+	    return registration.pushManager.subscribe(subscribeOptions);
+	})
+	.then(function(pushSubscription) {
+	  console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
+	  return pushSubscription;
+	});
+    }
+</script>
+{% endblock %}
