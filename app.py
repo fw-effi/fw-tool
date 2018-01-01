@@ -78,7 +78,7 @@ def get_page_report_alarmgruppe():
 	    return render_template("admin/pages/report_alarmgruppe.html", user=appSettings._user)
 
 @app.route("/page/settings/push", methods=['GET'])
-def get_page_report_alarmgruppe():
+def get_page_settings_push():
 	""" Load Page
 	"""
 
