@@ -24,6 +24,8 @@
 		</div>
 	</div>
 </div>
+{% endblock %}
+{% block javascript %}
 <script>
     navigator.serviceWorker.register('/static/js/push.js')
 	.then(function(registration) {
