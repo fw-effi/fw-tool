@@ -32,8 +32,7 @@
 	    console.log('Service worker successfully registered.');
     
 	    // We need the service worker registration to check for a subscription
-	    return navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-		return serviceWorkerRegistration.pushManager.getSubscription()
+	    serviceWorkerRegistration.pushManager.getSubscription()
 		  .then(function(subscription) {
 
 		    // If a subscription was found, return it.
@@ -46,8 +45,6 @@
 		    }
 
 		  });
-
-	      });
     })
 	.catch(function(err) {
 	    $('#btnActivate').addClass('disabled');
