@@ -20,7 +20,7 @@ def pdf_get_alarmgruppe(gruppe):
 		'ka5': render_template("pdf/liste-alarmgruppe-ka.html",adfs = pdfcontent["ka3"],gruppe = "KA 5"),
 		'ka6': render_template("pdf/liste-alarmgruppe-ka.html",adfs = pdfcontent["ka3"],gruppe = "KA 6"),
 		'bag': render_template("pdf/liste-alarmgruppe-bag.html",adfs = pdfcontent["bag"],gruppe = "Bagatell"),
-		'all': render_template("pdf/liste-alarmgruppe-bag.html",adfs = pdfcontent["all"],gruppe = "Alle")
+		'all': render_template("pdf/liste-alarmgruppe-ka.html",adfs = pdfcontent["all"],gruppe = "Alle")
 	    }[gruppe]
 
             pdf = pdfkit.from_string(page, False)
