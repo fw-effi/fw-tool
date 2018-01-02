@@ -19,7 +19,7 @@
 			    <blockquote class="m-b-25">
                                 <p>Beim Aktivieren wird eine Geraete Berechtigung angefordert. Diese muss angenommen werden!</p>
                             </blockquote>
-			    <button type="button" id="btnActivate" class="btn btn-success waves-effect">AKTIVIEREN</button>
+			    <button type="button" id="btnActivate" class="btn btn-success waves-effect" onClick="activateNotification()">AKTIVIEREN</button>
 			</div>
 		</div>
 	</div>
@@ -54,7 +54,7 @@
     }
     
     function activateNotification() {
-	return navigator.serviceWorker.register('/static/js/push.js')
+	return navigator.serviceWorker.register('/static/js/service-push.js')
 	.then(function(registration) {
 	    const subscribeOptions = {
 		userVisibleOnly: true,
