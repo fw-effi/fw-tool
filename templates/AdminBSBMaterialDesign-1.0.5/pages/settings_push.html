@@ -27,7 +27,7 @@
 {% endblock %}
 {% block javascript %}
 <script>
-    navigator.serviceWorker.register('/static/js/push.js')
+    navigator.serviceWorker.register('/static/js/service-push.js')
 	.then(function(registration) {
 	    console.log('Service worker successfully registered.');
     })
