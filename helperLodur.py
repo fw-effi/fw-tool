@@ -78,6 +78,7 @@ def lodur_get_appellliste(req_session):
 	result.update({'srt': []})
 	result.update({'va': []})
 	result.update({'san': []})
+	result.update({'all': []})
 	
 	tbl_root = lxml.html.fromstring(html_page.content)
 
@@ -87,6 +88,7 @@ def lodur_get_appellliste(req_session):
 	    vorname = row.xpath('.//td[3]//text()')[0]
 	    gruppe = row.xpath('.//td[4]//text()')[0]
 	    
+	    result["all"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'KA 1' in gruppe:
 	        result["ka1"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'KA 2' in gruppe:

@@ -19,7 +19,7 @@
 			    <blockquote class="m-b-25">
                                 <p>Beim Aktivieren wird eine Geraete Berechtigung angefordert. Diese muss angenommen werden!</p>
                             </blockquote>
-			    <button type="button" id="btnActivate" class="btn btn-success waves-effect" onClick="activateNotification()">AKTIVIEREN</button>
+			    <button type="button" id="btnActivate" class="btn waves-effect" onClick="activateNotification()">AKTIVIEREN</button>
 			</div>
 		</div>
 	</div>
@@ -36,6 +36,30 @@
 	    console.error('Unable to register service worker.', err);
     });
     
+    // We need the service worker registration to check for a subscription
+    navigator.serviceWorker.ready.then(function (reg) {
+	// Do we already have a push message subscription?
+	reg.pushManager.getSubscription()
+	    .then(function (subscription) {
+		if (!subscription) {
+		    console.log('Not yet subscribed to Push')
+
+		    isSubscribed = false;
+		    $('#btnActivate').html('AKTIVIEREN');
+		    $('#btnActivate').addClass('btn-success');
+		} else {
+		    // initialize status, which includes setting UI elements for subscribed status
+		    // and updating Subscribers list via push
+		    isSubscribed = true;
+		    $('#btnActivate').html('DEAKTIVIEREN');
+		    $('#btnActivate').addClass('btn-danger');
+		}
+	    })
+	    .catch(function (err) {
+		console.log('Error during getSubscription()', err);
+	    });
+    });
+
     function askPermission() {
 	return new Promise(function(resolve, reject) {
 	    const permissionResult = Notification.requestPermission(function(result) {
@@ -59,7 +83,7 @@
 	    const subscribeOptions = {
 		userVisibleOnly: true,
 		applicationServerKey: urlBase64ToUint8Array(
-			'AAAA18RlHwU:APA91bFD4A34fghpCv1UJ1UQagdpIjPa_9FNAM_lqOJGkCcYVcXHhW1asd9iOM_UA0v6cVVgE8HLY3U2AG3eU53gaEnbMxUMqG2JfNjY8tlOCSpuSB77ldSDTpNFbroz5PbnMf8_vWhU'
+			'BPG5qhEm8cTDFY7rh5hnbKM1omHbCl1Bz1eRT1S31Wk8qakYFxPW9KJGSWMP1JW4ZRLTM_9Zv6oy7hssbPgwmAo'
 		)
 	    };
 	    return registration.pushManager.subscribe(subscribeOptions);
