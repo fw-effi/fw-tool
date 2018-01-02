@@ -30,35 +30,31 @@
     navigator.serviceWorker.register('/static/js/service-push.js')
 	.then(function(registration) {
 	    console.log('Service worker successfully registered.');
+    
+	    // We need the service worker registration to check for a subscription
+	    return navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+		return serviceWorkerRegistration.pushManager.getSubscription()
+		  .then(function(subscription) {
+
+		    // If a subscription was found, return it.
+		    if (subscription) {
+			$('#btnActivate').html('AKTIVIEREN');
+			$('#btnActivate').addClass('btn-success');
+		    } else {
+			$('#btnActivate').html('DEAKTIVIEREN');
+			$('#btnActivate').addClass('btn-danger');
+		    }
+
+		  });
+
+	      });
     })
 	.catch(function(err) {
 	    $('#btnActivate').addClass('disabled');
 	    console.error('Unable to register service worker.', err);
     });
     
-    // We need the service worker registration to check for a subscription
-    navigator.serviceWorker.ready.then(function (reg) {
-	// Do we already have a push message subscription?
-	reg.pushManager.getSubscription()
-	    .then(function (subscription) {
-		if (!subscription) {
-		    console.log('Not yet subscribed to Push')
-
-		    isSubscribed = false;
-		    $('#btnActivate').html('AKTIVIEREN');
-		    $('#btnActivate').addClass('btn-success');
-		} else {
-		    // initialize status, which includes setting UI elements for subscribed status
-		    // and updating Subscribers list via push
-		    isSubscribed = true;
-		    $('#btnActivate').html('DEAKTIVIEREN');
-		    $('#btnActivate').addClass('btn-danger');
-		}
-	    })
-	    .catch(function (err) {
-		console.log('Error during getSubscription()', err);
-	    });
-    });
+    
 
     function askPermission() {
 	return new Promise(function(resolve, reject) {
