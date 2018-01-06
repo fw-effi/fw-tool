@@ -12,18 +12,21 @@ self.addEventListener('push', function(event) {
     switch(data.type) {
 	case "alarm":
 	    var title = data.title;
-	    var message = data.message;
-	    var icon = "/static/images/icon-alarm.png"
+	    var message = data.body;
+	    var icon = "https://fw.scherer.me/static/images/icon-alarm.png";
 	    break;
 	default:
 	    var title = data.title;
 	    var message = data.message;
 	    var icon = "img/FM_logo_2013.png";
-	    self.clickTarget = data.clickTarget;
+	    if(data.url){
+		self.url = data.url;
+	    }
     }
 
-    if(data.clickMap) {
-      self.clickMap = data.clickMap;
+    var actions = [];
+    if(data.urlMap) {
+      self.urlMap = data.urlMap;
       actions= [
           {
             action: 'googleMaps',
@@ -45,14 +48,17 @@ self.addEventListener('push', function(event) {
 /**** START notificationActionClickEvent ****/
 self.addEventListener('notificationclick', function(event) {
   if (!event.action) {
-    // Was a normal notification click
-    console.log('Notification Click.');
+    // Click in the Notification
+    event.notification.close();
+    if (typeof self.url != 'undefined') {
+	event.waitUntil(clients.openWindow(self.url));
+    }
     return;
   }
 
   switch (event.action) {
     case 'googleMaps':
-      event.waitUntil(clients.openWindow(self.clickTarget));
+      event.waitUntil(clients.openWindow(self.urlMap));
       break;
     default:
       console.log(`Unknown action clicked: '${event.action}'`);
@@ -60,13 +66,3 @@ self.addEventListener('notificationclick', function(event) {
   }
 });
 /**** END notificationActionClickEvent ****/
-
-self.addEventListener('notificationclick', function(event) {
-    console.log('[Service Worker] Notification click Received.');
-
-    event.notification.close();
-
-    if(clients.openWindow){
-        event.waitUntil(clients.openWindow(self.clickTarget));
-    }
-});
