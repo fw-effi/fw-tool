@@ -20,6 +20,8 @@ def pdf_get_alarmgruppe(gruppe):
 		'ka5': render_template("pdf/liste-alarmgruppe-ka.html",adfs = pdfcontent["ka5"],gruppe = "KA 5"),
 		'ka6': render_template("pdf/liste-alarmgruppe-ka.html",adfs = pdfcontent["ka6"],gruppe = "KA 6"),
 		'bag': render_template("pdf/liste-alarmgruppe-bag.html",adfs = pdfcontent["bag"],gruppe = "Bagatell"),
+		'spezZug': render_template("pdf/liste-alarmgruppe-spez.html",adfs = pdfcontent["spezZug"],gruppe = "Spez Zug"),
+		'spezGrp': render_template("pdf/liste-alarmgruppe-spezGrp.html",adfs = pdfcontent["spezGrp"],gruppe = "Spez Gruppen"),
 		'all': render_template("pdf/liste-alarmgruppe-ka.html",adfs = pdfcontent["all"],gruppe = "Alle")
 	    }[gruppe]
 

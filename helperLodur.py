@@ -73,11 +73,8 @@ def lodur_get_appellliste(req_session):
 	result.update({'ka5': []})
 	result.update({'ka6': []})
 	result.update({'bag': {'bag1':[],'bag2':[],'bag3':[],'konf':[]}})
-	result.update({'konf': []})
-	result.update({'adl': []})
-	result.update({'srt': []})
-	result.update({'va': []})
-	result.update({'san': []})
+	result.update({'spezZug': {'va': [],'san': []}})
+	result.update({'spezGrp': {'adl': [],'srt': []}})
 	result.update({'all': []})
 	
 	tbl_root = lxml.html.fromstring(html_page.content)
@@ -110,13 +107,13 @@ def lodur_get_appellliste(req_session):
 	    if 'Konf Gr' in gruppe:
 	        result["bag"]["konf"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'SRT' in gruppe:
-	        result["srt"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["spezGrp"]["srt"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'Verkehrsabteilung' in gruppe:
-	        result["va"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["spezZug"]["va"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'ADL' in gruppe:
-	        result["adl"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["spezGrp"]["adl"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'Sanitätsabteilung' in gruppe:
-	        result["san"].append({"grad":grad,"name":name,"vorname":vorname})
+	        result["spezZug"]["san"].append({"grad":grad,"name":name,"vorname":vorname})
 
 	return result
 

@@ -55,9 +55,9 @@
             <th width="6%">Bis</th>
         </tr>
 	<tr>
-	    <td colspan="2"><strong>Verkehrsgruppe</strong></td>
+	    <td colspan="2"><strong>SRT Gruppe</strong></td>
 	</tr>
-	{% for adf in adfs.va %}
+	{% for adf in adfs.srt %}
 	    <tr>
 		<td>{{ adf.grad }}</td>
 		<td>{{ adf.name }}</td>
@@ -78,20 +78,18 @@
 	    <td></td>
 	</tr>
 	<tr>
-	    <td colspan="2"><strong>Sanitätsabteilung</strong></td>
+	    <td colspan="2"><strong>ADL Gruppe</strong></td>
 	</tr>
-        {% for adf in adfs.san %}
-	    {% if not adf in adfs.konf %}
-		<tr>
-		    <td>{{ adf.grad }}</td>
-		    <td>{{ adf.name }}</td>
-		    <td>{{ adf.vorname }}</td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		    <td></td>
-		</tr>
-	    {% endif %}
+        {% for adf in adfs.adl %}
+	    <tr>
+		<td>{{ adf.grad }}</td>
+		<td>{{ adf.name }}</td>
+		<td>{{ adf.vorname }}</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	    </tr>
 	{% endfor %}
 	<tr>
 	    <td></td>
