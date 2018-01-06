@@ -8,19 +8,27 @@ self.addEventListener('push', function(event) {
         data = event.data.json();
     }
     console.log(data);
-    var title = data.title;
-    var message = data.message;
-    var icon = "img/FM_logo_2013.png";
-    var actions = [];
+    
+    switch(data.type) {
+	case "alarm":
+	    var title = data.title;
+	    var message = data.message;
+	    var icon = "/static/images/icon-alarm.png"
+	    break;
+	default:
+	    var title = data.title;
+	    var message = data.message;
+	    var icon = "img/FM_logo_2013.png";
+	    self.clickTarget = data.clickTarget;
+    }
 
-    self.clickTarget = data.clickTarget;
     if(data.clickMap) {
       self.clickMap = data.clickMap;
       actions= [
           {
             action: 'googleMaps',
             title: 'Karte anzeigen',
-            icon: ''
+            icon: '/static/images/icon-map.png'
           }
         ];
     }
