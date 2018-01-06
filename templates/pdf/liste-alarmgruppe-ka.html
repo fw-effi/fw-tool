@@ -18,6 +18,11 @@
 	tr {
 	    height: 28px;
 	}
+	
+	/* Page Breaks */
+	.pb_before { page-break-before:always !important; }
+	.pb_after  { page-break-after:always !important; }
+	.pbi_avoid { page-break-inside:avoid !important; }
     </style>
 </head>
 <body>
@@ -93,7 +98,7 @@
 	</tr>
 	{% for adf in adfs %}
 	    {% if 'Sdt' in adf.grad %}
-		<tr>
+		<tr class="pbi_avoid">
 		    <td>{{ adf.grad }}</td>
 		    <td>{{ adf.name }}</td>
 		    <td>{{ adf.vorname }}</td>
