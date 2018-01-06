@@ -54,8 +54,8 @@
             <th width="6%">Von</th>
             <th width="6%">Bis</th>
         </tr>
-	<tr>
-	    <td colspan="2"><strong>Verkehrsgruppe</strong></td>
+	<tr style="height:32px; vertical-align: bottom">
+	    <td colspan="3"><strong>Verkehrsgruppe</strong></td>
 	</tr>
 	{% for adf in adfs.va %}
 	    <tr>
@@ -77,8 +77,8 @@
 	    <td></td>
 	    <td></td>
 	</tr>
-	<tr>
-	    <td colspan="2"><strong>Sanitätsabteilung</strong></td>
+	<tr style="height:32px; vertical-align: bottom">
+	    <td colspan="3"><strong>Sanitätsabteilung</strong></td>
 	</tr>
         {% for adf in adfs.san %}
 	    {% if not adf in adfs.konf %}
