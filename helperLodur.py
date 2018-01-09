@@ -54,8 +54,9 @@ def lodur_get_appellliste(req_session):
 		"mannschaftslisten_info_field_sel_1_0":33,
 		"mannschaftslisten_info_field_sel_2_0":103,
 		"mannschaftslisten_info_field_sel_3_0":86,
+		"mannschaftslisten_info_field_sel_4_0":83,
 		"rows":1,
-		"cols":4,
+		"cols":5,
 		"adfs":3,
 		"gruppes":"1",
 		"zugs":1,
@@ -74,7 +75,7 @@ def lodur_get_appellliste(req_session):
 	result.update({'ka6': []})
 	result.update({'bag': {'bag1':[],'bag2':[],'bag3':[],'konf':[]}})
 	result.update({'spezZug': {'va': [],'san': []}})
-	result.update({'spezGrp': {'adl': [],'srt': []}})
+	result.update({'spezGrp': {'adl': [],'srt': [], 'fu': [], 'stab':[]}})
 	result.update({'all': []})
 	
 	tbl_root = lxml.html.fromstring(html_page.content)
@@ -84,6 +85,7 @@ def lodur_get_appellliste(req_session):
 	    name = row.xpath('.//td[2]//text()')[0]
 	    vorname = row.xpath('.//td[3]//text()')[0]
 	    gruppe = row.xpath('.//td[4]//text()')[0]
+	    zug = row.xpath('.//td[5]//text()')[0]
 	    
 	    result["all"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'KA 1' in gruppe:
@@ -114,7 +116,10 @@ def lodur_get_appellliste(req_session):
 	        result["spezGrp"]["adl"].append({"grad":grad,"name":name,"vorname":vorname})
 	    if 'SanitÃ¤tsabteilung' in gruppe:
 	        result["spezZug"]["san"].append({"grad":grad,"name":name,"vorname":vorname})
-
+	    if 'Führungsunterstützung' in zug:
+	        result["spezGrp"]["fu"].append({"grad":grad,"name":name,"vorname":vorname})
+	    if 'Stab' in zug:
+	        result["spezGrp"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
 	return result
 
 def lodur_get_userdata(req_session):

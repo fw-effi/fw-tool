@@ -59,9 +59,11 @@ self.addEventListener('notificationclick', function(event) {
   switch (event.action) {
     case 'googleMaps':
       event.waitUntil(clients.openWindow(self.urlMap));
+      event.notification.close();
       break;
     default:
       console.log(`Unknown action clicked: '${event.action}'`);
+      event.notification.close();
       break;
   }
 });
