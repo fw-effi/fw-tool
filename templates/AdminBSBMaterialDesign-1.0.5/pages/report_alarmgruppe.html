@@ -52,6 +52,7 @@
                                     {% for adf in adfs.ka1 %}
                                         <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
                                             {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -59,35 +60,50 @@
                             <div role="tabpanel" class="tab-pane fade" id="ka2">
                                 <ul class="list-group">
                                     {% for adf in adfs.ka2 %}
-                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="ka3">
                                 <ul class="list-group">
                                     {% for adf in adfs.ka3 %}
-                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="ka4">
                                 <ul class="list-group">
                                     {% for adf in adfs.ka4 %}
-                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="ka5">
                                 <ul class="list-group">
                                     {% for adf in adfs.ka5 %}
-                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="ka6">
                                 <ul class="list-group">
                                     {% for adf in adfs.ka6 %}
-                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -114,28 +130,40 @@
                             <div role="tabpanel" class="tab-pane fade active in" id="bag1">
                                 <ul class="list-group">
                                     {% for adf in adfs.bag.bag1 %}
-                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="bag2">
                                 <ul class="list-group">
                                     {% for adf in adfs.bag.bag2 %}
-                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="bag3">
                                 <ul class="list-group">
                                     {% for adf in adfs.bag.bag3 %}
-                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="konf">
                                 <ul class="list-group">
                                     {% for adf in adfs.bag.konf %}
-                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
