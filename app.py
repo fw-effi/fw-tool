@@ -75,7 +75,7 @@ def get_page_report_alarmgruppe():
 	    #If not loggedin redirect it to the login page
 	    return render_template("admin/pages/login.html")
 	else:
-	    return render_template("admin/pages/report_alarmgruppe.html", user=appSettings._user, adfs=helperLodur.lodur_get_appellliste(appSettings._session))
+	    return render_template("admin/pages/report_alarmgruppe.html", user=appSettings._user, adfs=lodur_get_appellliste(appSettings._session))
 
 @app.route("/page/settings/push", methods=['GET'])
 def get_page_settings_push():
