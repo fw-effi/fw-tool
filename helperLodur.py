@@ -81,45 +81,45 @@ def lodur_get_appellliste(req_session):
 	tbl_root = lxml.html.fromstring(html_page.content)
 
 	for row in tbl_root.xpath('//*[@id="mann_tab"]/tbody/tr'):
-	    grad = row.xpath('.//td[1]//text()')[0]
-	    name = row.xpath('.//td[2]//text()')[0]
-	    vorname = row.xpath('.//td[3]//text()')[0]
-	    gruppe = row.xpath('.//td[4]//text()')[0]
-	    zug = row.xpath('.//td[5]//text()')[0]
-	    
-	    result["all"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'KA 1' in gruppe:
-	        result["ka1"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'KA 2' in gruppe:
-	        result["ka2"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'KA 3' in gruppe:
-	        result["ka3"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'KA 4' in gruppe:
-	        result["ka4"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'KA 5' in gruppe:
-	        result["ka5"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'KA 6' in gruppe:
-	        result["ka6"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'Bag 1' in gruppe:
-	        result["bag"]["bag1"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'Bag 2' in gruppe:
-	        result["bag"]["bag2"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'Bag 3' in gruppe:
-	        result["bag"]["bag3"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'Konf Gr' in gruppe:
-	        result["bag"]["konf"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'SRT' in gruppe:
-	        result["spezGrp"]["srt"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'Verkehrsabteilung' in gruppe:
-	        result["spezZug"]["va"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'ADL' in gruppe:
-	        result["spezGrp"]["adl"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'Sanitätsabteilung' in gruppe:
-	        result["spezZug"]["san"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'F�hrungsunterst�tzung' in zug:
-	        result["spezGrp"]["fu"].append({"grad":grad,"name":name,"vorname":vorname})
-	    if 'Stab' in zug:
-	        result["spezGrp"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
+		grad = row.xpath('.//td[1]//text()')[0]
+		name = row.xpath('.//td[2]//text()')[0]
+		vorname = row.xpath('.//td[3]//text()')[0]
+		gruppe = row.xpath('.//td[4]//text()')[0]
+		zug = row.xpath('.//td[5]//text()')[0]
+
+		result["all"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'KA 1' in gruppe:
+			result["ka1"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'KA 2' in gruppe:
+			result["ka2"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'KA 3' in gruppe:
+			result["ka3"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'KA 4' in gruppe:
+			result["ka4"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'KA 5' in gruppe:
+			result["ka5"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'KA 6' in gruppe:
+			result["ka6"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'Bag 1' in gruppe:
+			result["bag"]["bag1"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'Bag 2' in gruppe:
+			result["bag"]["bag2"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'Bag 3' in gruppe:
+			result["bag"]["bag3"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'Konf Gr' in gruppe:
+			result["bag"]["konf"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'SRT' in gruppe:
+			result["spezGrp"]["srt"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'Verkehrsabteilung' in gruppe:
+			result["spezZug"]["va"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'ADL' in gruppe:
+			result["spezGrp"]["adl"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'Sanitätsabteilung' in gruppe:
+			result["spezZug"]["san"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'Führungsunterstützung' in zug:
+			result["spezGrp"]["fu"].append({"grad":grad,"name":name,"vorname":vorname})
+		if 'Stab' in zug:
+			result["spezGrp"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
 	return result
 
 def lodur_get_userdata(req_session):
