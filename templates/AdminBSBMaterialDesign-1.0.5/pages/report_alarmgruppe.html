@@ -30,47 +30,55 @@
     </div>
     <div class="body">
         <ul class="nav nav-tabs tab-nav-right" role="tablist">
-            <li role="presentation" class="active"><a href="" data-target="#ka1" data-toggle="tab">KA 1</a></li>
+            <li role="presentation" class="active"><a href="" data-target="#ka1" data-toggle="tab">KA 1<span class="badge bg-cyan">55</span></a></li>
             <li role="presentation" class=""><a href="" data-target="#ka2" data-toggle="tab">KA 2</a></li>
+            <li role="presentation" class=""><a href="" data-target="#ka3" data-toggle="tab">KA 3</a></li>
+            <li role="presentation" class=""><a href="" data-target="#ka4" data-toggle="tab">KA 4</a></li>
+            <li role="presentation" class=""><a href="" data-target="#ka5" data-toggle="tab">KA 5</a></li>
+            <li role="presentation" class=""><a href="" data-target="#ka6" data-toggle="tab">KA 6</a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade active in" id="ka1">
                 <ul class="list-group">
                     {% for adf in adfs.ka1 %}
-                        <li class="list-group-item">{{ adf.name }}</li>
+                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
                     {% endfor %}
                 </ul>
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="html_1">
-                <pre class="brush: html">
-&lt;div class="card"&gt;
-    &lt;div class="header"&gt;
-        &lt;h2&gt;
-            Basic Card Title &lt;small&gt;Description text here...&lt;/small&gt;
-        &lt;/h2&gt;
-        &lt;ul class="header-dropdown m-r--5"&gt;
-            &lt;li&gt;
-                &lt;a href="javascript:void(0);"&gt;
-                    &lt;i class="material-icons"&gt;mic&lt;/i&gt;
-                &lt;/a&gt;
-            &lt;/li&gt;
-            &lt;li class="dropdown"&gt;
-                &lt;a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"&gt;
-                    &lt;i class="material-icons"&gt;more_vert&lt;/i&gt;
-                &lt;/a&gt;
-                &lt;ul class="dropdown-menu pull-right"&gt;
-                    &lt;li&gt;&lt;a href="javascript:void(0);" class="waves-effect waves-block"&gt;Action&lt;/a&gt;&lt;/li&gt;
-                    &lt;li&gt;&lt;a href="javascript:void(0);" class="waves-effect waves-block"&gt;Another action&lt;/a&gt;&lt;/li&gt;
-                    &lt;li&gt;&lt;a href="javascript:void(0);" class="waves-effect waves-block"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
-                &lt;/ul&gt;
-            &lt;/li&gt;
-        &lt;/ul&gt;
-    &lt;/div&gt;
-    &lt;div class="body"&gt;
-        Quis pharetra a pharetra fames blandit. Risus faucibus velit Risus imperdiet mattis neque volutpat, etiam lacinia netus dictum magnis per facilisi sociosqu. Volutpat. Ridiculus nostra.
-    &lt;/div&gt;
-&lt;/div&gt;
-</pre>
+            <div role="tabpanel" class="tab-pane fade" id="ka2">
+                <ul class="list-group">
+                    {% for adf in adfs.ka2 %}
+                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="ka3">
+                <ul class="list-group">
+                    {% for adf in adfs.ka3 %}
+                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="ka4">
+                <ul class="list-group">
+                    {% for adf in adfs.ka4 %}
+                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="ka5">
+                <ul class="list-group">
+                    {% for adf in adfs.ka5 %}
+                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="ka6">
+                <ul class="list-group">
+                    {% for adf in adfs.ka6 %}
+                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
