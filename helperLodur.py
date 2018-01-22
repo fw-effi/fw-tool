@@ -114,13 +114,13 @@ def lodur_get_appellliste(req_session):
 			result["spezZug"]["va"].append({"grad":grad,"name":name,"vorname":vorname})
 		if 'ADL' in gruppe:
 			result["spezGrp"]["adl"].append({"grad":grad,"name":name,"vorname":vorname})
-		if 'SanitÃ¤tsabteilung' in gruppe:
+		if 'Sanitätsabteilung' in gruppe:
 			result["spezZug"]["san"].append({"grad":grad,"name":name,"vorname":vorname})
-		if 'FÃ¼hrungsunterstÃ¼tzung' in zug:
+		if 'Führungsunterstützung' in zug:
 			result["spezGrp"]["fu"].append({"grad":grad,"name":name,"vorname":vorname})
 		if 'Stab' in zug:
 			result["spezGrp"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
-                        result["spezZug"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
+            result["spezZug"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
 	return result
 
 def lodur_get_userdata(req_session):
