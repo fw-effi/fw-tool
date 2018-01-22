@@ -170,6 +170,66 @@
                         </div>
                     </div>
                 </div>
+                <div class="panel panel-col-teal">
+                <div class="panel-heading" role="tab" id="headingOne_bag">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" href="#collapse_bag" aria-expanded="false" aria-controls="collapse_bag" class="collapsed">Speziallisten</a>
+                    </h4>
+                </div>
+                <div id="collapse_bag" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_bag" aria-expanded="false" style="height: 0px;">
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                            <li role="presentation" class="active"><a href="" data-target="#bag1" data-toggle="tab">Stab <span class="badge bg-cyan">{{ adfs.bag.bag1|length }}</span></a></li>
+                            <li role="presentation" class=""><a href="" data-target="#bag2" data-toggle="tab">VA <span class="badge bg-cyan">{{ adfs.bag.bag2|length }}</span></a></li>
+                            <li role="presentation" class=""><a href="" data-target="#bag3" data-toggle="tab">SAN <span class="badge bg-cyan">{{ adfs.bag.bag3|length }}</span></a></li>
+                            <li role="presentation" class=""><a href="" data-target="#konf" data-toggle="tab">SRT <span class="badge bg-cyan">{{ adfs.bag.konf|length }}</span></a></li>
+                            <li role="presentation" class=""><a href="" data-target="#konf" data-toggle="tab">ADL <span class="badge bg-cyan">{{ adfs.bag.konf|length }}</span></a></li>
+                            <li role="presentation" class=""><a href="" data-target="#konf" data-toggle="tab">SRT <span class="badge bg-cyan">{{ adfs.bag.konf|length }}</span></a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade active in" id="bag1">
+                                <ul class="list-group">
+                                    {% for adf in adfs.bag.bag1 %}
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="bag2">
+                                <ul class="list-group">
+                                    {% for adf in adfs.bag.bag2 %}
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="bag3">
+                                <ul class="list-group">
+                                    {% for adf in adfs.bag.bag3 %}
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="konf">
+                                <ul class="list-group">
+                                    {% for adf in adfs.bag.konf %}
+                                        <li class="list-group-item">{{ adf.grad }} {{ adf.name }} {{ adf.vorname }}
+                                            {% if adf in adfs.spezZug.san %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                            {% if adf in adfs.spezZug.va %} <span class="badge bg-orange">VA</span> {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
