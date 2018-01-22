@@ -57,6 +57,29 @@
 	    </tr>
 	</thead>
 	<tr style="height:35px; vertical-align: bottom">
+            <td colspan="3"><strong>Stab</strong></td>
+        </tr>
+        {% for adf in adfs.stab %}
+            <tr>
+                <td>{{ adf.grad }}</td>
+                <td>{{ adf.name }}</td>
+                <td>{{ adf.vorname }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+	<tr style="height:35px; vertical-align: bottom">
 	    <td colspan="3"><strong>Verkehrsgruppe</strong></td>
 	</tr>
 	{% for adf in adfs.va %}
