@@ -114,9 +114,9 @@ def lodur_get_appellliste(req_session):
 			result["spezZug"]["va"].append({"grad":grad,"name":name,"vorname":vorname})
 		if 'ADL' in gruppe:
 			result["spezGrp"]["adl"].append({"grad":grad,"name":name,"vorname":vorname})
-		if 'Sanit�tsabteilung' in gruppe:
+		if 'Sanitätsabteilung' in gruppe:
 			result["spezZug"]["san"].append({"grad":grad,"name":name,"vorname":vorname})
-		if 'F�hrungsunterst�tzung' in zug:
+		if 'Führungsunterstützung' in zug:
 			result["spezGrp"]["fu"].append({"grad":grad,"name":name,"vorname":vorname})
 		if 'Stab' in zug:
 			result["spezGrp"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
