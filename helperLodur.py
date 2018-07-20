@@ -74,7 +74,7 @@ def lodur_get_appellliste(req_session):
 	result.update({'ka5': []})
 	result.update({'ka6': []})
 	result.update({'bag': {'bag1':[],'bag2':[],'bag3':[],'konf':[]}})
-	result.update({'spezZug': {'va': [],'san': []}})
+	result.update({'spezZug': {'va': [],'san': [], 'stab':[]}})
 	result.update({'spezGrp': {'adl': [],'srt': [], 'fu': [], 'stab':[]}})
 	result.update({'all': []})
 	
@@ -120,6 +120,7 @@ def lodur_get_appellliste(req_session):
 			result["spezGrp"]["fu"].append({"grad":grad,"name":name,"vorname":vorname})
 		if 'Stab' in zug:
 			result["spezGrp"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
+			result["spezZug"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
 	return result
 
 def lodur_get_userdata(req_session):
