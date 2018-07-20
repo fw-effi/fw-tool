@@ -3,7 +3,7 @@
 {% if session['logged_in'] %}
 <p>You're logged in already!</p>
 {% else %}
-<form action="/login" method="POST">
+<form id="login" action="/login" method="POST">
   <div class="box">
   <div id="header">
   <h1 id="logintoregister">Login</h1>
@@ -21,7 +21,7 @@
       <span class="bar"></span>
       <label>Password</label>
     </div>
-    <button id="buttonlogintoregister" type="submit">Login</button>
+    <button class="waves-effect" id="buttonlogintoregister" type="submit">Login</button>
   </form>
   <div id="footer-box"><p class="footer-text">{{ error }}</p></div>
 </div>
