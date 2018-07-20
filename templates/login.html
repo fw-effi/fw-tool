@@ -21,7 +21,18 @@
       <span class="bar"></span>
       <label>Password</label>
     </div>
-    <button class="waves-effect" id="buttonlogintoregister" type="submit">Login</button>
+    <button id="buttonlogintoregister" type="submit">Login</button>
+       <div id="loginspinner" class="preloader-wrapper small active">
+        <div class="spinner-layer spinner-green-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
   </form>
   <div id="footer-box"><p class="footer-text">{{ error }}</p></div>
 </div>
