@@ -88,8 +88,9 @@
     <!-- Custom Js -->
     <script src="/static/js/admin.js"></script>
     <script>
-        $('#login-submit').on('submit',function() {
+        $('#login-submit').on('click',function() {
             console.log('Submit Form');
+            $('#login-submit').hide();
             $('#login-loader').show();
         });
     </script>
