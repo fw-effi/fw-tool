@@ -78,7 +78,7 @@ def get_page_report_alarmgruppe():
 	    return render_template("admin/pages/report_alarmgruppe.html", user=appSettings._user, adfs=lodur_get_appellliste(appSettings._session))
 
 @app.route("/page/communication/sendMail", methods=['GET'])
-def get_page_settings_push():
+def get_page_communicaton_sendMail():
 	""" Load Page
 	"""
 
