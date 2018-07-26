@@ -16,7 +16,7 @@ def mail_post_sendOne(request,user):
             {
                 "From": {
                     "Email": "mailer@scherer.me",
-                    "Name": user['name']
+                    "Name": user['name'].split(" ",1)[1]
                 },
                 "To": [
                     {
