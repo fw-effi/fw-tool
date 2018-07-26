@@ -24,7 +24,7 @@ def mail_post_sendOne(request,user):
                         "Name": ""
                     }
                 ],
-                "Subject": "Test E-Mail",
+                "Subject": request.form['mailSubject'],
                 "HTMLPart": request.form['mailBody']
             }
         ]
