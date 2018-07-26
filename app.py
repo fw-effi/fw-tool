@@ -98,8 +98,8 @@ def post_page_communicaton_sendMail():
 	    #If not loggedin redirect it to the login page
 	    return render_template("admin/pages/login.html")
 	else:
-        mailer = mail_post_sendOne(request,appSettings._user)
-        return render_template("admin/pages/communication_sendMail.html", user=appSettings._user, error=mailer)
+            mailer = mail_post_sendOne(request,appSettings._user)
+            return render_template("admin/pages/communication_sendMail.html", user=appSettings._user, error=mailer)
 
 
 @app.route("/page/settings/push", methods=['GET'])
