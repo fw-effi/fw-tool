@@ -10,6 +10,7 @@ from flask import Flask, flash, redirect, render_template, request, session, abo
 from flask_debugtoolbar import DebugToolbarExtension
 from helperLodur import *
 from helperPDF import pdf_pages
+from helperMail import *
 
 app = Flask(__name__)
 
@@ -87,6 +88,19 @@ def get_page_communicaton_sendMail():
 	    return render_template("admin/pages/login.html")
 	else:
 	    return render_template("admin/pages/communication_sendMail.html", user=appSettings._user)
+
+@app.route("/page/communication/sendMail", methods=['POST'])
+def post_page_communicaton_sendMail():
+	""" Load Page
+	"""
+
+	if not session.get("logged_in"):
+	    #If not loggedin redirect it to the login page
+	    return render_template("admin/pages/login.html")
+	else:
+        mailer = mail_post_sendOne(request,appSettings._user)
+        return render_template("admin/pages/communication_sendMail.html", user=appSettings._user, error=mailer)
+
 
 @app.route("/page/settings/push", methods=['GET'])
 def get_page_settings_push():
