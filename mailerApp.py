@@ -37,7 +37,8 @@ print("SMTP Verbindung aktiv")
 print("Lodur Login durchfuehren...")
 lodur = lodur_login(lodur_user, lodur_passwd, lodur_session)
 lodur_session = lodur['session']
-lodur_userdata = lodur_get_userdata(lodur_session)
+lodur_userdata = lodur_get_usersContactInfos(lodur_session)
+print("Folgende Infos vom Lodur geladen: %s" % lodur_userdata)
 print("Lodur Login erfolgreich: %s" % lodur_userdata['name'])
 
 # Use search(), to get all unreaded messages
@@ -49,6 +50,8 @@ print("%d neue Nachrichten" % len(unread_msg_nums))
 for e_id in unread_msg_nums:
     _, data = client.fetch(e_id, '(RFC822)')
     email_data = data[0][1]
+
+    #find related User Informationen. Read for that the part of the mail address befor @ and split in to first- and lastname
 
     #create new Message instance from the email_data
     message = email.message_from_bytes(email_data)
