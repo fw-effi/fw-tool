@@ -21,7 +21,7 @@ def mail_post_sendOneSmtp(request,user):
     message['From'] = "%s <admin@scherer.me>" % user['name'].split(" ",1)[1]
     message['To']= request.form['mailTo']
     message['Subject'] = request.form['mailSubject']
-    message.attach(MIMEText(remove_html_tags(request.form['mailBody']),'plain'))
+    #message.attach(MIMEText(remove_html_tags(request.form['mailBody']),'plain'))
     message.attach(MIMEText(request.form['mailBody'],'html'))
 
     server = smtplib.SMTP('smtp.migadu.com',587)
