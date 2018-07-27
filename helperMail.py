@@ -67,3 +67,4 @@ def mail_post_sendOne(request,user):
     }
     result = mailjet.send.create(data=data)
     return result.json()
+
