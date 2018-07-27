@@ -3,8 +3,8 @@ from mailjet_rest import Client
 import os
 import re
 import smtplib
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 def remove_html_tags(text):
     """ Remove HTML Tages from a String
