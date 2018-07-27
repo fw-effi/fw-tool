@@ -1,6 +1,17 @@
 from flask import Response
 from mailjet_rest import Client
 import os
+import re
+
+def remove_html_tags(text):
+    """ Remove HTML Tages from a String
+
+    Keyword arguments:
+    text -> String with HTML Text
+    """
+
+    clean = re.compile('<.*?>')
+    return re.sub(clean,'',text)
 
 def mail_post_sendOne(request,user):
     """ Send E-Mail from Webform to one Recipient
@@ -25,7 +36,12 @@ def mail_post_sendOne(request,user):
                     }
                 ],
                 "Subject": request.form['mailSubject'],
-                "HTMLPart": request.form['mailBody']
+                "TextPart": remove_html_tags(request.form['mailBody']),
+                "HTMLPart": request.form['mailBody'],
+                "ReplyTo": {
+                    "Email": user['mail'].split("|",1)[0],
+                    "Name": user['name'].split(" ",1)[1]
+                }
             }
         ]
     }
