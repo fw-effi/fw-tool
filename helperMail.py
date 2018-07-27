@@ -15,10 +15,16 @@ def remove_html_tags(text):
     return re.sub(clean,'',text)
 
 def mail_post_sendOneSmtp(request,user):
-    header = 'From: admin@scherer.me'
-    header += 'To: [%s]' % request.form['mailTo']
-    header += 'Subject: %s' % request.form['mailSubject']
-    message = header + request.form['mailBody']
+    message = """From: {0} <admin@scherer.me>
+    To: {1}
+    MIME-Version: 1.0
+    Content-type: text/html
+    Subject: {2}
+    
+    {3}
+    
+    {4}
+    """.format(user['name'],request.form['mailTo'],request.form['mailSubject'],remove_html_tags(request.form['mailBody'),request.form['mailBody'])
 
     server = smtplib.SMTP('smtp.migadu.com',587)
     server.starttls()
