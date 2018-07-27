@@ -26,6 +26,8 @@ def mail_post_sendOneSmtp(request,user):
     {4}
     """.format(user['name'],request.form['mailTo'],request.form['mailSubject'],remove_html_tags(request.form['mailBody']),request.form['mailBody'])
 
+    print message
+    
     server = smtplib.SMTP('smtp.migadu.com',587)
     server.starttls()
     server.login('admin@scherer.me','Scan5415')
