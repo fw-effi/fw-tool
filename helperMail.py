@@ -16,6 +16,7 @@ def remove_html_tags(text):
 
 def mail_post_sendOneSmtp(request,user):
     server = smtplib.SMTP('smtp.migadu.com',587)
+    server.starttls()
     server.login('admin@scherer.me','Scan5415')
     msg=request.form['mailBody']
 
