@@ -22,7 +22,7 @@ def mail_post_sendOneSmtp(request,user):
     message['To']= request.form['mailTo']
     message['Subject'] = request.form['mailSubject']
     message.attach(MIMEText(remove_html_tags(request.form['mailBody']),'plain'))
-    message.attach(MIMEText(request.form['mailBody']),'html')
+    message.attach(MIMEText(request.form['mailBody'],'html'))
 
     server = smtplib.SMTP('smtp.migadu.com',587)
     server.starttls()
