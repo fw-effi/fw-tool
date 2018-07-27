@@ -21,13 +21,13 @@ def mail_post_sendOneSmtp(request,user):
     Content-type: text/html
     Subject: {2}
     
-    {3}
+    \n{3}
     
     {4}
     """.format(user['name'],request.form['mailTo'],request.form['mailSubject'],remove_html_tags(request.form['mailBody']),request.form['mailBody'])
 
-    print message
-    
+    print "SMTP Meldung: %s" % message
+
     server = smtplib.SMTP('smtp.migadu.com',587)
     server.starttls()
     server.login('admin@scherer.me','Scan5415')
