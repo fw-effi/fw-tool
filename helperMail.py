@@ -2,6 +2,7 @@ from flask import Response
 from mailjet_rest import Client
 import os
 import re
+import smtplib
 
 def remove_html_tags(text):
     """ Remove HTML Tages from a String
@@ -12,6 +13,15 @@ def remove_html_tags(text):
 
     clean = re.compile('<.*?>')
     return re.sub(clean,'',text)
+
+def mail_post_sendOneSmtp(request,user):
+    server = smtplib.SMTP('smtp.migadu.com',587)
+    server.login('admin@scherer.me','Scan5415')
+    msg=request.form['mailBody']
+
+    result = server.sendmail("admin@scherer.me",request.form['mailTo'],msg)
+    server.quit()
+    return result
 
 def mail_post_sendOne(request,user):
     """ Send E-Mail from Webform to one Recipient
