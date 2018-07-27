@@ -162,6 +162,7 @@ def lodur_get_usersContactInfos(req_session):
 	tbl_root = lxml.html.fromstring(html_page.content)
 
 	for row in tbl_root.xpath('//*[@id="mann_tab"]/tbody/tr'):
+		print("Vorname: %s" % row.xpath('.//td[4]//text()')[0])
 		result.append({"grad":row.xpath('.//td[1]//text()')[0],
 					   "anrede": row.xpath('.//td[2]//text()')[0],
 					   "name": row.xpath('.//td[3]//text()')[0],
