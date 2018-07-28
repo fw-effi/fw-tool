@@ -3,6 +3,8 @@ import imaplib
 import email
 import sys
 import requests
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from helperLodur import *
 
 imap_host = "imap.migadu.com"
