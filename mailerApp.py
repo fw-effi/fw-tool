@@ -14,6 +14,13 @@ lodur_user = "andsche"
 lodur_passwd = "9SG2uxqnfhQafwiM3qYT"
 lodur_session = requests.session()
 
+def find_user(list,firstname,lastname):
+    for l in range(0,len(list)):
+        listX = list[l]
+
+        if listX['name'].lower() == lastname.lower() and listX['vorname'].lower() == firstname.lower():
+            return l
+
 # open IMAP connection and fetch all new messages
 # store message data in email_data
 print("IMAP starten...")
@@ -38,8 +45,7 @@ print("Lodur Login durchfuehren...")
 lodur = lodur_login(lodur_user, lodur_passwd, lodur_session)
 lodur_session = lodur['session']
 lodur_userdata = lodur_get_usersContactInfos(lodur_session)
-print("Folgende Infos vom Lodur geladen: %s" % lodur_userdata)
-print("Lodur Login erfolgreich: %s" % lodur_userdata['name'])
+print("Lodur Login erfolgreich")
 
 # Use search(), to get all unreaded messages
 status, response = client.search(None, None,'(UNSEEN)')
@@ -51,27 +57,26 @@ for e_id in unread_msg_nums:
     _, data = client.fetch(e_id, '(RFC822)')
     email_data = data[0][1]
 
-    #find related User Informationen. Read for that the part of the mail address befor @ and split in to first- and lastname
-
     #create new Message instance from the email_data
     message = email.message_from_bytes(email_data)
+
+    #find related User Informationen. Read for that the part of the mail address befor @ and split in to first- and lastname
+    userFirstname = message['To'].split('@',1)[0].split('.',1)[0]
+    userLastname = message['To'].split('@',1)[0].split('.',1)[1]
+    userId = find_user(lodur_userdata,userFirstname,userLastname)
+    if userId != None:
+        user = lodur_userdata[userId]
+    else:
+        print("Kein User gefunden! {0} {1}".format(userFirstname,userLastname))
 
     #replace headers for the new E-Mail
     message.add_header("Reply-to",message['From'])
     message.replace_header("From","andy.scherer@outlook.com")
-    print("E-Mail an: %s",message['To'])
+    message.replace_header("To",user['mail'])
 
-    if "zug3" in message['To']:
-        to = "ofee42@gmail.com"
-        print("Mail wurde an Zug3 gesendet, an Gmail weiterleiten")
-    else:
-        to = "andy.scherer@outlook.com"
-        print("Mail an Outlook weiterleiten")
-
-    message.replace_header("To",to)
-
+    print("E-Mail an neue Mail Adresse senden: %s" % user['mail'])
     #send Mail with new Headers
-    server.sendmail(user,to,message.as_string())
+    #server.sendmail(user,to,message.as_string())
 
 server.quit()
 client.close()

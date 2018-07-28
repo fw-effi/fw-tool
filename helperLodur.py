@@ -147,7 +147,7 @@ def lodur_get_usersContactInfos(req_session):
 		"mannschaftslisten_info_field_sel_8_0": 48, #E-Mail
 		"mannschaftslisten_info_field_sel_9_0": 49, #2. E-Mail
 		"rows": 1,
-		"cols": 5,
+		"cols": 10,
 		"adfs": 3,
 		"gruppes": "1",
 		"zugs": 1,
@@ -162,18 +162,18 @@ def lodur_get_usersContactInfos(req_session):
 	tbl_root = lxml.html.fromstring(html_page.content)
 
 	for row in tbl_root.xpath('//*[@id="mann_tab"]/tbody/tr'):
-		print("Mobile Privat: %s" % row.xpath('.//td[5]//text()')[0])
-		result.append({"grad":row.xpath('.//td[1]//text()')[0],
-					   "anrede": row.xpath('.//td[2]//text()')[0],
-					   "name": row.xpath('.//td[3]//text()')[0],
-					   "vorname": row.xpath('.//td[4]//text()')[0],
-					   "mobilePrivat": row.xpath('.//td[5]//text()')[0],
-					   "festnetzPrivat": row.xpath('.//td[6]//text()')[0],
-					   "mobileArbeit": row.xpath('.//td[7]//text()')[0],
-					   "festnetzArbeit": row.xpath('.//td[8]//text()')[0],
-					   "mail": row.xpath('.//td[9]//text()')[0],
-					   "mail2": row.xpath('.//td[10]//text()')[0]})
-
+		result.append({"grad":row.xpath('.//td[1]//text()')[0].split('\n',1)[0],
+					   "anrede": row.xpath('.//td[2]//text()')[0].split('\n',1)[0],
+					   "name": row.xpath('.//td[3]//text()')[0].split('\n',1)[0],
+					   "vorname": row.xpath('.//td[4]//text()')[0].split('\n',1)[0],
+					   "mobilePrivat": row.xpath('.//td[5]//text()')[0].split('\n',1)[0],
+					   "festnetzPrivat": row.xpath('.//td[6]//text()')[0].split('\n',1)[0],
+					   "mobileArbeit": row.xpath('.//td[7]//text()')[0].split('\n',1)[0],
+					   "festnetzArbeit": row.xpath('.//td[8]//text()')[0].split('\n',1)[0],
+					   "mail": row.xpath('.//td[9]//text()')[0].split('\n',1)[0],
+					   "mail2": row.xpath('.//td[10]//text()')[0].split('\n',1)[0]
+		})
+#	print(result)
 	return result
 
 
