@@ -58,9 +58,10 @@ try:
     client.select('INBOXdd')
     print("INFO: IMAP Verbindung aktiv")
 except Exception as e:
-    send_bounceMail(admin_mail,str(e))
+    errorMessage = "Failed to open a new IMAP Connection to {0} with error: {1}".format(imap_host, str(e))
+    send_bounceMail(admin_mail,errorMessage)
     server.quit()
-    sys.exit("ERROR: Failed to open a new IMAP Connection to {0} with error: {1}".format(imap_host, str(e)))
+    sys.exit("ERROR: %s" % errorMessage)
 
 
 # Login to Lodur for Maillist details
