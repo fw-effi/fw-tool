@@ -8,6 +8,8 @@ from email.mime.text import MIMEText
 from helperLodur import *
 
 imap_host = "imap.migadu.com"
+imap_user = "admin@scherer.me"
+imap_passwd = "Scan5415"
 smtp_host = "smtp.migadu.com"
 #smtp_host = "smtp-mail.outlook.com"
 smtp_port = 587
@@ -54,7 +56,7 @@ except Exception as e:
 print("INFO: IMAP Verbinden...")
 try:
     client = imaplib.IMAP4_SSL(imap_host,993)
-    client.login(user,passwd)
+    client.login(imap_user,imap_passwd)
     client.select('INBOXdd')
     print("INFO: IMAP Verbindung aktiv")
 except Exception as e:
@@ -65,42 +67,62 @@ except Exception as e:
 
 
 # Login to Lodur for Maillist details
-print("Lodur Login durchfuehren...")
-lodur = lodur_login(lodur_user, lodur_passwd, lodur_session)
-lodur_session = lodur['session']
-lodur_userdata = lodur_get_usersContactInfos(lodur_session)
-print("Lodur Login erfolgreich")
+try:
+    print("INFO: Lodur Login...")
+    lodur = lodur_login(lodur_user, lodur_passwd, lodur_session)
+    lodur_session = lodur['session']
+    lodur_userdata = lodur_get_usersContactInfos(lodur_session)
+    print("INFO: Lodur Login erfolgreich")
+except Exception as e:
+    errorMessage = "Failed to connect to Lodur with error: {0}".format(str(e))
+    send_bounceMail(admin_mail,errorMessage)
+    server.quit()
+    client.close()
+    client.logout()
+
+    sys.exit("ERROR: %s" % errorMessage)
 
 # Use search(), to get all unreaded messages
-status, response = client.search(None, None,'(UNSEEN)')
-unread_msg_nums = response[0].split()
-print("%d neue Nachrichten" % len(unread_msg_nums))
+try:
+    print("INFO: Mails verarbeiten...")
+    status, response = client.search(None, None,'(UNSEEN)')
+    unread_msg_nums = response[0].split()
+    print("DEBUG: %d neue Nachrichten" % len(unread_msg_nums))
 
-# Loop through all messages
-for e_id in unread_msg_nums:
-    _, data = client.fetch(e_id, '(RFC822)')
-    email_data = data[0][1]
+    # Loop through all messages
+    for e_id in unread_msg_nums:
+        _, data = client.fetch(e_id, '(RFC822)')
+        email_data = data[0][1]
 
-    #create new Message instance from the email_data
-    message = email.message_from_bytes(email_data)
+        #create new Message instance from the email_data
+        message = email.message_from_bytes(email_data)
 
-    #find related User Informationen. Read for that the part of the mail address befor @ and split in to first- and lastname
-    userFirstname = message['To'].split('@',1)[0].split('.',1)[0]
-    userLastname = message['To'].split('@',1)[0].split('.',1)[1]
-    userId = find_user(lodur_userdata,userFirstname,userLastname)
-    if userId != None:
-        user = lodur_userdata[userId]
-    else:
-        print("Kein User gefunden! {0} {1}".format(userFirstname,userLastname))
+        #find related User Informationen. Read for that the part of the mail address befor @ and split in to first- and lastname
+        userFirstname = message['To'].split('@',1)[0].split('.',1)[0]
+        userLastname = message['To'].split('@',1)[0].split('.',1)[1]
+        userId = find_user(lodur_userdata,userFirstname,userLastname)
+        if userId != None:
+            user = lodur_userdata[userId]
+        else:
+            print("Kein User gefunden! {0} {1}".format(userFirstname,userLastname))
 
-    #replace headers for the new E-Mail
-    message.add_header("Reply-to",message['From'])
-    message.replace_header("From","andy.scherer@outlook.com")
-    message.replace_header("To",user['mail'])
+        #replace headers for the new E-Mail
+        message.add_header("Reply-to",message['From'])
+        message.replace_header("From","andy.scherer@outlook.com")
+        message.replace_header("To",user['mail'])
 
-    print("E-Mail an neue Mail Adresse senden: %s" % user['mail'])
-    #send Mail with new Headers
-    #server.sendmail(user,to,message.as_string())
+        print("E-Mail an neue Mail Adresse senden: %s" % user['mail'])
+        #send Mail with new Headers
+        #server.sendmail(user,to,message.as_string())
+
+except Exception as e:
+    errorMessage = "Failed to connect to proceed with Mails with error: {0}".format(str(e))
+    send_bounceMail(admin_mail, errorMessage)
+    server.quit()
+    client.close()
+    client.logout()
+
+    sys.exit("ERROR: %s" % errorMessage)
 
 server.quit()
 client.close()
