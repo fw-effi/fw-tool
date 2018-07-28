@@ -57,7 +57,7 @@ print("INFO: IMAP Verbinden...")
 try:
     client = imaplib.IMAP4_SSL(imap_host,993)
     client.login(imap_user,imap_passwd)
-    client.select('INBOXdd')
+    client.select('INBOX')
     print("INFO: IMAP Verbindung aktiv")
 except Exception as e:
     errorMessage = "Failed to open a new IMAP Connection to {0} with error: {1}".format(imap_host, str(e))
