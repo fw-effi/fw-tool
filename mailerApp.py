@@ -6,10 +6,12 @@ import requests
 from helperLodur import *
 
 imap_host = "imap.migadu.com"
-smtp_host = "smtp-mail.outlook.com"
+smtp_host = "smtp.migadu.com"
+#smtp_host = "smtp-mail.outlook.com"
 smtp_port = 587
-user = "admin@scherer.me"
-passwd = "Scan5415"
+smtp_user = "admin@scherer.me"
+smtp_passwd = "Scan5415"
+admin_mail = "andy.scherer@outlook.com"
 lodur_user = "andsche"
 lodur_passwd = "9SG2uxqnfhQafwiM3qYT"
 lodur_session = requests.session()
@@ -21,24 +23,43 @@ def find_user(list,firstname,lastname):
         if listX['name'].lower() == lastname.lower() and listX['vorname'].lower() == firstname.lower():
             return l
 
+def send_bounceMail(orginal_sender,errorMessage):
+    bounceMessage = MIMEMultipart()
+    bounceMessage['From'] = "{0} <{1}>".format("Feuerwehr Mailer",smtp_user)
+    bounceMessage['To'] = orginal_sender
+    bounceMessage['Subject'] = "Feuerwehr Mailer: Error E-Mail nicht versendet!"
+    bounceBody = """
+    <html><body><h1>Versand von E-Mail via FW Backend fehlgeschlagen</h1>
+    <p>Der Feurwehr Mailer Deamon wurde mit folgendem Fehler abgebrochen:</p>
+    <p>{0}</p>
+    </body></html>
+    """.format(errorMessage)
+    message.attach(MIMEText(bounceBody, 'html'))
+    server.sendmail(smtp_user, orginal_sender, bounceMessage.as_string())
+
+# open new SMTP Connection to forward received mails
+try:
+    print("INFO: SMTP Verbinden...")
+    server = smtplib.SMTP(smtp_host,smtp_port)
+    server.starttls()
+    server.login(smtp_user,smtp_passwd)
+    print("INFO: SMTP Verbindung aktiv")
+except Exception as e:
+    sys.exit("ERROR: Failed to open a new SMTP Connection to {0} with error: {1}".format(smtp_host,str(e)))
+
 # open IMAP connection and fetch all new messages
 # store message data in email_data
-print("IMAP starten...")
+print("INFO: IMAP Verbinden...")
 try:
     client = imaplib.IMAP4_SSL(imap_host,993)
     client.login(user,passwd)
-    client.select('INBOX')
-except:
-    print("Unexpected error:",sys.exc_info()[0])
+    client.select('INBOXdd')
+    print("INFO: IMAP Verbindung aktiv")
+except Exception as e:
+    send_bounceMail(admin_mail,str(e))
+    server.quit()
+    sys.exit("ERROR: Failed to open a new IMAP Connection to {0} with error: {1}".format(imap_host, str(e)))
 
-print("IMAP gestartet")
-
-# open new SMTP Connection to forward received mails
-print("SMTP Verbinden...")
-server = smtplib.SMTP(smtp_host,smtp_port)
-server.starttls()
-server.login("andy.scherer@outlook.com","7eLAx!oZYrhf")
-print("SMTP Verbindung aktiv")
 
 # Login to Lodur for Maillist details
 print("Lodur Login durchfuehren...")
