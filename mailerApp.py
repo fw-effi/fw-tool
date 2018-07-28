@@ -36,7 +36,7 @@ def send_bounceMail(orginal_sender,errorMessage):
     <p>{0}</p>
     </body></html>
     """.format(errorMessage)
-    message.attach(MIMEText(bounceBody, 'html'))
+    bounceMessage.attach(MIMEText(bounceBody, 'html'))
     server.sendmail(smtp_user, orginal_sender, bounceMessage.as_string())
 
 # open new SMTP Connection to forward received mails
