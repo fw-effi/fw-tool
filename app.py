@@ -4,6 +4,7 @@ import cookiejar
 import json
 import sys
 import pdfkit
+import sqlite3
 import appSettings
 from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort

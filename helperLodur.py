@@ -110,7 +110,7 @@ def lodur_get_appellliste(req_session):
 			result["bag"]["konf"].append({"grad":grad,"name":name,"vorname":vorname})
 		if 'SRT' in gruppe:
 			result["spezGrp"]["srt"].append({"grad":grad,"name":name,"vorname":vorname})
-		if 'Verkehrsabteilung' in gruppe:
+		if 'Verkehrsgruppe' in gruppe:
 			result["spezZug"]["va"].append({"grad":grad,"name":name,"vorname":vorname})
 		if 'ADL' in gruppe:
 			result["spezGrp"]["adl"].append({"grad":grad,"name":name,"vorname":vorname})
