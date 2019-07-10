@@ -1,7 +1,7 @@
 {
   "apps" : [{
     "name"        : "fw-tool",
-    "script"      : "./app.py",
+    "script"      : "./run.py",
     "watch"       : true
   }]
 }

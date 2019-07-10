@@ -1,5 +1,4 @@
 import pdfkit
-import appSettings
 import helperLodur
 import requests
 import flask
@@ -10,7 +9,7 @@ pdf_pages = Blueprint('pdf_pages',__name__)
 @pdf_pages.route("/pdf/alarmgruppe/<gruppe>", methods=['GET'])
 def pdf_get_alarmgruppe(gruppe):
 
-            pdfcontent = helperLodur.lodur_get_appellliste(appSettings._session)
+            pdfcontent = helperLodur.lodur_get_appellliste("PHPSESSION")
 	    
             page = {
 		'ka1': render_template("pdf/liste-alarmgruppe-ka.html",adfs = pdfcontent["ka1"],gruppe = "KA 1"),
