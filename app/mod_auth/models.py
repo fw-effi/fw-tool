@@ -18,6 +18,11 @@ class User(Base):
     username = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
 
+    def __init__(self, username, email, open_id):
+        self.username = username
+        self.email = email
+        self.open_id = open_id
+
 @lm.user_loader
 def load_user(id):
     return User.query.get(int(id))

@@ -29,12 +29,8 @@ CSRF_SESSION_KEY = "secret"
 SECRET_KEY = "secret"
 
 # OAuth Settings
-#OAUTH_CLIENT_ID = "@!64B3.3386.5E9B.4F2F!0001!C647.1A34!0008!91FA.7940.FB5E.09D1"
-#OAUTH_CLIENT_SECRET = "6t&bckJ4IY%kDN6K"
-#OAUTH_AUTHORIZE_URL = "https://oauth.scherer.me/oxauth/restv1/authorize"
-#OAUTH_TOKEN_URL ="https://oauth.scherer.me/oxauth/restv1/token"
-#OAUTH_NAME = "Lodur"
 OIDC_CLIENT_SECRETS= 'app/mod_auth/client_secret.json'
 OIDC_INTROSPECTION_AUTH_METHOD= 'client_secret_post'
 OIDC_SCOPES = ['openid','oxd','profile']
-OVERWRITE_REDIRECT_URI = 'http://localhost:8080/auth/callback/lodur'
+OIDC_COOKIE_SECURE = False
+OVERWRITE_REDIRECT_URI = 'http://dev.test:8080/auth/callback/lodur'

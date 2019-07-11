@@ -1,10 +1,9 @@
 import os
-import urllib.parse
 import json
 import sys
 import pdfkit
 from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, abort, url_for
+from flask import Flask, flash, redirect, render_template, request, session, abort, url_for, g
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -45,14 +44,15 @@ db.create_all()
 app.register_blueprint(auth_module.mod_auth)
 
 # Sample HTTP error handling
-@app.errorhandler(404)
-def not_found(error):
-    return render_template('404.html'), 404
+#@app.errorhandler(404)
+#def not_found(error):
+#    return render_template('404.html'), 404
+
 
 @app.route("/")
 def home():
 	if oidc.user_loggedin:
-		return render_template("/admin/pages/index.html", error="error")
+		return render_template("index.html", user=auth_module.get_userobject())
 	else:
 		return oidc.redirect_to_auth_server(None, request.values)
 

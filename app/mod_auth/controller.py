@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, render_template, session, request, redirect, g
+from flask import Blueprint, render_template, session, request, redirect, g, flash
 from flask import current_app as app
 from flask_login import login_user, logout_user, current_user, login_required
 from .oAuth import *
@@ -12,59 +12,42 @@ from app.mod_auth.models import User
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
-@mod_auth.before_request
-def before_request():
-    g.user = None
-    if 'user_id' in session:
-        g.user = User.query.filter_by(open_id=session['user_id']).first()
-
-@mod_auth.route("/login", methods=['GET'])
-def do_login():
-    return 'Welcome %s' % oidc.user_getfield('email')
-
+def get_userobject():
+    if session.get('user_id') is not None:
+        return User.query.filter_by(open_id=session['user_id']).first()
+    else:
+        logout()
 
 @mod_auth.route('/callback/lodur')
 @oidc.custom_callback
 def callback(data):
-    if g.user is None:
-        session['access_token'] = oidc.get_access_token()
-        session['user_id'] = oidc.user_getfield('sub',session['access_token'])
+    session_state = request.args.get("state")
 
-        username = oidc.user_getfield('user',session['access_token'])
-        email = oidc.user_getfield('email',session['access_token'])
-        user_id = session['user_id']
-        print('userinfo %s,%s,%s' % (username,email,user_id))
-        
-        if user_id in oidc.credentials_store:
-            try:
-                db.add(User(user_id,username,email))
-                db.commit()
-                user = User.query.filter_by(open_id=user_id).first()
-                g.user = user
-                return 'Hello. You logged in %s' % user.username
-            except:
-                return "Could not create User Object in DB"
+    access_token = oidc.get_access_token()
+    user_id = oidc.user_getfield('sub',access_token)
+    session['user_id'] = user_id
+
+    user = User.query.filter_by(open_id=session['user_id']).first()
+    if user is not None:
+        g.user = user
+        flash("Welcome back. You logged in %s" % user.username,"success")
     else:
-        return 'Hello. Not logged in but You submitted %s' % data
+        username = oidc.user_getfield('user_name',access_token)
+        email = oidc.user_getfield('email',access_token)
+
+        if user_id in oidc.credentials_store:
+            db.session.add(User(username,email, user_id))
+            db.session.commit()
+            user = User.query.filter_by(open_id=user_id).first()
+            g.user = user
+        else:
+            return "ERROR: User can't find in Credentials Store."
+    
+    return redirect('/')
 
 @mod_auth.route('/logout')
-@login_required
 def logout():
-    logout_user()
-    logout_url = oxc.get_logout_uri()
-    return redirect(logout_url)
-
-@mod_auth.route('/logout_callback/')
-def logout_callback():
-    """Route called by the OpenID provider when user logs out.
-    Clear the cookies here.
-    """
-    resp = make_response('Logging Out')
-    resp.set_cookie('sub', 'null', expires=0)
-    resp.set_cookie('session_id', 'null', expires=0)
-    return resp
-
-
-@mod_auth.route('/post_logout/')
-def post_logout():
-    return redirect(url_for('index'))
+    session.pop('user_id', None)
+    session.pop('access_token', None)
+    oidc.logout()
+    return 'Hi, you have been logged out! <a href="/">Return</a>'
