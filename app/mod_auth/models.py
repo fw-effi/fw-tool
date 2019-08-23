@@ -1,5 +1,5 @@
 # Import the database object (db. from the main application module
-from app import db, lm
+from app import db
 
 # Define a base model for other database tables to inherit
 class Base(db.Model):
@@ -22,7 +22,3 @@ class User(Base):
         self.username = username
         self.email = email
         self.open_id = open_id
-
-@lm.user_loader
-def load_user(id):
-    return User.query.get(int(id))

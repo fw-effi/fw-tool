@@ -72,12 +72,12 @@
                     <img src="/static/images/user.png" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.name }}</div>
-                    <div class="email">{{ user.mail }}</div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.user_name }}</div>
+                    <div class="email">{{ user.email }}</div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="/logout"><i class="material-icons">input</i>Sign Out</a></li>
+                            <li><a href="/auth/logout"><i class="material-icons">input</i>Sign Out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="/page/reports/alarmgruppe">Alarmgruppen</a>
+                                <a href="/lodur/reports/alarmgruppe">Alarmgruppen</a>
                             </li>
                         </ul>
                     </li>

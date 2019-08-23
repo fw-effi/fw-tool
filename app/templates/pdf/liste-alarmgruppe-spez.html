@@ -1,8 +1,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="pdfkit-header-html" content="./static/pdf/liste-header.html">
-    <meta name="pdfkit-footer-html" content="./static/pdf/liste-footer.html">
+    <meta name="pdfkit-header-html" content="{{ request.host_url }}static/pdf/liste-header.html">
+    <meta name="pdfkit-footer-html" content="{{ request.host_url }}static/pdf/liste-footer.html">
     <style>
         body {
             font-family: calibri
