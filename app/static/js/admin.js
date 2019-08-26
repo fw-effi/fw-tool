@@ -235,7 +235,7 @@ $.AdminBSB.navbar = {
 
         //Open left sidebar panel
         $('.bars').on('click', function () {
-            $body.toggleClass('overlay-open');
+            $body.toggleClass('overlay-open'); 
             if ($body.hasClass('overlay-open')) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
         });
 
@@ -249,6 +249,11 @@ $.AdminBSB.navbar = {
                     $navbarCollapse.removeClass('in').removeAttr('style');
                 });
             }
+        });
+
+        //
+        $('.menupoint').on('click', function() {
+            $('.page-loader-wrapper').show();
         });
     }
 }
