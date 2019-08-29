@@ -1,7 +1,9 @@
 {
   "apps" : [{
     "name"        : "fw-tool",
-    "script"      : "./run.py",
+    "script"      : "run.py",
+    "interpreter" : "python3",
+    "interpreter-args": "-u",
     "watch"       : true
   }]
 }
