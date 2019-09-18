@@ -6,7 +6,9 @@ from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_oidc import OpenIDConnect
+from celery import Celery
 
 app = Flask(__name__)
 
@@ -19,9 +21,14 @@ app.config.from_object('config')
 # Define the database object which is imported by modules and controllers
 # And build the database, this will create the database file using SQLAlchemy
 db = SQLAlchemy(app)
+db_migrate = Migrate(app,db)
 
 # Register OpenID Library
 oidc = OpenIDConnect(app)
+
+# Initial Async Task Queue
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
 
 # Import a module / component using its blueprint handler variable (mod_auth)
 from .mod_auth import controller as auth_module

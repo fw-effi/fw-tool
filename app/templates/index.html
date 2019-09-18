@@ -2,3 +2,21 @@
 {% block content %}
 <img src="./static/images/background.jpg" style="margin: 0 auto;" class="img-responsive"/>
 {% endblock %}
+
+{% block javascript %}
+<script>
+    $.ajax({
+        url: '/lodur/updateData',
+        type: 'POST',
+        success: function(response) {
+            showNotification('alert-success','Lodur Daten aktualisiert');
+            console.log(response);
+        },
+        error: function(error) {
+            showNotification('alert-danger','Fehler bei Lodurdaten: ' + error)
+            console.log(error);
+        }
+    });
+ 
+</script>
+{% endblock %}
