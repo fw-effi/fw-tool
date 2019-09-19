@@ -5,13 +5,15 @@ import sys
 from app import db, oidc
 # Import module models (i.e. User)
 from app.mod_auth.models import User
+from app.mod_lodur.models import Firefighter
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 def get_userobject():
     if session.get('user_id') is not None:
-        return User.query.filter_by(open_id=session['user_id']).first()
+        user,firefighter = db.session.query(User, Firefighter).outerjoin(Firefighter, User.email == Firefighter.mail).filter(User.open_id==session['user_id']).first()
+        return user,firefighter
     else:
         logout()
 

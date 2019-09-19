@@ -12,6 +12,29 @@ mod_pdf = Blueprint('mod_pdf',__name__, url_prefix='/pdf')
 @mod_pdf.route("/appellliste/<gruppe>", methods=['GET'])
 @oidc.require_login
 def pdf_appellliste(gruppe):
-    pdfcontent = lodur.export_appellliste()
 
-    return render_alarmgruppe(pdfcontent,gruppe)
+    if gruppe == 'bag':
+        content = {
+            "bag1": lodur.getFirefightersPerAlarm('BAG1'),
+            "bag2": lodur.getFirefightersPerAlarm('BAG2'),
+            "bag3": lodur.getFirefightersPerAlarm('BAG3'),
+            "konf": lodur.getFirefightersPerAlarm('Konf')
+        }
+    elif gruppe == 'spezZug':
+        content = {
+            "stab": lodur.getFirefightersPerAlarm('Stab'),
+            "va": lodur.getFirefightersPerAlarm('VA'),
+            "san": lodur.getFirefightersPerAlarm('San')
+        }
+    elif gruppe == 'spezGrp':
+        content = {
+            "stab": lodur.getFirefightersPerAlarm('Stab'),
+            "fu": lodur.getFirefightersPerAlarm('Fu'),
+            "srt": lodur.getFirefightersPerAlarm('SRT'),
+            "adl": lodur.getFirefightersPerAlarm('ADL')
+        }
+    else:
+        content = lodur.getFirefightersPerAlarm(gruppe)
+    
+
+    return render_alarmgruppe(content,gruppe)

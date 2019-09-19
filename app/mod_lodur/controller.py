@@ -9,20 +9,24 @@ import app.mod_lodur.models
 # Define the blueprint: 'lodur', set its url prefix: app.url/lodur
 mod_lodur = Blueprint('lodur', __name__, url_prefix='/lodur')
 
-@mod_lodur.before_request
-def before_request():
-    lodur_init()
 
 @mod_lodur.route("/updateData",methods=['POST'])
 @oidc.require_login
 def update_data():
-    get_appellliste()
-    return "OK."
-    
+    fetch_update_lodur()
+    return "OK"
+
 @mod_lodur.route("/reports/alarmgruppe", methods=['GET'])
 @oidc.require_login
 def report_alarmgruppe():
-    return render_template("pages/report_alarmgruppe.html", user=auth_module.get_userobject(), adfs=get_appellliste())
 
-def export_appellliste():
-    return get_appellliste()
+    return render_template("pages/report_alarmgruppe.html", user=auth_module.get_userobject(), groups=AlarmGroup.query.all())
+
+def getFirefightersPerAlarm(gruppe):
+
+    if gruppe == 'all':
+        firefighters = Firefighter.query.all()
+    else:
+        firefighters = Firefighter.query.filter(Firefighter.alarmgroups.any(name=gruppe))
+
+    return firefighters

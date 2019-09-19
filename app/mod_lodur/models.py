@@ -1,3 +1,5 @@
+import typing
+
 # Import the database object (db. from the main application module
 from app import db
 
@@ -10,6 +12,26 @@ class Base(db.Model):
     date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(),
                                            onupdate=db.func.current_timestamp())
+    
+    def __repr__(self) -> str:
+        return self._repr(id=self.id)
+
+    def _repr(self, **fields: typing.Dict[str, typing.Any]) -> str:
+        '''
+        Helper for __repr__
+        '''
+        field_strings = []
+        at_least_one_attached_attribute = False
+        for key, field in fields.items():
+            try:
+                field_strings.append(f'{key}={field!r}')
+            except sa.orm.exc.DetachedInstanceError:
+                field_strings.append(f'{key}=DetachedInstanceError')
+            else:
+                at_least_one_attached_attribute = True
+        if at_least_one_attached_attribute:
+            return f"<{self.__class__.__name__}({','.join(field_strings)})>"
+        return f"<{self.__class__.__name__} {id(self)}>"
 
 # 
 alarmgroups = db.Table('alarmgroups',
@@ -25,7 +47,7 @@ class Firefighter(Base):
     vorname = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
     mail = db.Column(db.String(64), nullable=False)
-    alarmgroups = db.relationship('AlarmGroup', secondary=alarmgroups, lazy='subquery', backref=db.backref('alarmgroups', lazy=True))
+    alarmgroups = db.relationship('AlarmGroup', secondary=alarmgroups, lazy='subquery', backref=db.backref('members', lazy=True))
 
     def __init__(self,uid,grad,vorname,name,mail):
         self.uid = uid
@@ -39,8 +61,10 @@ class Firefighter(Base):
 class AlarmGroup(Base):
     __tablename__ = 'AlarmGroup'
     name = db.Column(db.String(64), nullable=False)
+    firefighters = db.relationship('Firefighter', secondary=alarmgroups, lazy='subquery',backref=db.backref('firefighters',lazy=True))
 
-    def __init__(self, username, email, open_id):
-        self.username = username
-        self.email = email
-        self.open_id = open_id
+    def __init__(self, name):
+        self.name = name
+    
+    def __repr__(self):
+        return self._repr(id=self.id,name=self.name)

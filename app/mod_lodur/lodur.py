@@ -28,15 +28,15 @@ def lodur_init():
 
 def do_lodur_request(url,method,params=None):
 
-    if session.get('lodur_phpsess') is None:
-        init()
+    #if session.get('lodur_phpsess') is None:
+    lodur_init()
 
     if method == "POST":
         response = requests.post(url=url, cookies=session['lodur_phpsess'], data=params)
 
     return response
 
-def get_appellliste():
+def fetch_update_lodur():
     """ Get the excel list from Lodur used for the 'Appellblaetter'
 
     Keyword arguments:
@@ -70,19 +70,6 @@ def get_appellliste():
     html_page = resp.text
     #print(html_page)
     
-
-    result = {}
-    result.update({'ka1': []})
-    result.update({'ka2': []})
-    result.update({'ka3': []})
-    result.update({'ka4': []})
-    result.update({'ka5': []})
-    result.update({'ka6': []})
-    result.update({'bag': {'bag1':[],'bag2':[],'bag3':[],'konf':[]}})
-    result.update({'spezZug': {'va': [],'san': [], 'stab':[]}})
-    result.update({'spezGrp': {'adl': [],'srt': [], 'fu': [], 'stab':[]}})
-    result.update({'all': []})
-    
     tbl_root = lxml.html.fromstring(html_page)
 
     for row in tbl_root.xpath('//*[@id="mann_tab"]/tbody/tr'):
@@ -113,58 +100,38 @@ def get_appellliste():
             firefighter.name = name
             firefighter.mail = mail
 
-        result["all"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'KA 1' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='KA1').first())
-            result["ka1"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'KA 2' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='KA2').first())
-            result["ka2"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'KA 3' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='KA3').first())
-            result["ka3"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'KA 4' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='KA4').first())
-            result["ka4"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'KA 5' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='KA5').first())
-            result["ka5"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'KA 6' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='KA6').first())
-            result["ka6"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'Bag 1' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='BAG1').first())
-            result["bag"]["bag1"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'Bag 2' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='BAG2').first())
-            result["bag"]["bag2"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'Bag 3' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='BAG3').first())
-            result["bag"]["bag3"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'Konf Gr' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Konf').first())
-            result["bag"]["konf"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'SRT' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='SRT').first())
-            result["spezGrp"]["srt"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'Verkehrsgruppe' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='VA').first())
-            result["spezZug"]["va"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'ADL' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='ADL').first())
-            result["spezGrp"]["adl"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'Sanitätsabteilung' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='San').first())
-            result["spezZug"]["san"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'Führungsunterstützung' in zug:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Fu').first())
-            result["spezGrp"]["fu"].append({"grad":grad,"name":name,"vorname":vorname})
         if 'Stab' in zug:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Stab').first())
-            result["spezGrp"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
-            result["spezZug"]["stab"].append({"grad":grad,"name":name,"vorname":vorname})
     
     # Write changes to DB
     db.session.commit()
-
-    return result

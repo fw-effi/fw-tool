@@ -12,14 +12,29 @@ function hexToRgba(hexCode, opacity) {
     return rgb;
 }
 
+function reloadLodurData() {
+    $.ajax({
+        url: '/lodur/updateData',
+        type: 'POST',
+        success: function(response) {
+            showNotification('alert-success','Lodur Daten aktualisiert');
+            console.log(response);
+        },
+        error: function(error) {
+            showNotification('alert-danger','Fehler bei Lodurdaten: ' + error)
+            console.log(error);
+        }
+    });
+}
+
 function showNotification(colorName, text) {
     if (colorName === null || colorName === '') { colorName = 'bg-black'; }
     if (text === null || text === '') { text = 'Turning standard Bootstrap alerts'; }
-    var animateEnter = 'animated fadeInDown';
-    var animateExit = 'animated fadeOutUp'; 
+    var animateEnter = 'animated fadeInRight';
+    var animateExit = 'animated fadeOutRight'; 
     var allowDismiss = true;
-    var placementFrom = 'bottom';
-    var placementAlign = 'center';
+    var placementFrom = 'top';
+    var placementAlign = 'right';
 
     $.notify({
         message: text
@@ -28,7 +43,7 @@ function showNotification(colorName, text) {
             type: colorName,
             allow_dismiss: allowDismiss,
             newest_on_top: true,
-            timer: 1000,
+            timer: 9000,
             placement: {
                 from: placementFrom,
                 align: placementAlign
