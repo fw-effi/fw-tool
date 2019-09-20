@@ -55,7 +55,14 @@ class Firefighter(Base):
         self.vorname = vorname
         self.name = name
         self.mail = mail
-        
+    
+    def __repr__(self):
+        return self._repr(id=self.id,
+            name=self.name,
+            vorname=self.vorname,
+            grad=self.grad,
+            mail=self.mail
+        )
 
 # Define alarmgroups
 class AlarmGroup(Base):
