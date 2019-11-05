@@ -25,6 +25,12 @@
     <!-- Morris Chart Css-->
     <link href="/static/plugins/morrisjs/morris.css" rel="stylesheet" />
 
+    <!-- Bootstrap Material Datetime Picker Css -->
+    <link href="/static/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+
+    <!-- JQuery DataTable Css -->
+    <link href="/static/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+    
     <!-- Custom Css -->
     <link href="/static/css/style.css" rel="stylesheet">
 
@@ -95,12 +101,29 @@
                     </li>
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">get_app</i>
+                            <i class="material-icons">alarm</i>
                             <span>Alarmierung</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
                                 <a href="/lodur/reports/alarmgruppe" class="menupoint">Alarmgruppen</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">face</i>
+                            <span>Atemschutz</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="/atemschutz/" class="menupoint">Übersicht</a>
+                            </li>
+                            <li>
+                                <a href="/atemschutz/kontrolle" class="menupoint">Kontrolle</a>
+                            </li>
+                            <li>
+                                <a href="/atemschutz/settings" class="menupoint">Einstellungen</a>
                             </li>
                         </ul>
                     </li>
@@ -597,11 +620,16 @@
     <script src="/static/plugins/raphael/raphael.min.js"></script>
     <script src="/static/plugins/morrisjs/morris.js"></script>
 
+    
+
     <!-- ChartJs -->
     <script src="/static/plugins/chartjs/Chart.bundle.js"></script>
 
     <!-- Bootstrap Notify Plugin Js -->
     <script src="/static/plugins/bootstrap-notify/bootstrap-notify.js"></script>
+
+    <!-- Bootstrap Select Css -->
+    <link href="/static/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
     <!-- Flot Charts Plugin Js -->
     <script src="/static/plugins/flot-charts/jquery.flot.js"></script>

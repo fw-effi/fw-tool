@@ -1,0 +1,162 @@
+{% extends "layout.html" %} 
+{% block content %}
+<div class="block-header">
+	<h2>ATEMSCHUTZ ÜBERSICHT</h2>
+</div>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="card">
+			<div class="header">
+				<h2>KATEGORIEN</h2>
+				<small>Verwalte die verschiedene Kategorien</small>
+				<ul class="header-dropdown m-r--5">
+					<button type="button" class="btn btn-default waves-effect m-r-20" data-toggle="modal" data-category-id="-1" data-target="#CategoryModal">Neue Kategorie</button>
+				</ul>
+			</div>
+			<div class="body">
+				
+				<div class="body table-responsive">
+					<table class="table">
+						<thead>
+							<th>#</th>
+							<th>Name</th>
+							<th></th>
+						</thead>
+						<tbody class="table-hover">
+							{% for category in categories %}
+							<tr>
+								<th scope="row">{{ category.id }}</th>
+								<td>{{ category.name}}</td>
+								<td><a href="#" class="menu-toggle" data-toggle="modal" data-category-id="{{ category.id }}" data-category-name="{{ category.name }}" data-target="#CategoryModal"><i class="material-icons">edit</i></a> 
+									<a href="#" class="menu-toggle" data-toggle="modal" data-category-id="{{ category.id }}" data-category-name="{{ category.name }}" data-target="#DeleteCategoryModal"><i class="material-icons">delete</i></a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+            <div class="header">
+                <h2>ANSICHTER ÜBER ALLES</h2>
+            </div>
+            <div class="body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New / Edit Category Modal START -->
+<div class="modal fade" id="CategoryModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="CategoryModalLabel">Neue Kategorie hinzufügen</h4>
+			</div>
+			<form class="form" data-category="category">
+				<div class="modal-body" id="CategoryModalBody">
+					
+					<div class="form-group">
+						<div class="form-line">
+							<input type="hidden" id="txtCategoryId" />
+							<input type="text" class="form-control" id="txtCategoryName" placeholder="Kategorie Name" required />
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-link waves-effect">SPEICHERN</button>
+				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ABBRECHEN</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- New / Edit Category Modal END -->
+
+<!-- Delete Category Modal START-->
+<div class="modal fade" id="DeleteCategoryModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content modal-col-red">
+			<div class="modal-header">
+				<h4 class="modal-title" id="DeleteCategoryModalLabel">Kategorie löschen</h4>
+			</div>
+			<div class="modal-body" id="DeleteCategoryModalBody">
+				<input type="hidden" name="categoryId" />
+				Soll die Kategorie <span id="labelDeleteCategoryName"></span> defintiv gelöscht werden?
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteCategory" class="btn btn-link waves-effect">LÖSCHEN</button>
+				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ABBRECHEN</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Delete Category Modal END -->
+{% endblock %}
+{% block javascript %}
+<script>
+$('#DeleteCategoryModal').on('show.bs.modal', function(e) {
+	// Get data-category-name attribute of the entry 
+	$('#labelDeleteCategoryName').html($(e.relatedTarget).data('category-name'));
+	$("input[name='categoryId']").val($(e.relatedTarget).data('category-id'))
+});
+
+$('#CategoryModal').on('show.bs.modal', function(e) {
+	//get data-id attribute of the clicked element
+	var categoryId = $(e.relatedTarget).data('category-id');
+	var categoryName = $(e.relatedTarget).data('category-name');
+	
+	$("#txtCategoryName").val("")
+	$("#txtCategoryId").val()
+	$('#CategoryModalLabel').html("Neue Kategorie hinzufügen")
+
+	//If Category Id avaiable Edit Button was pressed.
+	if(categoryId > -1) {
+		$('#CategoryModalLabel').html("Kategorie ändern")
+		$("#txtCategoryId").val(categoryId)
+		$("#txtCategoryName").val(categoryName)
+	}
+});
+
+$('#btnDeleteCategory').click(function() {
+	$.ajax({
+		url: '/atemschutz/category/'+$("input[name='categoryId']").val(),
+		type: 'DELETE',
+		success: function(response) {
+			$('#CategoryModal').modal('hide')
+			location.reload();
+		},
+		error: function(error) {
+			var errorJson = JSON.parse(error.responseText);
+			console.log(errorJson)
+			$('#DeleteCategoryModalBody').addClass('error');
+			$('#DeleteCategoryModalBody').prepend('<div class="alert alert-danger">' + errorJson.message + '</div>');
+		}
+	});
+})
+
+$('.form').submit('click', function () {
+	event.preventDefault();
+
+	if($(this).data('category') === 'category') {
+		$.ajax({
+			url: '/atemschutz/category',
+			type: 'POST',
+			data: { category_id: $("#txtCategoryId").val(), category_name:$("#txtCategoryName").val() },
+			success: function(response) {
+				$('#CategoryModal').modal('hide')
+				location.reload();
+			},
+			error: function(error) {
+				var errorJson = JSON.parse(error.responseText);
+				console.log(errorJson)
+				$('#CategoryModalBody').addClass('error');
+				$('#CategoryModalBody').prepend('<div class="alert alert-danger">' + errorJson.message + '</div>');
+			}
+		});
+	}
+});
+</script>
+{% endblock %}

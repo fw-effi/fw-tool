@@ -3,7 +3,7 @@ import lxml.html
 from flask import session
 from flask import current_app as app
 from app import db
-from app.mod_lodur.models import Firefighter, AlarmGroup
+from app.mod_lodur.models import Firefighter, AlarmGroup, FF_Zug
 
 def lodur_init():
     sess_login = requests.session()
@@ -100,6 +100,19 @@ def fetch_update_lodur():
             firefighter.name = name
             firefighter.mail = mail
 
+        # Mapping Zug Zugehörigkeit
+        if 'Zug 1' in zug:
+            firefighter.zug.append(FF_Zug.query.filter_by(name='Zug 1').first())
+        if 'Zug 2' in zug:
+            firefighter.zug.append(FF_Zug.query.filter_by(name='Zug 2').first())
+        if 'Zug 3' in zug:
+            firefighter.zug.append(FF_Zug.query.filter_by(name='Zug 3').first())
+        if 'Spez Zug' in zug:
+            firefighter.zug.append(FF_Zug.query.filter_by(name='Spez Zug').first())
+        if 'Führungsunterstützung' in zug:
+            firefighter.zug.append(FF_Zug.query.filter_by(name='FU').first())
+
+        #Mapping Alarmgruppen
         if 'KA 1' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='KA1').first())
         if 'KA 2' in gruppe:

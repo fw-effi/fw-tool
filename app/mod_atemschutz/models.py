@@ -11,14 +11,26 @@ class Base(db.Model):
     date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(),
                                            onupdate=db.func.current_timestamp())
 
-# Define a AS-Event
-class Event(Base):
-    __tablename__ = 'AS-Event'
+# Define Category
+class Category(Base):
+    __tablename__ = 'AS_Category'
     name = db.Column(db.String(64), nullable=False, unique=True)
-    category = db.Relation
-    date = db.Column(db.String(64), nullable=True)
 
-    def __init__(self, username, email, open_id):
-        self.username = username
-        self.email = email
-        self.open_id = open_id
+    def __init__(self,name):
+        self.name = name
+
+# Define a AS-Entry
+class Entry(Base):
+    __tablename__ = 'AS_Entry'
+    time = db.Column(db.Integer,nullable=False,default=0)
+    member = db.relationship("Firefighter", backref=db.backref('as_entries',lazy=True))
+    member_id = db.Column(db.Integer, db.ForeignKey('Firefighter.id'))
+    datum = db.Column(db.DateTime,nullable=False)
+    category = db.relationship("Category", backref=db.backref('entries',lazy=True))
+    category_id = db.Column(db.Integer, db.ForeignKey('AS_Category.id'))
+
+    def __init__(self, member_id,datum,category_id, time):
+        self.member_id = member_id
+        self.datum = datum
+        self.category_id = category_id
+        self.time = time

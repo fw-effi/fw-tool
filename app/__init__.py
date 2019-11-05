@@ -34,6 +34,7 @@ celery.conf.update(app.config)
 from .mod_auth import controller as auth_module
 from .mod_lodur import controller as lodur_module
 from .mod_pdf import controller as pdf_module
+from .mod_atemschutz import controller as atemschutz_module
 
 # Generate all DB Models
 db.create_all()
@@ -42,6 +43,7 @@ db.create_all()
 app.register_blueprint(auth_module.mod_auth)
 app.register_blueprint(lodur_module.mod_lodur)
 app.register_blueprint(pdf_module.mod_pdf)
+app.register_blueprint(atemschutz_module.mod_atemschutz)
 
 # Sample HTTP error handling
 #@app.errorhandler(404)

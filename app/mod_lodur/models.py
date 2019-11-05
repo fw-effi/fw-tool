@@ -38,6 +38,11 @@ alarmgroups = db.Table('alarmgroups',
     db.Column('alarmgroup_id', db.Integer, db.ForeignKey('AlarmGroup.id'), primary_key=True),
     db.Column('firefighter_id', db.Integer, db.ForeignKey('Firefighter.id'), primary_key=True)
 )
+FF_Zugmapping = db.Table('FF_Zugmapping',
+    db.Column('ff_zug_id', db.Integer, db.ForeignKey('FF_Zug.id'), primary_key=True),
+    db.Column('firefighter_id', db.Integer, db.ForeignKey('Firefighter.id'), primary_key=True)
+)
+
 
 # Define a Firebrigade Member
 class Firefighter(Base):
@@ -47,6 +52,7 @@ class Firefighter(Base):
     vorname = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
     mail = db.Column(db.String(64), nullable=False)
+    zug = db.relationship('FF_Zug', secondary=FF_Zugmapping, lazy='subquery', backref=db.backref('members', lazy=True))
     alarmgroups = db.relationship('AlarmGroup', secondary=alarmgroups, lazy='subquery', backref=db.backref('members', lazy=True))
 
     def __init__(self,uid,grad,vorname,name,mail):
@@ -75,3 +81,9 @@ class AlarmGroup(Base):
     
     def __repr__(self):
         return self._repr(id=self.id,name=self.name)
+
+# Define Firefighter Zugseinteilung
+class FF_Zug(Base):
+    __tablename__ = 'FF_Zug'
+    name = db.Column(db.String(64), nullable=False)
+    firefighters = db.relationship('Firefighter', secondary=FF_Zugmapping, lazy='subquery',backref=db.backref('members',lazy=True))
