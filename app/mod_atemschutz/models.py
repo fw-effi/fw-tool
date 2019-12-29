@@ -1,5 +1,5 @@
 # Import the database object (db. from the main application module
-from app import db
+from app import db, auth_module
 
 # Define a base model for other database tables to inherit
 class Base(db.Model):
@@ -10,7 +10,7 @@ class Base(db.Model):
     date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(),
                                            onupdate=db.func.current_timestamp())
-
+    
 # Define Category
 class Category(Base):
     __tablename__ = 'AS_Category'

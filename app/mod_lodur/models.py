@@ -67,7 +67,8 @@ class Firefighter(Base):
             name=self.name,
             vorname=self.vorname,
             grad=self.grad,
-            mail=self.mail
+            mail=self.mail,
+            zug=self.zug
         )
 
 # Define alarmgroups
@@ -87,3 +88,6 @@ class FF_Zug(Base):
     __tablename__ = 'FF_Zug'
     name = db.Column(db.String(64), nullable=False)
     firefighters = db.relationship('Firefighter', secondary=FF_Zugmapping, lazy='subquery',backref=db.backref('members',lazy=True))
+
+    def __repr__(self):
+        return self._repr(name=self.name)
