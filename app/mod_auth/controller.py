@@ -11,11 +11,14 @@ from app.mod_lodur.models import Firefighter
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 def get_userobject():
-    if session.get('user_id') is not None:
-        user,firefighter = db.session.query(User, Firefighter).outerjoin(Firefighter, User.email == Firefighter.mail).filter(User.open_id==session['user_id']).first()
-        return user,firefighter
-    else:
-        logout()
+    try:
+        if session.get('user_id') is not None:
+            user,firefighter = db.session.query(User, Firefighter).outerjoin(Firefighter, User.email == Firefighter.mail).filter(User.open_id==session['user_id']).first()
+            return user,firefighter
+        else:
+            logout()
+    except:
+        return {"name":"Lodur nicht synchronisiert"},{'name':'Lodur nicht synchronisiert'}
 
 @mod_auth.route('/callback/lodur')
 @oidc.custom_callback
@@ -51,4 +54,4 @@ def logout():
     session.pop('user_id', None)
     session.pop('access_token', None)
     oidc.logout()
-    return 'Hi, you have been logged out! <a href="/">Return</a>'
+    return redirect('/')
