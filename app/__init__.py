@@ -26,10 +26,6 @@ db_migrate = Migrate(app,db)
 # Register OpenID Library
 oidc = OpenIDConnect(app)
 
-# Initial Async Task Queue
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
-
 # Import a module / component using its blueprint handler variable (mod_auth)
 from .mod_auth import controller as auth_module
 from .mod_lodur import controller as lodur_module

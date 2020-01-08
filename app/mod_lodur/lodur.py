@@ -113,6 +113,7 @@ def fetch_update_lodur():
             firefighter.zug.append(FF_Zug.query.filter_by(name='FU').first())
 
         #Mapping Alarmgruppen
+        firefighter.alarmgroups.clear()
         if 'KA 1' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='KA1').first())
         if 'KA 2' in gruppe:
@@ -137,7 +138,7 @@ def fetch_update_lodur():
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='SRT').first())
         if 'Verkehrsgruppe' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='VA').first())
-        if 'ADL' in gruppe:
+        if 'ADL Gruppe' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='ADL').first())
         if 'Sanitätsabteilung' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='San').first())
@@ -145,6 +146,8 @@ def fetch_update_lodur():
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Fu').first())
         if 'Stab' in zug:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Stab').first())
+        if 'Atemschutz' in gruppe:
+            firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Atemschutz').first())
     
     # Write changes to DB
     db.session.commit()

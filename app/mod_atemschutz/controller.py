@@ -22,8 +22,9 @@ def uebersicht():
         "FF_Zug.name AS zug,"
         "(SELECT sum(AS_Entry.time) AS sum_1 FROM AS_Entry "
         "WHERE AS_Entry.member_id = Firefighter.id AND AS_Entry.datum > date('now','start of year')) AS time "
-        "FROM Firefighter, FF_Zugmapping AS FF_Zugmapping_1, FF_Zug "
-        "WHERE FF_Zugmapping_1.ff_zug_id == FF_Zug.id AND FF_Zugmapping_1.firefighter_id == Firefighter.id")
+        "FROM Firefighter, FF_Zugmapping AS FF_Zugmapping_1, FF_Zug, alarmgroups "
+        "WHERE FF_Zugmapping_1.ff_zug_id == FF_Zug.id AND FF_Zugmapping_1.firefighter_id == Firefighter.id "
+        "AND alarmgroups.firefighter_id = Firefighter.id AND alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Atemschutz')")
     
     as_statistics = result.fetchall()
     result.close()
