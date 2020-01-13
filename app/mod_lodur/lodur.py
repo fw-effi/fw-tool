@@ -74,6 +74,7 @@ def fetch_update_lodur():
 
     for row in tbl_root.xpath('//*[@id="mann_tab"]/tbody/tr'):
         grad = row.xpath('.//td[1]//text()')[0]
+        grad_id = 99 #Höchste Zahl, daher wenn der Grad nicht gemamppet werden kann, landet die Person zu unterst auf der Liste -> Wird für die Sortierung verwendet
         name = row.xpath('.//td[2]//text()')[0]
         vorname = row.xpath('.//td[3]//text()')[0]
         gruppe = row.xpath('.//td[4]//text()')[0]
@@ -81,12 +82,27 @@ def fetch_update_lodur():
         mail = row.xpath('.//td[6]//text()')[0]
         uid = row.xpath('.//td[7]//text()')[0]
 
+        #Füge anhand vom Rand eine passende Integer Zahl hinzu. Damit danach nach Rang sortiert werden kann
+        if 'Hptm' in grad:
+            grad_id = 1
+        if 'Oblt' in grad:
+            grad_id = 2
+        if 'Lt' in grad:
+            grad_id = 3
+        if 'Wm' in grad:
+            grad_id = 4
+        if 'Kpl' in grad:
+            grad_id = 5
+        if 'Sdt' in grad:
+            grad_id = 6
+        
         # If User with Personalnumber from Lodur no exist
         if db.session.query(Firefighter.id).filter_by(uid=uid).scalar() is None:
             # Then add a new Entry
             firefighter = Firefighter(
                 uid,
                 grad,
+                grad_id,
                 vorname,
                 name,
                 mail
@@ -96,11 +112,13 @@ def fetch_update_lodur():
             #Update existing Entry
             firefighter = Firefighter.query.filter_by(uid=uid).first()
             firefighter.grad = grad
+            firefighter.grad_sort = grad_id
             firefighter.vorname = vorname
             firefighter.name = name
             firefighter.mail = mail
 
         # Mapping Zug Zugehörigkeit
+        firefighter.zug.clear()
         if 'Zug 1' in zug:
             firefighter.zug.append(FF_Zug.query.filter_by(name='Zug 1').first())
         if 'Zug 2' in zug:
@@ -149,5 +167,6 @@ def fetch_update_lodur():
         if 'Atemschutz' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Atemschutz').first())
     
+        
     # Write changes to DB
     db.session.commit()

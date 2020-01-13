@@ -47,17 +47,19 @@ FF_Zugmapping = db.Table('FF_Zugmapping',
 # Define a Firebrigade Member
 class Firefighter(Base):
     __tablename__ = 'Firefighter'
-    uid = db.Column(db.Integer, unique=True, nullable=True) # Lodur Personalnummer
+    uid = db.Column(db.Integer, unique=True, nullable=True) # ILEF Personalnummer
     grad = db.Column(db.String(64), nullable=False)
+    grad_sort = db.Column(db.Integer,nullable=True)
     vorname = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
     mail = db.Column(db.String(64), nullable=False)
     zug = db.relationship('FF_Zug', secondary=FF_Zugmapping, lazy='subquery', backref=db.backref('members', lazy=True))
     alarmgroups = db.relationship('AlarmGroup', secondary=alarmgroups, lazy='subquery', backref=db.backref('members', lazy=True))
 
-    def __init__(self,uid,grad,vorname,name,mail):
+    def __init__(self,uid,grad,grad_sort,vorname,name,mail):
         self.uid = uid
         self.grad = grad
+        self.grad_sort = grad_sort
         self.vorname = vorname
         self.name = name
         self.mail = mail
@@ -67,6 +69,7 @@ class Firefighter(Base):
             name=self.name,
             vorname=self.vorname,
             grad=self.grad,
+            grad_sort=self.grad_sort,
             mail=self.mail,
             zug=self.zug
         )

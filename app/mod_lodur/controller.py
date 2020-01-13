@@ -20,13 +20,13 @@ def update_data():
 @oidc.require_login
 def report_alarmgruppe():
 
-    return render_template("pages/report_alarmgruppe.html", user=auth_module.get_userobject(), groups=AlarmGroup.query.all())
+    return render_template("pages/report_alarmgruppe.html", user=auth_module.get_userobject(), groups=db.session.query(AlarmGroup).all())
 
 def getFirefightersPerAlarm(gruppe):
 
     if gruppe == 'all':
-        firefighters = Firefighter.query.all()
+        firefighters = Firefighter.query.order_by(Firefighter.grad_sort,Firefighter.name,Firefighter.vorname).all()
     else:
-        firefighters = Firefighter.query.filter(Firefighter.alarmgroups.any(name=gruppe))
+        firefighters = Firefighter.query.filter(Firefighter.alarmgroups.any(name=gruppe)).order_by(Firefighter.grad_sort,Firefighter.name,Firefighter.vorname)
 
     return firefighters

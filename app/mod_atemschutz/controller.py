@@ -24,7 +24,7 @@ def uebersicht():
         "WHERE AS_Entry.member_id = Firefighter.id AND AS_Entry.datum > date('now','start of year')) AS time "
         "FROM Firefighter, FF_Zugmapping AS FF_Zugmapping_1, FF_Zug, alarmgroups "
         "WHERE FF_Zugmapping_1.ff_zug_id == FF_Zug.id AND FF_Zugmapping_1.firefighter_id == Firefighter.id "
-        "AND alarmgroups.firefighter_id = Firefighter.id AND alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Atemschutz')")
+        "AND alarmgroups.firefighter_id = Firefighter.id AND alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Atemschutz') ORDER BY grad_sort")
     
     as_statistics = result.fetchall()
     result.close()
