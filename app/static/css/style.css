@@ -2560,6 +2560,53 @@ section.content {
   .btn-group-vertical .btn + .dropdown-toggle {
     border-left: 1px solid rgba(0, 0, 0, 0.08) !important; }
 
+.btn-floating {
+  position: fixed;
+  bottom: 20px;
+  right: 60px;
+  z-index: 1;
+  display: inline-block;
+  padding: 0;
+  margin: 10px;
+  overflow: hidden;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 50%;
+  border-style: none;
+  -webkit-box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+  box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out; }
+  .btn-floating i {
+    display: inline-block;
+    width: inherit;
+    color: #fff;
+    text-align: center; }
+
+@media (max-width: 991px) {
+  .btn-floating {
+    width: 47px;
+    height: 47px; }
+    .btn-floating i {
+      font-size: 1.25rem;
+      line-height: 47px;
+    }
+}
+@media (min-width: 991px) {
+  .btn-floating {
+    width: 61px;
+    height: 61px; }
+    .btn-floating i {
+      font-size: 1.625rem;
+      line-height: 61px;
+    }
+  div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    margin-right: 90px !important;
+  }
+}
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+  margin-right: 90px !important;
+}
 /* Bootstrap Tags Input ======================== */
 .bootstrap-tagsinput {
   -webkit-box-shadow: none !important;

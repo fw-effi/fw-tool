@@ -4,3 +4,4 @@
 bin/
 config.py
 app/mod_auth/client_secret.json
+app/migrations
