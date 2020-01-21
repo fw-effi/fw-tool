@@ -1,5 +1,8 @@
 {% extends "layout.html" %} 
 {% block content %}
+<style>
+    svg { width: 100% !important; }
+    </style>
 <div class="block-header">
 	<h2>ATEMSCHUTZ KONTROLLE</h2>
 </div>
@@ -23,8 +26,6 @@
                 <script>var zug1_ef = 0; var zug1_nef = 0;</script>
             </div>
             <div class="body">
-                <div class="row clearfix">
-                    <div class="col-md-12">
                         <div id="donut_zug1" class="graph align-center" style="max-height: 180px"></div>
                         <ul class="nav nav-tabs tab-nav-right" role="tablist">
                             <li role="presentation" class=""><a role="button" data-target="#personen1" data-toggle="collapse">Details <span class="badge bg-cyan"></span></a></li>
@@ -49,8 +50,7 @@
                             </ul>
                         </div>
                     </div>
-                </div>
-            </div>
+                
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -368,7 +368,7 @@ $('#btnDeleteEntry').click(function() {
 	});
 });
 
-Morris.Donut({
+var graph_zug1 = Morris.Donut({
     element: donut_zug1,
     data: [{
         label: 'Nicht erreicht',
@@ -383,7 +383,9 @@ Morris.Donut({
         return y + ' Pers.'
    }
 });
-Morris.Donut({
+$('#donut_zug1').resize(function () { graph_zug1.redraw(); });
+
+var graph_zug2 = Morris.Donut({
    element: donut_zug2,
     data: [{
         label: 'Nicht erreicht',
@@ -398,7 +400,9 @@ Morris.Donut({
         return y + ' Pers.'
    }
 });
-Morris.Donut({
+$('#donut_zug2').resize(function () { graph_zug2.redraw(); });
+
+var graph_zug3 = Morris.Donut({
    element: donut_zug3,
     data: [{
         label: 'Nicht erreicht',
@@ -413,5 +417,6 @@ Morris.Donut({
         return y + ' Pers.'
    }
 });
+$('#donut_zug3').resize(function () { graph_zug3.redraw(); });
 </script>
 {% endblock %}

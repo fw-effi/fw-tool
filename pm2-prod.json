@@ -1,0 +1,9 @@
+{
+  "apps" : [{
+    "name"        : "fw-tool-PROD",
+    "script"      : "run-prod.py",
+    "interpreter" : "python3",
+    "interpreter-args": "-u",
+    "watch"       : false
+  }]
+}

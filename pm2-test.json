@@ -1,7 +1,7 @@
 {
   "apps" : [{
-    "name"        : "fw-tool",
-    "script"      : "run.py",
+    "name"        : "fw-tool-TEST",
+    "script"      : "run-test.py",
     "interpreter" : "python3",
     "interpreter-args": "-u",
     "watch"       : false

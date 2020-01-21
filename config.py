@@ -37,7 +37,7 @@ OIDC_CLIENT_SECRETS= 'app/mod_auth/client_secret.json'
 OIDC_INTROSPECTION_AUTH_METHOD= 'client_secret_post'
 OIDC_SCOPES = ['openid','oxd','profile']
 OIDC_COOKIE_SECURE = False
-OVERWRITE_REDIRECT_URI = 'http://localhost:8080/auth/callback/lodur'
+OVERWRITE_REDIRECT_URI = 'http://localhost:8081/auth/callback/lodur'
 
 # Lodur Settings
 LODUR_USERNAME = 'andsche'
