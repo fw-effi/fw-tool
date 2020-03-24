@@ -15,9 +15,10 @@ class Base(db.Model):
 class Category(Base):
     __tablename__ = 'AS_Category'
     name = db.Column(db.String(64), nullable=False, unique=True)
-
-    def __init__(self,name):
+    training = db.Column(db.Boolean, default=False, nullable=True)
+    def __init__(self,name,training):
         self.name = name
+        self.training = training
 
 # Define a AS-Entry
 class Entry(Base):

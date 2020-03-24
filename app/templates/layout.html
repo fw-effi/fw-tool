@@ -7,7 +7,24 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Feuerwehr Illnau-Effretikon / Lindau</title>
     <!-- Favicon-->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="57x57" href="/static/images/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/static/images/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/images/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/images/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/images/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/images/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/static/images/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/static/images/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/static/images/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="144x144"  href="/static/images/icons/android-icon-144x144.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/static/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/static/images/icons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/static/images/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -27,9 +44,6 @@
 
     <!-- Bootstrap Material Datetime Picker Css -->
     <link href="/static/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
-
-    <!-- JQuery DataTable Css -->
-    <link href="/static/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
     
     <!-- Custom Css -->
     <link href="/static/css/style.css" rel="stylesheet">
@@ -119,9 +133,9 @@
                             <li>
                                 <a href="/atemschutz/" class="menupoint">Übersicht</a>
                             </li>
-                            <!--<li>
+                            <li>
                                 <a href="/atemschutz/auswertung" class="menupoint">Auswertung</a>
-                            </li>-->
+                            </li>
                             <li>
                                 <a href="/atemschutz/settings" class="menupoint">Einstellungen</a>
                             </li>
@@ -437,11 +451,14 @@
             <!-- #Menu -->
             <!-- Footer -->
             <div class="legal">
+                <div class="install-app bg-red animated"><p>Feuewehr Effi App auf dem Homescreen speichern.</p>
+                    <p><button id="installBtn" type="button" class="btn bg-deep-orange waves-effect">INSTALLIEREN</button></p>
+                </div>
                 <div class="copyright">
                     &copy; 2019 <a href="javascript:void(0);">FW Backend (AdminBSB Template)</a>.
                 </div>
                 <div class="version">
-                    <b>Version: </b> 0.3.5                   
+                    <b>Version: </b> 0.4.0              
                 </div>
             </div>
             <!-- #Footer -->
@@ -597,6 +614,9 @@
 		{% block content %}{% endblock %}            
         </div>
     </section>
+
+    <!-- PWA Service Worker Js -->
+    <script src="/static/js/pwa.js"></script>
 
     <!-- Jquery Core Js -->
     <script src="/static/plugins/jquery/jquery.min.js"></script>

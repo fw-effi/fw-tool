@@ -7,6 +7,10 @@ DEBUG = True
 import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))  
 
+# Serialize objects to ASCII-encoded JSON. If this is disabled, the JSON will be returned as a Unicode string, or encoded as UTF-8 by jsonify.
+# This has security implications when rendering the JSON into JavaScript in templates, and should typically remain enabled. 
+JSON_AS_ASCII = False
+
 # Define the database - we are working with
 # SQLite for this example
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
@@ -37,6 +41,7 @@ OIDC_CLIENT_SECRETS= 'app/mod_auth/client_secret.json'
 OIDC_INTROSPECTION_AUTH_METHOD= 'client_secret_post'
 OIDC_SCOPES = ['openid','oxd','profile']
 OIDC_COOKIE_SECURE = False
+OIDC_CLOCK_SKEW = 590
 OVERWRITE_REDIRECT_URI = 'http://localhost:8081/auth/callback/lodur'
 
 # Lodur Settings

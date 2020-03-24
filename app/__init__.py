@@ -55,6 +55,10 @@ def home():
 	else:
 		return oidc.redirect_to_auth_server(None, request.values)
 
+@app.route("/pwa_service.js", methods=['GET'])
+def get_pwa_service():
+	return app.send_static_file('js/pwa_service.js')
+
 @app.route("/page/communication/sendMail", methods=['GET'])
 def get_page_communicaton_sendMail():
 	""" Load Page

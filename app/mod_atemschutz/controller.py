@@ -8,6 +8,9 @@ from app.mod_atemschutz.models import *
 from app.mod_lodur.models import Firefighter, FF_Zug
 # Import objects from the main app module
 from app import auth_module, oidc, db
+import collections
+import requests
+import json
 
 # Define the blueprint: 'atemschutz', set its url prefix: app.url/atemschutz
 mod_atemschutz = Blueprint('atemschutz', __name__, url_prefix='/atemschutz')
@@ -38,7 +41,52 @@ def uebersicht():
 @mod_atemschutz.route("/auswertung",methods=['GET'])
 @oidc.require_login
 def auswertung():
-    return render_template("mod_atemschutz/auswertung.html", user=auth_module.get_userobject())
+    result = db.engine.execute("SELECT Firefighter.id as id,"
+        "Firefighter.vorname AS vorname,"
+        "Firefighter.name AS name,"
+        "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 "
+            "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-1 year') AND strftime('%Y-12-31','now','-1 year') "
+            "AND Sub1.member_id = Firefighter.id),0) AS 'one_year', "
+        "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 LEFT JOIN AS_Category As Sub2 ON (Sub1.category_id = Sub2.id) "
+            "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-1 year') AND strftime('%Y-12-31','now','-1 year') "
+            "AND Sub2.training = 1 "
+            "AND Sub1.member_id = Firefighter.id),0) AS 'one_year_training', "
+        "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1  "
+            "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-2 year') AND strftime('%Y-12-31','now','-2 year') "
+            "AND Sub1.member_id = Firefighter.id),0) AS 'two_year', "
+        "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 LEFT JOIN AS_Category As Sub2 ON (Sub1.category_id = Sub2.id) "
+            "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-2 year') AND strftime('%Y-12-31','now','-2 year') "
+            "AND Sub2.training = 1 "
+            "AND Sub1.member_id = Firefighter.id),0) AS 'two_year_training', "
+        "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 "
+            "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-3 year') AND strftime('%Y-12-31','now','-3 year') "
+            "AND Sub1.member_id = Firefighter.id),0) AS 'three_year', "
+        "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 LEFT JOIN AS_Category As Sub2 ON (Sub1.category_id = Sub2.id) "
+            "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-3 year') AND strftime('%Y-12-31','now','-3 year') "
+            "AND Sub2.training = 1 "
+            "AND Sub1.member_id = Firefighter.id),0) AS 'three_year_training', "
+        "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 "
+            "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-4 year') AND strftime('%Y-12-31','now','-4 year') "
+            "AND Sub1.member_id = Firefighter.id),0) AS 'four_year', "
+        "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 LEFT JOIN AS_Category As Sub2 ON (Sub1.category_id = Sub2.id) "
+            "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-4 year') AND strftime('%Y-12-31','now','-4 year') "
+            "AND Sub2.training = 1 "
+            "AND Sub1.member_id = Firefighter.id),0) AS 'four_year_training', "
+        "strftime('%Y','now','-1 year') AS 'one_year_name', "
+        "strftime('%Y','now','-2 year') AS 'two_year_name', "
+        "strftime('%Y','now','-3 year') AS 'three_year_name', "
+        "strftime('%Y','now','-4 year') AS 'four_year_name' "
+        "FROM Firefighter "
+        "GROUP BY Firefighter.id")
+    year_statistics = result.fetchall()
+    result.close()
+
+    return render_template("mod_atemschutz/auswertung.html", user=auth_module.get_userobject(),
+        statistics=year_statistics,
+        entries=Entry.query.all(), 
+        categories=Category.query.all(), 
+        firefighters=Firefighter.query.all()
+    )
 
 @mod_atemschutz.route("/settings",methods=['GET'])
 @oidc.require_login
@@ -49,11 +97,17 @@ def settings():
 @oidc.require_login
 def category_NewEdit():
     try:
+        if request.form.get('category_training') == 'true':
+            training = 1
+        else:
+            training = 0
+        
         if request.form.get('category_id') == "":
-            db.session.add(Category(request.form.get('category_name')))
+            db.session.add(Category(request.form.get('category_name'), training))
         else:
             category = Category.query.get(request.form.get('category_id'))
             category.name = request.form.get('category_name')
+            category.training = training
 
         db.session.commit()
         return make_response(jsonify(message='OK'),200)

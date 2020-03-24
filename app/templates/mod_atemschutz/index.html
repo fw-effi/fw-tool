@@ -1,5 +1,10 @@
 {% extends "layout.html" %} 
 {% block content %}
+<!-- JQuery DataTable Css -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap.min.css"/>
 <style>
     svg { width: 100% !important; }
     </style>
@@ -261,15 +266,20 @@
 <!-- Bootstrap Material Datetime Picker Plugin Js -->
 <script src="/static/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
 
-<script src="/static/plugins/jquery-datatable/jquery.dataTables.js"></script>
-<script src="/static/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-<script src="/static/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
-<script src="/static/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
-<script src="/static/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
-<script src="/static/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
-<script src="/static/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
-<script src="/static/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
-<script src="/static/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+<!-- Datatable-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+<script type="text/javascript"  src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
 
 <script>
 var curday = function(sp){
@@ -280,7 +290,7 @@ today = new Date();
 
     if(dd<10) dd='0'+dd;
     if(mm<10) mm='0'+mm;
-    return (mm+sp+dd+sp+yyyy);
+    return (dd+sp+mm+sp+yyyy);
 };
 
 $('.datepicker').bootstrapMaterialDatePicker({
@@ -290,14 +300,43 @@ $('.datepicker').bootstrapMaterialDatePicker({
     time: false
 });
 
-$('.table-all').DataTable({
-    dom: 'Bfrtip',
+$.fn.dataTable.moment( 'DD.MM.YYYY' ); //Define Dateformat for DataTable Plugin (used automaticly)
+var table = $('.table-all').DataTable({
+    dom: "Bfrtip",
     responsive: true,
-    buttons: [
-        { extend: 'print',  text: 'Drucken', title: 'Atemschutzkontrolle per ' + curday('.'), footer: 'true', exportOptions: { columns: [0,1,2,3] } },
-        { extend: 'pdf',  text: 'PDF', title: 'Atemschutzkontrolle per ' + curday('.'), footer: 'true', exportOptions: { columns: [0,1,2,3] } }
-    ],
-    order: [[0,"desc"]]
+    select: {
+        style: 'multi'
+    },
+    buttons: {
+        dom: {
+            button: {
+                className: ''
+            }
+        },
+        buttons: [
+            { extend: 'print',  text: '<i class="material-icons">print</i>', className: 'btn btn-primary waves-effect', title: 'Atemschutzkontrolle per ' + curday('.'), footer: 'true', exportOptions: { columns: [0,1,2,3] } },
+            { extend: 'pdf',  text: '<i class="material-icons">picture_as_pdf</i>', className: 'btn btn-primary waves-effect', title: 'Atemschutzkontrolle per ' + curday('.'), footer: 'true', exportOptions: { columns: [0,1,2,3] } },
+            
+        ]
+    },
+    order: [[0,"desc"]],
+    language: {
+        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+    }
+});
+
+table.buttons(2).enable(
+    table.rows( { selected: true } ).indexes().length === 0 ?
+        false :
+        true
+);
+table.on('select deselect', function( e,dt,type,indexes) {
+    if(table.rows({selected: true}).indexes().length === 0) 
+        table.buttons(2).disable();
+    else
+        table.buttons(2).enable();
+    
+        
 });
 
 $('#EntryModal').on('show.bs.modal', function(e) {

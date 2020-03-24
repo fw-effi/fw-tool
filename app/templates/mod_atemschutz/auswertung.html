@@ -1,5 +1,17 @@
 {% extends "layout.html" %} 
 {% block content %}
+<!-- JQuery DataTable Css -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap.min.css"/>
+<style>
+.icon-right {
+    float:right; 
+    margin-right:10px; 
+    margin-top:-10px;
+}
+</style>
 <div class="block-header">
 	<h2>ATEMSCHUTZ AUSWERTUNG</h2>
 </div>
@@ -11,6 +23,59 @@
 				<small>Letzte 4 Jahre</small>
 			</div>
 			<div class="body">
+				<div class="table-responsive">
+                    <table id="tblAuswertung" class="table row-border table-striped table-hover table-all dataTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>{{ statistics[0].four_year_name }}</th>
+                                <th>{{ statistics[0].three_year_name }}</th>
+                                <th>{{ statistics[0].two_year_name }}</th>
+								<th>{{ statistics[0].one_year_name }}</th>
+								<th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in statistics %}
+                            <tr>
+								<td>{{ entry.vorname }} {{ entry.name }}</td>
+								<td>
+                                    Ausbildung: {{ entry.four_year_training }} <br/>
+                                    Total: {{ entry.four_year }}
+                                    {% if entry.four_year < 480 %}
+                                    <span class="icon-right"><img src="https://image.flaticon.com/icons/svg/1672/1672451.svg" width="16px" height="16px"></span>
+                                    {% endif %}
+                                </td>
+								<td>
+                                    Ausbildung: {{ entry.three_year_training }} <br/>
+                                    Total: {{ entry.three_year }}
+                                    {% if entry.three_year < 480 %}
+                                    <span class="icon-right"><img src="https://image.flaticon.com/icons/svg/1672/1672451.svg" width="16px" height="16px"></span>
+                                    {% endif %}
+                                </td>
+								<td>
+                                    Ausbildung: {{ entry.two_year_training }} <br/>
+                                    Total: {{ entry.two_year }}
+                                    {% if entry.two_year < 480 %}
+                                    <span class="icon-right"><img src="https://image.flaticon.com/icons/svg/1672/1672451.svg" width="16px" height="16px"></span>
+                                    {% endif %}
+                                </td>
+								<td>
+                                    Ausbildung: {{ entry.one_year_training }} <br/>
+                                    Total: {{ entry.one_year }}
+                                    {% if entry.one_year < 480 %}
+                                    <span class="icon-right"><img src="https://image.flaticon.com/icons/svg/1672/1672451.svg" width="16px" height="16px"></span></a>
+                                    {% endif %}
+                                </td>
+								<td>
+                                    <a href="/pdf/atemschutz/personalauswertung/{{ entry.id }}" target="_blank"><i class="material-icons">search</i></a>
+                                </td>
+							</tr>
+							
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 			</div>
 		</div>
 <!--
@@ -22,5 +87,58 @@
             </div>
         </div>
     </div>-->
-</div>
+</div> 
+{% endblock %}
+{% block javascript %}
+
+<!-- Datatable-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
+ 
+<script>
+
+var curday = function(sp){
+today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //As January is 0.
+    var yyyy = today.getFullYear();
+
+    if(dd<10) dd='0'+dd;
+    if(mm<10) mm='0'+mm;
+    return (dd+sp+mm+sp+yyyy);
+};
+
+$.fn.dataTable.moment( 'DD.MM.YYYY' ); //Define Dateformat for DataTable Plugin (used automaticly)
+var table = $('.table-all').DataTable({
+	dom: "Bti",
+	paging: false,
+	ordering: false,
+    responsive: false,
+    buttons: {
+        dom: {
+            button: {
+                className: ''
+            }
+        },
+        buttons: [
+            { text: '<i class="material-icons">picture_as_pdf</i>', className: 'btn btn-primary waves-effect', action: function() { window.open('/pdf/atemschutz/jahrauswertung','_href')} },
+            
+        ]
+    },
+    language: {
+        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+    }
+});
+</script>
 {% endblock %}

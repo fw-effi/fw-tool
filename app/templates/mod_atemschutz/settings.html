@@ -20,6 +20,7 @@
 						<thead>
 							<th>#</th>
 							<th>Name</th>
+							<th>Type</th>
 							<th></th>
 						</thead>
 						<tbody class="table-hover">
@@ -27,7 +28,13 @@
 							<tr>
 								<th scope="row">{{ category.id }}</th>
 								<td>{{ category.name}}</td>
-								<td><a href="#" class="menu-toggle" data-toggle="modal" data-category-id="{{ category.id }}" data-category-name="{{ category.name }}" data-target="#CategoryModal"><i class="material-icons">edit</i></a> 
+								<td>{% if category.training == 1 %}
+									Ausbildung
+									{% else %}
+									Einsatz
+									{% endif %}
+								</td>
+								<td><a href="#" class="menu-toggle" data-toggle="modal" data-category-id="{{ category.id }}" data-category-name="{{ category.name }}" data-category-training="{{ category.training }}" data-target="#CategoryModal"><i class="material-icons">edit</i></a> 
 									<a href="#" class="menu-toggle" data-toggle="modal" data-category-id="{{ category.id }}" data-category-name="{{ category.name }}" data-target="#DeleteCategoryModal"><i class="material-icons">delete</i></a>
 								</td>
 							</tr>
@@ -54,7 +61,16 @@
 					<div class="form-group">
 						<div class="form-line">
 							<input type="hidden" id="txtCategoryId" />
+							<label for="txtCategoryName">Kategorie Name</label>
 							<input type="text" class="form-control" id="txtCategoryName" placeholder="Kategorie Name" required />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-line">
+							<label for="bolType">Typ (Art der Ausbildungsstunden)</label>
+							<div class="switch">
+								<label>Einsatz <input id="bolType" type="checkbox"><span class="lever switch-col-blue"></span> Ausbildung</label>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -100,9 +116,11 @@ $('#CategoryModal').on('show.bs.modal', function(e) {
 	//get data-id attribute of the clicked element
 	var categoryId = $(e.relatedTarget).data('category-id');
 	var categoryName = $(e.relatedTarget).data('category-name');
-	
+	var categoryTraining = ($(e.relatedTarget).data('category-training').toLowerCase() == "true")
+
 	$("#txtCategoryName").val("")
 	$("#txtCategoryId").val()
+	$('#bolType').prop('checked', true)
 	$('#CategoryModalLabel').html("Neue Kategorie hinzufügen")
 
 	//If Category Id avaiable Edit Button was pressed.
@@ -110,6 +128,8 @@ $('#CategoryModal').on('show.bs.modal', function(e) {
 		$('#CategoryModalLabel').html("Kategorie ändern")
 		$("#txtCategoryId").val(categoryId)
 		$("#txtCategoryName").val(categoryName)
+		$('#bolType').prop('checked', categoryTraining)
+		
 	}
 });
 
@@ -132,12 +152,12 @@ $('#btnDeleteCategory').click(function() {
 
 $('.form').submit('click', function () {
 	event.preventDefault();
-
+	console.log("Type: " + $("#bolType").is(":checked"))
 	if($(this).data('category') === 'category') {
 		$.ajax({
 			url: '/atemschutz/category',
 			type: 'POST',
-			data: { category_id: $("#txtCategoryId").val(), category_name:$("#txtCategoryName").val() },
+			data: { category_id: $("#txtCategoryId").val(), category_name:$("#txtCategoryName").val(), category_training:$("#bolType").is(":checked") },
 			success: function(response) {
 				$('#CategoryModal').modal('hide')
 				location.reload();
