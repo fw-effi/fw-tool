@@ -41,7 +41,7 @@ def uebersicht():
 @mod_atemschutz.route("/auswertung",methods=['GET'])
 @oidc.require_login
 def auswertung():
-    result = db.engine.execute("SELECT Firefighter.id as id,"
+    result = db.engine.execute("SELECT Firefighter.grad_sort as grad_sort, Firefighter.id as id,"
         "Firefighter.vorname AS vorname,"
         "Firefighter.name AS name,"
         "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 "
@@ -76,8 +76,9 @@ def auswertung():
         "strftime('%Y','now','-2 year') AS 'two_year_name', "
         "strftime('%Y','now','-3 year') AS 'three_year_name', "
         "strftime('%Y','now','-4 year') AS 'four_year_name' "
-        "FROM Firefighter "
-        "GROUP BY Firefighter.id")
+        "FROM Firefighter, alarmgroups "
+        "WHERE alarmgroups.firefighter_id = Firefighter.id AND alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Atemschutz') "
+        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
     year_statistics = result.fetchall()
     result.close()
 

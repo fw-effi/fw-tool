@@ -2917,7 +2917,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   .card .bg-blue-grey,
   .card .bg-black {
     border-bottom: none !important;
-    color: #fff !important; }
+    color: #fff  }
     .card .bg-red h2, .card .bg-red small, .card .bg-red .material-icons,
     .card .bg-pink h2,
     .card .bg-pink small,
@@ -2976,7 +2976,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     .card .bg-black h2,
     .card .bg-black small,
     .card .bg-black .material-icons {
-      color: #fff !important; }
+      color: #fff ; }
     .card .bg-red .badge,
     .card .bg-pink .badge,
     .card .bg-purple .badge,
@@ -3276,7 +3276,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     bottom: 2px;
     text-align: center; }
     .info-box-3 .icon i {
-      color: rgba(0, 0, 0, 0.15);
+      color: rgba(0, 0, 0, 0.15) !important;
       font-size: 60px; }
   .info-box-3 .chart {
     margin-right: 5px; }
@@ -4098,7 +4098,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
       -ms-box-shadow: none !important;
       box-shadow: none !important;
       border: none;
-      margin-left: 30px; }
+      /*margin-left: 30px; */}
   .bootstrap-select .bs-searchbox {
     position: relative; }
     .bootstrap-select .bs-searchbox:after {

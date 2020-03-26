@@ -23,6 +23,42 @@
 				<small>Letzte 4 Jahre</small>
 			</div>
 			<div class="body">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box-3 bg-green hover-expand-effect">
+                            {% set ns = namespace(done=0,didnt=0) %}
+                            {% set didnt = 0 %}
+
+                            {% for stat in statistics %}
+                                {% if stat.one_year_training > 480 and stat.two_year_training > 480 and stat.three_year_training > 480 and stat.four_year_training > 480 %}
+                                    {% set ns.done = ns.done + 1 %}
+                                {% else %}
+                                    {% set ns.didnt = ns.didnt + 1 %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% set total = ns.done + ns.didnt %}
+                            <div class="icon">
+                                <i class="material-icons">done_all</i>
+                            </div>
+                            <div class="content">
+                                <div class="text">IN ALLEN 4 JAHREN ERREICHT</div>
+                                <div class="number">{{ ns.done }} ({{ ((100/total) * ns.done)|round(1) }}%)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box-3 bg-deep-orange hover-expand-effect">
+                            <div class="icon">
+                                <i class="material-icons">cached</i>
+                            </div>
+                            <div class="content">
+                                <div class="text">IN MIND. EINEM JAHR ZUWENIG</div>
+                                <div class="number">{{ ns.didnt }} ({{ ((100/total) * ns.didnt)|round(1) }}%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 				<div class="table-responsive">
                     <table id="tblAuswertung" class="table row-border table-striped table-hover table-all dataTable">
                         <thead>
