@@ -166,6 +166,8 @@ def fetch_update_lodur():
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Stab').first())
         if 'Atemschutz' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Atemschutz').first())
+        if 'Fahrer Grossfahrzeuge' in gruppe:
+            firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Grossfahrzeuge').first())
     
         
     # Write changes to DB

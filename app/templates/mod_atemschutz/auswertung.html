@@ -16,10 +16,82 @@
 	<h2>ATEMSCHUTZ AUSWERTUNG</h2>
 </div>
 <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+			<div class="header">
+				<h2>AUFTEILUNG IN JAHRE</h2>
+				<small>letzte 4 Jahre</small>
+			</div>
+			<div class="body">
+                <script>
+                    var one_year = { year: '{{ statistics[0].one_year_name }}', training: 0, total: 0 }
+                    var two_year = { year: '{{ statistics[0].two_year_name }}', training: 0, total: 0 }
+                    var three_year = { year: '{{ statistics[0].three_year_name }}', training: 0, total: 0 }
+                    var four_year = { year: '{{ statistics[0].four_year_name }}', training: 0, total: 0 }
+
+                    var line_perYear = new Array(four_year,three_year, two_year,one_year)
+
+                {% for stat in statistics %}
+                    one_year.training += {{stat.one_year_training}}
+                    one_year.total += {{stat.one_year}}
+
+                    two_year.training += {{stat.two_year_training}}
+                    two_year.total += {{stat.two_year}}
+
+                    three_year.training += {{stat.three_year_training}}
+                    three_year.total += {{stat.two_year}}
+
+                    four_year.training += {{stat.four_year_training}}
+                    four_year.total += {{stat.four_year}}
+                
+                {% endfor %}
+                console.log(one_year);
+                </script>
+                <div id="line_peryear" class="graph"></div>
+            </div>
+        </div>
+    </div>
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <!--
+        <div class="card">
+			<div class="header">
+				<h2>EINZELNE JAHRE</h2>
+				<small>Auswertung der einzelnen Jahre</small>
+			</div>
+			<div class="body">
+                <div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-col-teal">
+                        <div class="panel-heading" role="tab" id="headingOne_ka">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" href="#collapse_oneyear" aria-expanded="false" aria-controls="collapse_oneyear" class="collapsed">{{ statistics[0].one_year_name }}</a>
+                            </h4>
+                        </div>
+                        <div id="collapse_oneyear" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_ka" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                                <table id="tblAuswertungOneYear" class="table row-border table-striped table-hover table-all dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th class="rotate"><div><span>{{ statistics[0].four_year_name }}</span></div></th>
+                                            <th class="rotate"><div>{{ statistics[0].three_year_name }}</div></th>
+                                            <th class="rotate"><div>{{ statistics[0].two_year_name }}</div></th>
+                                            <th class="rotate"><div>{{ statistics[0].one_year_name }}</div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    -->
 		<div class="card">
 			<div class="header">
-				<h2>AUSWERTUNG</h2>
+				<h2>GESAMTÜBERSICHT</h2>
 				<small>Letzte 4 Jahre</small>
 			</div>
 			<div class="body">
@@ -27,7 +99,6 @@
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                         <div class="info-box-3 bg-green hover-expand-effect">
                             {% set ns = namespace(done=0,didnt=0) %}
-                            {% set didnt = 0 %}
 
                             {% for stat in statistics %}
                                 {% if stat.one_year_training > 480 and stat.two_year_training > 480 and stat.three_year_training > 480 and stat.four_year_training > 480 %}
@@ -175,6 +246,18 @@ var table = $('.table-all').DataTable({
     language: {
         "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
     }
+});
+
+/* MORRIS Graphs */
+Morris.Area({
+    element: 'line_peryear',
+    data: line_perYear,
+    xkey:'year',
+    ykeys:['training','total'],
+    labels:['Ausbildung','Total'],
+    pointSize: 2,
+    hideHover: 'auto',
+    lineColors: ['rgb(233, 30, 99)', 'rgb(0, 188, 212)']
 });
 </script>
 {% endblock %}

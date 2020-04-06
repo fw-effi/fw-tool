@@ -2,13 +2,14 @@ import os
 import json
 import sys
 import pdfkit
+import atexit
 from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_oidc import OpenIDConnect
-from celery import Celery
+from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
 
@@ -29,6 +30,7 @@ oidc = OpenIDConnect(app)
 # Import a module / component using its blueprint handler variable (mod_auth)
 from .mod_auth import controller as auth_module
 from .mod_lodur import controller as lodur_module
+from .mod_alarm import controller as alarm_module
 from .mod_pdf import controller as pdf_module
 from .mod_atemschutz import controller as atemschutz_module
 
@@ -38,8 +40,15 @@ db.create_all()
 # Register blueprint(s)
 app.register_blueprint(auth_module.mod_auth)
 app.register_blueprint(lodur_module.mod_lodur)
+app.register_blueprint(alarm_module.mod_alarm)
 app.register_blueprint(pdf_module.mod_pdf)
 app.register_blueprint(atemschutz_module.mod_atemschutz)
+
+# Start Scheduler
+cron = BackgroundScheduler()
+from . import scheduler as scheduler
+atexit.register(lambda: cron.shutdown()) # Shut down the scheduler when exiting the app
+
 
 # Sample HTTP error handling
 #@app.errorhandler(404)
