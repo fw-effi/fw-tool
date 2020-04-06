@@ -19,8 +19,6 @@ def get_alarmgruppe():
 @mod_alarm.route("/statusUpdate", methods=['GET'])
 @oidc.require_login
 def get_gvzUpdate():
-    from app.mod_lodur import gvzUpdate
-    gvzUpdate.send_FwStatus()
 
     return render_template("mod_alarm/gvzStatus.html", user=auth_module.get_userobject(), 
     firefighters=Firefighter.query.all(),
