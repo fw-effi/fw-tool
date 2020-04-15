@@ -27,7 +27,10 @@ def uebersicht():
         "WHERE AS_Entry.member_id = Firefighter.id AND AS_Entry.datum > date('now','start of year')) AS time "
         "FROM Firefighter, FF_Zugmapping AS FF_Zugmapping_1, FF_Zug, alarmgroups "
         "WHERE FF_Zugmapping_1.ff_zug_id == FF_Zug.id AND FF_Zugmapping_1.firefighter_id == Firefighter.id "
-        "AND alarmgroups.firefighter_id = Firefighter.id AND alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Atemschutz') ORDER BY grad_sort")
+        "AND alarmgroups.firefighter_id = Firefighter.id AND "
+        "alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Atemschutz') "
+        "AND Firefighter.is_deleted = 0 "
+        "ORDER BY grad_sort")
     
     as_statistics = result.fetchall()
     result.close()
@@ -35,7 +38,7 @@ def uebersicht():
         statistics=as_statistics,
         entries=Entry.query.all(), 
         categories=Category.query.all(), 
-        firefighters=Firefighter.query.all()
+        firefighters=Firefighter.query.filter_by(is_deleted=False).all()
     )
 
 @mod_atemschutz.route("/auswertung",methods=['GET'])
@@ -44,6 +47,7 @@ def auswertung():
     result = db.engine.execute("SELECT Firefighter.grad_sort as grad_sort, Firefighter.id as id,"
         "Firefighter.vorname AS vorname,"
         "Firefighter.name AS name,"
+        "Firefighter.eintritt AS eintritt,"
         "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 "
             "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-1 year') AND strftime('%Y-12-31','now','-1 year') "
             "AND Sub1.member_id = Firefighter.id),0) AS 'one_year', "
@@ -77,7 +81,9 @@ def auswertung():
         "strftime('%Y','now','-3 year') AS 'three_year_name', "
         "strftime('%Y','now','-4 year') AS 'four_year_name' "
         "FROM Firefighter, alarmgroups "
-        "WHERE alarmgroups.firefighter_id = Firefighter.id AND alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Atemschutz') "
+        "WHERE alarmgroups.firefighter_id = Firefighter.id "
+        "AND alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Atemschutz') "
+        "AND Firefighter.is_deleted = 0 "
         "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
     year_statistics = result.fetchall()
     result.close()

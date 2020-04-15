@@ -1,5 +1,7 @@
 import requests
 import lxml.html
+import datetime
+import uuid
 from flask import session
 from flask import current_app as app
 from app import db
@@ -24,15 +26,15 @@ def lodur_init():
     phpsess_after = requests.utils.dict_from_cookiejar(sess_login.cookies)
     print('Bevor: %s \nAfter: %s' % (phpsess_bevor, phpsess_after))
 
-    session['lodur_phpsess'] = phpsess_after
+    return phpsess_after
 
 def do_lodur_request(url,method,params=None):
 
     #if session.get('lodur_phpsess') is None:
-    lodur_init()
+    lodur_phpsess = lodur_init()
 
     if method == "POST":
-        response = requests.post(url=url, cookies=session['lodur_phpsess'], data=params)
+        response = requests.post(url=url, cookies=lodur_phpsess, data=params)
 
     return response
 
@@ -42,6 +44,9 @@ def fetch_update_lodur():
     Keyword arguments:
     None
     """
+    # Generate Unique Sync ID
+    sync_id = str(uuid.uuid4())
+
     # Create object for the POST Request
     post_data = {
         "status": 1,
@@ -57,8 +62,9 @@ def fetch_update_lodur():
         "mannschaftslisten_info_field_sel_4_0":83,
         "mannschaftslisten_info_field_sel_5_0":48,
         "mannschaftslisten_info_field_sel_6_0":35,
+        "mannschaftslisten_info_field_sel_7_0":51,
         "rows":1,
-        "cols":7,
+        "cols":8,
         "adfs":3,
         "gruppes":"1",
         "zugs":1,
@@ -81,6 +87,8 @@ def fetch_update_lodur():
         zug = row.xpath('.//td[5]//text()')[0]
         mail = row.xpath('.//td[6]//text()')[0]
         uid = row.xpath('.//td[7]//text()')[0]
+        eintritt = row.xpath('.//td[8]//text()')[0]
+        eintritt = datetime.datetime.strptime(eintritt.split('\n')[0], "%d.%m.%Y")
 
         #Füge anhand vom Rand eine passende Integer Zahl hinzu. Damit danach nach Rang sortiert werden kann
         if 'Hptm' in grad:
@@ -105,7 +113,10 @@ def fetch_update_lodur():
                 grad_id,
                 vorname,
                 name,
-                mail
+                mail,
+                eintritt,
+                sync_id,
+                datetime.datetime.now() #Set last sync DateTime
             )
             db.session.add(firefighter)
         else:
@@ -116,6 +127,9 @@ def fetch_update_lodur():
             firefighter.vorname = vorname
             firefighter.name = name
             firefighter.mail = mail
+            firefighter.eintritt = eintritt
+            firefighter.sync_uid = sync_id
+            firefighter.last_sync = datetime.datetime.now() #Update last Sync DateTime
 
         # Mapping Zug Zugehörigkeit
         firefighter.zug.clear()
@@ -168,7 +182,12 @@ def fetch_update_lodur():
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Atemschutz').first())
         if 'Fahrer Grossfahrzeuge' in gruppe:
             firefighter.alarmgroups.append(AlarmGroup.query.filter_by(name='Grossfahrzeuge').first())
-    
-        
+
     # Write changes to DB
+    db.session.commit()
+
+    # Mark all not updated entry as deleted
+    result = db.session.query(Firefighter)\
+        .filter(db.or_(Firefighter.sync_uid!=sync_id, Firefighter.sync_uid == None))\
+        .update(dict(is_deleted=True))
     db.session.commit()

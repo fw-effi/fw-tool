@@ -4098,9 +4098,14 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
       -ms-box-shadow: none !important;
       box-shadow: none !important;
       border: none;
-      /*margin-left: 30px; */}
+    }
+    .bootstrap-select .bs-searchbox input {
+      margin-left: 34px;
+    }
+
   .bootstrap-select .bs-searchbox {
-    position: relative; }
+    position: relative;
+    margin-left: 34px; }
     .bootstrap-select .bs-searchbox:after {
       content: '\E8B6';
       font-family: 'Material Icons';
@@ -4109,7 +4114,8 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
       left: 10px;
       font-size: 25px; }
   .bootstrap-select ul.dropdown-menu {
-    margin-top: 0 !important; }
+    margin-top: 0 !important;
+    margin-left: 34px !important; }
   .bootstrap-select .dropdown-menu li.selected a {
     background-color: #eee !important;
     color: #555 !important; }

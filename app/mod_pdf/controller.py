@@ -47,6 +47,7 @@ def pdf_appellliste(gruppe):
 def pdf_atemschutz_jahrauswertung():
     result = db.engine.execute("SELECT Firefighter.vorname AS vorname,"
         "Firefighter.name AS name,"
+        "Firefighter.eintritt as eintritt,"
         "IFNULL((SELECT SUM(Sub1.time) FROM AS_Entry AS Sub1 "
             "WHERE Sub1.datum BETWEEN strftime('%Y-01-01','now','-1 year') AND strftime('%Y-12-31','now','-1 year') "
             "AND Sub1.member_id = Firefighter.id),0) AS 'one_year', "
@@ -79,8 +80,11 @@ def pdf_atemschutz_jahrauswertung():
         "strftime('%Y','now','-2 year') AS 'two_year_name', "
         "strftime('%Y','now','-3 year') AS 'three_year_name', "
         "strftime('%Y','now','-4 year') AS 'four_year_name' "
-        "FROM Firefighter "
-        "GROUP BY Firefighter.id")
+        "FROM Firefighter, alarmgroups "
+        "WHERE alarmgroups.firefighter_id = Firefighter.id "
+        "AND alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Atemschutz') "
+        "AND Firefighter.is_deleted = 0 "
+        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
     year_statistics = result.fetchall()
     result.close()
 
@@ -89,6 +93,7 @@ def pdf_atemschutz_jahrauswertung():
         d = collections.OrderedDict()
         d['name'] = row.name.replace("\n        ","")
         d['vorname'] = row.vorname.replace("\n        ","")
+        d['eintritt'] = row.eintritt
         d['one_year'] = row.one_year
         d['one_year_training'] = row.one_year_training
         d['one_year_name'] = row.one_year_name
@@ -119,7 +124,7 @@ def pdf_atemschutz_jahrauswertung():
 @oidc.require_login
 def pdf_atemschutz_personalauswertung(id):
     # Fetch Personal information
-    result = db.engine.execute("SELECT name, vorname FROM Firefighter WHERE id = :id", {'id': id})
+    result = db.engine.execute("SELECT name, vorname,eintritt FROM Firefighter WHERE id = :id", {'id': id})
     data_personal = result.fetchall()
     result.close()
 
@@ -133,7 +138,7 @@ def pdf_atemschutz_personalauswertung(id):
     req_jsondata = json.loads('{"template":{"shortid":"Bkesse6IUU"}}')
 
     for row in data_personal:
-        json_data = {"vorname":row.vorname, "name":row.name, "items":[]}
+        json_data = {"vorname":row.vorname, "name":row.name, "eintritt":row.eintritt, "items":[]}
         req_jsondata['data'] = json.loads(json.dumps(json_data))
     
     json_array = []
