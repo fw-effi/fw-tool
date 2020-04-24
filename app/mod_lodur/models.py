@@ -103,3 +103,13 @@ class FF_Zug(Base):
 
     def __repr__(self):
         return self._repr(name=self.name)
+
+# Define General Lodur Table
+class Lodur_General(Base):
+    __tablename__ = 'Lodur_general'
+    name = db.Column(db.String(64), nullable=True)
+    value = db.Column(db.String(64), nullable=True)
+
+    def __init__(self,name,value):
+        self.name = name
+        self.value = value

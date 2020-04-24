@@ -1,9 +1,12 @@
 {
   "apps" : [{
     "name"        : "fw-tool-PROD",
-    "script"      : "run-prod.py",
+    "script"      : "run.py",
     "interpreter" : "python3",
     "interpreter-args": "-u",
-    "watch"       : false
+    "watch"       : false,
+    "env"         : {
+      "FWAPP_ENV"  : "prod"
+    }
   }]
 }

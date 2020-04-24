@@ -1,7 +1,7 @@
 import time
 # Import objects from the main app module
 from app import app, os, cron
-from .mod_lodur import gvzUpdate, lodur
+from app.mod_lodur import gvzUpdate, lodur
 
 # Check add_jobs at th end of this file!
 
@@ -19,7 +19,7 @@ def gvzUpdate_24h():
 
     print(time.strftime("%d.%m.%Y %H:%M:%S") + ": INFO - BackgroundScheduler - GVZUpdate FINISH")
 
-def lodurUpdate_1h():
+def lodurUpdate_3h():
     print(time.strftime("%d.%m.%Y %H:%M:%S") + ": INFO - BackgroundScheduler - LodurUpdate START")
     #Update Lodur Data hourly
     with app.app_context():
@@ -27,14 +27,16 @@ def lodurUpdate_1h():
     
     print(time.strftime("%d.%m.%Y %H:%M:%S") + ": INFO - BackgroundScheduler - LodurUpdate FINISH")
 
-if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' and os.environ.get('FWAPP_ENV') == 'dev':
+    print("####################")
+    print("# Scheduler started in Development Mode")
     #cron.add_job(func=print_date_time, trigger="interval", seconds=3)
     #cron.add_job(func=gvzUpdate_24h, trigger="cron",hour=20, minute=00)
-    cron.add_job(func=lodurUpdate_1h, trigger="interval", hours=1)
+    cron.add_job(func=lodurUpdate_3h, trigger="interval", hours=8)
     cron.start()
 
 # Scheduler for productive system
-if not app.debug:
+if os.environ.get('FWAPP_ENV') == 'prod':
     cron.add_job(func=gvzUpdate_24h, trigger="cron",hour=20, minute=00)
-    cron.add_job(func=lodurUpdate_1h, trigger="interval", hours=1)
+    cron.add_job(func=lodurUpdate_3h, trigger="interval", hours=3)
     cron.start()

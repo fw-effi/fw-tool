@@ -28,11 +28,15 @@ db_migrate = Migrate(app,db)
 oidc = OpenIDConnect(app)
 
 # Import a module / component using its blueprint handler variable (mod_auth)
+from .mod_core import jinja_filters as jinja_filters
 from .mod_auth import controller as auth_module
 from .mod_lodur import controller as lodur_module
 from .mod_alarm import controller as alarm_module
 from .mod_pdf import controller as pdf_module
 from .mod_atemschutz import controller as atemschutz_module
+
+# Import Jinja custom filters
+app.jinja_env.filters['datetimestrformat'] = jinja_filters.datetimestrformat
 
 # Generate all DB Models
 db.create_all()
@@ -46,7 +50,7 @@ app.register_blueprint(atemschutz_module.mod_atemschutz)
 
 # Start Scheduler
 cron = BackgroundScheduler()
-from . import scheduler as scheduler
+from .mod_core import scheduler as scheduler
 atexit.register(lambda: cron.shutdown()) # Shut down the scheduler when exiting the app
 
 

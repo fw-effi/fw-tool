@@ -5,7 +5,7 @@ import uuid
 from flask import session
 from flask import current_app as app
 from app import db
-from app.mod_lodur.models import Firefighter, AlarmGroup, FF_Zug
+from app.mod_lodur.models import Firefighter, AlarmGroup, FF_Zug, Lodur_General
 
 def lodur_init():
     sess_login = requests.session()
@@ -190,4 +190,10 @@ def fetch_update_lodur():
     result = db.session.query(Firefighter)\
         .filter(db.or_(Firefighter.sync_uid!=sync_id, Firefighter.sync_uid == None))\
         .update(dict(is_deleted=True))
+    
+    # Update General Table with last Sync DateTime
+    general = db.session.query(Lodur_General).filter(Lodur_General.name == "LastLodurSync").first()
+    
+    general.value = str(datetime.datetime.now())
+
     db.session.commit()

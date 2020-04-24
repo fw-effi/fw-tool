@@ -1,9 +1,12 @@
 {
   "apps" : [{
     "name"        : "fw-tool-TEST",
-    "script"      : "run-test.py",
+    "script"      : "run.py",
     "interpreter" : "python3",
     "interpreter-args": "-u",
-    "watch"       : false
+    "watch"       : false,
+    "env"         : {
+      "FWAPP_ENV" : "test"
+    }
   }]
 }

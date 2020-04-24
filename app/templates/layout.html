@@ -30,6 +30,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/91db221ff3.js" crossorigin="anonymous"></script>
+    
     <!-- Bootstrap Core Css -->
     <link href="/static/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
 
@@ -75,10 +78,47 @@
     <!-- #END# Overlay For Sidebars -->
     <!-- Top Bar -->
     <nav class="navbar">
-        <div class="container-fluid">
+        <div class="container-fluid" {% if user[2] == "test" %} style="background:chartreuse" {% endif %}>
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="/">Feuerwehr Illnau-Effretikon / Lindau</a>
+                <a class="navbar-brand" {% if user[2] == "test" %} style="color:black" {% endif %} href="/">
+                    {% if user[2] != "prod" %} <strong>{{ user[2]|upper }}</strong> {% endif %} Feuerwehr Illnau-Effretikon / Lindau
+                </a>
+            </div>
+        
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Lodur Sync -->
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i id="topRightLodurSyncIcon" class="fa-lg fas fa-sync"></i>
+                            <span class="label-count"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">LODUR</li>
+                            <li class="body">
+                                <ul class="menu">
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-light-green">
+                                                <i id="topRightLodurSyncIcon" class="material-icons">sync</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Letzte Synchronisation</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> <span id="topRightLodurSyncTime">{{ user[3][0].value|datetimestrformat("%d.%m.%Y %H:%M:%S") }}</span>
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" onclick="reloadLodurData();" class="button">Jetzt aktualisieren</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -462,7 +502,7 @@
                     &copy; 2019 <a href="javascript:void(0);">FW Backend (AdminBSB Template)</a>.
                 </div>
                 <div class="version">
-                    <b>Version: </b> 0.4.5              
+                    <b>Version: </b> 0.4.6 / {{ user[2]|upper }}           
                 </div>
             </div>
             <!-- #Footer -->
@@ -644,7 +684,8 @@
     <script src="/static/plugins/raphael/raphael.min.js"></script>
     <script src="/static/plugins/morrisjs/morris.js"></script>
 
-    
+    <!-- Moment Plugin Js -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
 
     <!-- ChartJs -->
     <script src="/static/plugins/chartjs/Chart.bundle.js"></script>

@@ -13,18 +13,23 @@ function hexToRgba(hexCode, opacity) {
 }
 
 function reloadLodurData() {
+    $("#topRightLodurSyncIcon").addClass("fa-spin");
     $.ajax({
         url: '/lodur/updateData',
         type: 'POST',
         success: function(response) {
             showNotification('alert-success','Lodur Daten aktualisiert');
             console.log(response);
+            $("#topRightLodurSyncIcon").removeClass("fa-spin");
+            $("#topRightLodurSyncTime").text(moment(new Date()).format('DD.MM.YYYY hh:mm:ss'));
         },
         error: function(error) {
             showNotification('alert-danger','Fehler bei Lodurdaten: ' + error)
             console.log(error);
+            $("#topRightLodurSyncIcon").removeClass("fa-spin");
         }
     });
+    
 }
 
 function showNotification(colorName, text) {

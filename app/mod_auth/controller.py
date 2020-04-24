@@ -1,11 +1,11 @@
 from flask import Blueprint, session, request, redirect, flash
 from flask import current_app as app
-import sys
+import sys, os
 # Import objects from the main app module
 from app import db, oidc
 # Import module models (i.e. User)
 from app.mod_auth.models import User
-from app.mod_lodur.models import Firefighter
+from app.mod_lodur.models import Firefighter,Lodur_General
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -14,7 +14,9 @@ def get_userobject():
     try:
         if session.get('user_id') is not None:
             user,firefighter = db.session.query(User, Firefighter).outerjoin(Firefighter, User.email == Firefighter.mail).filter(User.open_id==session['user_id']).first()
-            return user,firefighter
+            general = db.session.query(Lodur_General).all()
+
+            return user,firefighter, os.environ['FWAPP_ENV'],general
         else:
             logout()
     except:

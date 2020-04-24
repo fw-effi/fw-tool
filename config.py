@@ -42,7 +42,7 @@ OIDC_INTROSPECTION_AUTH_METHOD= 'client_secret_post'
 OIDC_SCOPES = ['openid','oxd','profile']
 OIDC_COOKIE_SECURE = False
 OIDC_CLOCK_SKEW = 590
-OVERWRITE_REDIRECT_URI = 'http://localhost:8081/auth/callback/lodur'
+OVERWRITE_REDIRECT_URI = 'http://localhost:8080/auth/callback/lodur'
 
 # Lodur Settings
 LODUR_USERNAME = 'andsche'
