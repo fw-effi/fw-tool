@@ -10,7 +10,7 @@ if os.environ['FWAPP_ENV'] == "dev":
 elif os.environ['FWAPP_ENV'] == "test":
     print("Starting in TEST Mode")
     print("####################")
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8081, debug=True)
 else:
     print("Starting in PRODUCTION Mode")
     print("####################")

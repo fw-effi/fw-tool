@@ -106,7 +106,7 @@
                                             <div class="menu-info">
                                                 <h4>Letzte Synchronisation</h4>
                                                 <p>
-                                                    <i class="material-icons">access_time</i> <span id="topRightLodurSyncTime">{{ user[3][0].value|datetimestrformat("%d.%m.%Y %H:%M:%S") }}</span>
+                                                    <i class="material-icons">access_time</i> <span id="topRightLodurSyncTime">{% if user|length > 2 %}{{ user[3][0].value|datetimestrformat("%d.%m.%Y %H:%M:%S") }}{% endif %}</span>
                                                 </p>
                                             </div>
                                         </a>
@@ -502,7 +502,7 @@
                     &copy; 2019 <a href="javascript:void(0);">FW Backend (AdminBSB Template)</a>.
                 </div>
                 <div class="version">
-                    <b>Version: </b> 0.4.6 / {{ user[2]|upper }}           
+                    <b>Version: </b> 0.4.7 / {{ user[2]|upper }}           
                 </div>
             </div>
             <!-- #Footer -->
