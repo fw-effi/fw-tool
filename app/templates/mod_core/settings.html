@@ -1,0 +1,75 @@
+{% extends "layout.html" %} 
+{% block content %}
+<div class="block-header">
+	<h2>ALLGEMEINE EINSTELLUNGEN</h2>
+</div>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="card">
+			<div class="header">
+				<h2>BERECHTIGUNGEN</h2>
+				<small>Definiere die Zugriffsmöglichkeiten der Benutzer</small>
+				<ul class="header-dropdown m-r--5">
+					
+				</ul>
+			</div>
+			<div class="body" style="min-height: 500px;">
+				<form class="form" id="permissions" data-category="permissions">
+				<div class="body table-responsive">
+					<table class="table">
+						<thead>
+							<th>Name</th>
+							<th>Berechtigung</th>
+						</thead>
+						<tbody class="table-hover">
+							{% for group in groups %}
+							<tr>
+								<td>{{ group.beschreibung}}</td>
+								<td><select class="select form-control show-tick" name="roles['{{group.name}}']'" data-live-search="false" multiple >
+									<option data-hidden="true">Benutzerrolle auswählen</option>
+                                    {% for role in roles %}
+                                        <option value="{{ role.id }}" {% if group.roles|selectattr("id", "equalto", role.id)|list|length > 0 %}selected{%endif%}>{{ role.name }}</option>
+									{% endfor %}
+								</select>
+								</td>
+								
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<button type="submit" class="btn btn-primary m-t-15 waves-effect">SPEICHERN</button>
+				</div>
+				
+				</form>
+			</div>
+		</div>
+	</div>
+	<button type="button" class="btn-floating bg-blue" data-toggle="modal" data-category-id="-1" data-target="#CategoryModal"><i class="material-icons btn-float">add</i></button>
+</div>
+{% endblock %}
+{%block javascript %}
+<!-- Bootstrap Tags Input Plugin Js -->
+<script src="/static/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+
+<script>
+$('.form').submit('click', function () {
+	event.preventDefault();
+	console.log($('input[name="roles[]"]').serialize());
+		$.ajax({
+			url: '/core/settings/permission',
+			type: 'POST',
+			data:  $("#permissions").serialize(),
+			success: function(response) {
+				$('#EntryModal').modal('hide')
+				location.reload();
+			},
+			error: function(error) {
+				var errorJson = JSON.parse(error.responseText);
+				console.log(errorJson)
+				$('#EntryModalBody').addClass('error');
+				$('#EntryModalBody').prepend('<div class="alert alert-danger">' + errorJson.message + '</div>');
+			}
+		});
+});
+</script>
+{% endblock %}

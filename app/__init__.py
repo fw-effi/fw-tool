@@ -30,6 +30,7 @@ oidc = OpenIDConnect(app)
 # Import a module / component using its blueprint handler variable (mod_auth)
 from .mod_core import jinja_filters as jinja_filters
 from .mod_auth import controller as auth_module
+from .mod_core import controller as core_module
 from .mod_lodur import controller as lodur_module
 from .mod_alarm import controller as alarm_module
 from .mod_pdf import controller as pdf_module
@@ -42,6 +43,7 @@ app.jinja_env.filters['datetimestrformat'] = jinja_filters.datetimestrformat
 db.create_all()
 
 # Register blueprint(s)
+app.register_blueprint(core_module.mod_core)
 app.register_blueprint(auth_module.mod_auth)
 app.register_blueprint(lodur_module.mod_lodur)
 app.register_blueprint(alarm_module.mod_alarm)

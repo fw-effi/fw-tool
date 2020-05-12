@@ -97,6 +97,7 @@ def auswertung():
 
 @mod_atemschutz.route("/settings",methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('AS_Setting')
 def settings():
     return render_template("mod_atemschutz/settings.html", user=auth_module.get_userobject(), categories=db.session.query(Category).all())
 
