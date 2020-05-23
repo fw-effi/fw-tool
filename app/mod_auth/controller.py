@@ -1,4 +1,4 @@
-from flask import Blueprint, session, request, redirect, flash, g
+from flask import Blueprint, session, request, redirect, flash, g, render_template
 from flask import current_app as app
 import sys, os
 from functools import wraps
@@ -124,6 +124,8 @@ class check_role_permission:
                     return func(*args,**kwargs)
                 else:
                     print("oauth role: User has no Role ")
-            return "Zugriff verweigert!", 401
-            
+            return render_template("mod_auth/403.html", user=get_userobject())
+        
+        #Rename function namen, otherwise got error "override existing endpoint function"
+        decorated_function.__name__ = func.__name__
         return decorated_function

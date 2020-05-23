@@ -15,9 +15,9 @@ import json
 # Define the blueprint: 'atemschutz', set its url prefix: app.url/atemschutz
 mod_atemschutz = Blueprint('atemschutz', __name__, url_prefix='/atemschutz')
 
-
 @mod_atemschutz.route("/",methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('AS_Index')
 def uebersicht():
     result = db.engine.execute("SELECT Firefighter.grad AS Firefighter_grad,"
         "Firefighter.vorname AS vorname,"
@@ -43,6 +43,7 @@ def uebersicht():
 
 @mod_atemschutz.route("/auswertung",methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('AS_Auswertung')
 def auswertung():
     result = db.engine.execute("SELECT Firefighter.grad_sort as grad_sort, Firefighter.id as id,"
         "Firefighter.vorname AS vorname,"
@@ -103,6 +104,7 @@ def settings():
 
 @mod_atemschutz.route("/category",methods=['POST'])
 @oidc.require_login
+@auth_module.check_role_permission('AS_Setting')
 def category_NewEdit():
     try:
         if request.form.get('category_training') == 'true':
@@ -126,6 +128,7 @@ def category_NewEdit():
     
 @mod_atemschutz.route("/category/<id>",methods=['DELETE'])
 @oidc.require_login
+@auth_module.check_role_permission('AS_Setting')
 def category_Delete(id):
     try:
         Category.query.filter_by(id=id).delete()
@@ -137,6 +140,7 @@ def category_Delete(id):
 
 @mod_atemschutz.route("/entry",methods=['POST'])
 @oidc.require_login
+@auth_module.check_role_permission('AS_Index')
 def entry_NewEdit():
     try:
         if request.form.get('entry_id') == "":
@@ -165,6 +169,7 @@ def entry_NewEdit():
 
 @mod_atemschutz.route("/entry/<id>",methods=['DELETE'])
 @oidc.require_login
+@auth_module.check_role_permission('AS_Index')
 def centry_Delete(id):
     try:
         Entry.query.filter_by(id=id).delete()

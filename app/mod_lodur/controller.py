@@ -18,6 +18,7 @@ def update_data():
 
 @mod_lodur.route("/reports/alarmgruppe", methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('Alarm_Report')
 def report_alarmgruppe():
 
     return render_template("pages/report_alarmgruppe.html", user=auth_module.get_userobject(), groups=db.session.query(AlarmGroup).all())

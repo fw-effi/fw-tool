@@ -11,6 +11,7 @@ mod_core = Blueprint('core', __name__, url_prefix='/core')
 
 @mod_core.route("/settings", methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('Core_Setting')
 def get_settings():
     return render_template("mod_core/settings.html", user=auth_module.get_userobject(), 
         groups=db.session.query(auth_groups).filter_by(is_deleted=False).all(),
@@ -18,6 +19,7 @@ def get_settings():
 
 @mod_core.route("/settings/permission",methods=['POST'])
 @oidc.require_login
+@auth_module.check_role_permission('Core_Setting')
 def post_permission():
     try:
         req = request.form.to_dict(flat=False)

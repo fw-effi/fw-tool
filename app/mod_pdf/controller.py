@@ -14,6 +14,7 @@ mod_pdf = Blueprint('mod_pdf',__name__, url_prefix='/pdf')
 
 @mod_pdf.route("/appellliste/<gruppe>", methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('Alarm_Report')
 def pdf_appellliste(gruppe):
 
     if gruppe == 'bag':
@@ -44,6 +45,7 @@ def pdf_appellliste(gruppe):
 
 @mod_pdf.route("/atemschutz/jahrauswertung",methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('AS_Auswertung')
 def pdf_atemschutz_jahrauswertung():
     result = db.engine.execute("SELECT Firefighter.vorname AS vorname,"
         "Firefighter.name AS name,"
@@ -122,6 +124,7 @@ def pdf_atemschutz_jahrauswertung():
 
 @mod_pdf.route("/atemschutz/personalauswertung/<id>",methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('AS_Auswertung')
 def pdf_atemschutz_personalauswertung(id):
     # Fetch Personal information
     result = db.engine.execute("SELECT name, vorname,eintritt FROM Firefighter WHERE id = :id", {'id': id})

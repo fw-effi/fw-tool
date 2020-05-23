@@ -12,12 +12,14 @@ mod_alarm = Blueprint('alarm', __name__, url_prefix='/alarm')
 
 @mod_alarm.route("/alarmgruppe", methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('Alarm_Report')
 def get_alarmgruppe():
 
     return render_template("mod_alarm/alarmgruppe.html", user=auth_module.get_userobject(), groups=db.session.query(AlarmGroup).all())
 
 @mod_alarm.route("/statusUpdate", methods=['GET'])
 @oidc.require_login
+@auth_module.check_role_permission('Alarm_GVZStatus')
 def get_gvzUpdate():
 
     return render_template("mod_alarm/gvzStatus.html", user=auth_module.get_userobject(), 
@@ -27,6 +29,7 @@ def get_gvzUpdate():
 
 @mod_alarm.route("/statusUpdate",methods=['POST'])
 @oidc.require_login
+@auth_module.check_role_permission('Alarm_GVZStatus')
 def post_gvzUpdate():
     try:
         if request.form.get('bolFwBereit') == 'true':
@@ -54,6 +57,7 @@ def post_gvzUpdate():
 
 @mod_alarm.route("/statusUpdate/entry",methods=['POST'])
 @oidc.require_login
+@auth_module.check_role_permission('Alarm_GVZStatus')
 def post_statusUpdateEntry():
     try:
         
@@ -105,6 +109,7 @@ def post_statusUpdateEntry():
 
 @mod_alarm.route("/statusUpdate/entry/<id>",methods=['DELETE'])
 @oidc.require_login
+@auth_module.check_role_permission('Alarm_GVZStatus')
 def delete_statusUpdateEntry(id):
     try:
         GVZnotAvailable.query.filter_by(id=id).delete()

@@ -7902,19 +7902,18 @@ fieldset[disabled] .form-control {
   .four-zero-four .four-zero-four-container .button-place {
     margin-top: 32px; }
 
-/* 500 Server Error Page ======================= */
-.five-zero-zero {
+/* Error Page ======================= */
+.five-zero-zero-container {
   width: 100%;
   text-align: center;
   margin: 5% auto; }
-  .five-zero-zero .five-zero-zero-container .error-code {
-    font-size: 160px; }
-  .five-zero-zero .five-zero-zero-container .error-message {
+  .five-zero-zero-container .error-code {
+    font-size: 100px; }
+  .five-zero-zero-container .error-message {
     font-size: 27px;
     color: #333;
-    font-weight: bold;
-    margin-top: -40px; }
-  .five-zero-zero .five-zero-zero-container .button-place {
+    font-weight: bold; }
+  .five-zero-zero-container .button-place {
     margin-top: 32px; }
 
 /* Maps ======================================== */
