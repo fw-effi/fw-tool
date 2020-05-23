@@ -148,7 +148,7 @@
                                 <td>{{ entry.vorname }} {{ entry.name }}<br />
                                 Eintrittsjahr: {{ entry.eintritt.split('-')[0] }}</td>
 								<td>
-                                    {% if entry.eintritt.split('-')[0] < entry.four_year_name %}
+                                    {% if entry.eintritt.split('-')[0] <= entry.four_year_name %}
                                         Ausbildung: {{ entry.four_year_training }} <br/>
                                         Total: {{ entry.four_year }}
                                         {% if entry.four_year < 480 %}
@@ -157,7 +157,7 @@
                                     {% endif %}
                                 </td>
 								<td>
-                                    {% if entry.eintritt.split('-')[0] < entry.three_year_name %}
+                                    {% if entry.eintritt.split('-')[0] <= entry.three_year_name %}
                                         Ausbildung: {{ entry.three_year_training }} <br/>
                                         Total: {{ entry.three_year }}
                                         {% if entry.three_year < 480 %}
@@ -166,7 +166,7 @@
                                     {% endif %}
                                 </td>
 								<td>
-                                    {% if entry.eintritt.split('-')[0] < entry.two_year_name %}
+                                    {% if entry.eintritt.split('-')[0] <= entry.two_year_name %}
                                         Ausbildung: {{ entry.two_year_training }} <br/>
                                         Total: {{ entry.two_year }}
                                         {% if entry.two_year < 480 %}
@@ -175,7 +175,7 @@
                                     {% endif %}
                                 </td>
 								<td>
-                                    {% if entry.eintritt.split('-')[0] < entry.one_year_name %}
+                                    {% if entry.eintritt.split('-')[0] <= entry.one_year_name %}
                                         Ausbildung: {{ entry.one_year_training }} <br/>
                                         Total: {{ entry.one_year }}
                                         {% if entry.one_year < 480 %}
