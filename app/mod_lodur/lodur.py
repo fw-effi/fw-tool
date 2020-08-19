@@ -14,7 +14,9 @@ def lodur_init():
     # Url for the POST Request with the form data
     url_login = "https://lodur-zh.ch/iel/index.php?modul=9"
     # Create object with login data (url encoding automaticly by python)
-    form_data = { "login_member_name": app.config['LODUR_USERNAME'], "login_member_pwd": app.config['LODUR_PASSWORD'] }
+    print("Lodur Login - Username: " + app.config['LODUR_USERNAME'])
+
+    form_data = { "login_member_name": app.config['LODUR_USERNAME'], "login_member_pwd": app.config['LODUR_PASSWORD'], "sms_mannschaft_id": ""}
     #request the login from - genereate PHPSESSID cookie
     req_form = sess_login.get(url_form)
     # save the PHPSESSID Cookie bevor we do the login
@@ -35,9 +37,39 @@ def do_lodur_request(url,method,params=None):
 
     if method == "POST":
         response = requests.post(url=url, cookies=lodur_phpsess, data=params)
+    if method == "GET":
+        response = requests.get(url=url, cookies=lodur_phpsess)
 
     return response
 
+def fetch_kurse():
+    """ Get list of all registered courses and the current status
+
+    Keyword arguments:
+    None
+    """
+    # Generate Unique Sync ID
+    sync_id = str(uuid.uuid4())
+
+    # Do the GET request for the table with the information
+    resp = do_lodur_request(url='https://lodur-zh.ch/iel/index.php?modul=59', method="GET")
+    resp.encoding = 'latin-1'
+    html_page = resp.text
+    print(html_page)
+    tbl_root = lxml.html.fromstring(html_page)
+
+    for row in tbl_root.xpath('//*[@id="teilnehmerlisten"]/tbody/tr'):
+        grad = row.xpath('.//td[1]//text()')[0]
+        name = row.xpath('.//td[2]//text()')[0]
+        vorname = row.xpath('.//td[3]//text()')[0]
+        datum = row.xpath('.//td[4]//text()')[0]
+        datum = datetime.datetime.strptime(datum.split('\n')[0], "%d.%m.%Y")
+        dauer = row.xpath('.//td[5]//text()')[0]
+        kurs = row.xpath('.//td[6]//text()')[0]
+        status = row.xpath('.//td[8]//text()')[0]
+    
+        print(datum)
+    
 def fetch_update_lodur():
     """ Get the excel list from Lodur used for the 'Appellblaetter'
 

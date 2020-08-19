@@ -27,12 +27,21 @@ def lodurUpdate_3h():
     
     print(time.strftime("%d.%m.%Y %H:%M:%S") + ": INFO - BackgroundScheduler - LodurUpdate FINISH")
 
+def kurseUpdate_3h():
+    print(time.strftime("%d.%m.%Y %H:%M:%S") + ": INFO - BackgroundScheduler - KurseUpdate START")
+    #Update Lodur Data hourly
+    with app.app_context():
+        lodur.fetch_kurse()
+    
+    print(time.strftime("%d.%m.%Y %H:%M:%S") + ": INFO - BackgroundScheduler - KurseUpdate FINISH")
+
 if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' and os.environ.get('FWAPP_ENV') == 'dev':
     print("####################")
     print("# Scheduler started in Development Mode")
     #cron.add_job(func=print_date_time, trigger="interval", seconds=3)
     #cron.add_job(func=gvzUpdate_24h, trigger="cron",hour=20, minute=00)
     cron.add_job(func=lodurUpdate_3h, trigger="interval", hours=8)
+    #cron.add_job(func=kurseUpdate_3h, trigger="interval", minutes=1)
     cron.start()
 
 # Scheduler for productive system

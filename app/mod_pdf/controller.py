@@ -12,6 +12,7 @@ from .appelliste import *
 # Define the blueprint: 'pdf', set its url prefix: app.url/pdf
 mod_pdf = Blueprint('mod_pdf',__name__, url_prefix='/pdf')
 
+
 @mod_pdf.route("/appellliste/<gruppe>", methods=['GET'])
 @oidc.require_login
 @auth_module.check_role_permission('Alarm_Report')
@@ -40,7 +41,7 @@ def pdf_appellliste(gruppe):
     else:
         content = lodur.getFirefightersPerAlarm(gruppe)
     
-
+    print(content)
     return render_alarmgruppe(content,gruppe)
 
 @mod_pdf.route("/atemschutz/jahrauswertung",methods=['GET'])

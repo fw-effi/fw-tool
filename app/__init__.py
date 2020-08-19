@@ -35,6 +35,7 @@ from .mod_lodur import controller as lodur_module
 from .mod_alarm import controller as alarm_module
 from .mod_pdf import controller as pdf_module
 from .mod_atemschutz import controller as atemschutz_module
+from .mod_peer import controller as peer_module
 
 # Import Jinja custom filters
 app.jinja_env.filters['datetimestrformat'] = jinja_filters.datetimestrformat
@@ -49,6 +50,7 @@ app.register_blueprint(lodur_module.mod_lodur)
 app.register_blueprint(alarm_module.mod_alarm)
 app.register_blueprint(pdf_module.mod_pdf)
 app.register_blueprint(atemschutz_module.mod_atemschutz)
+app.register_blueprint(peer_module.mod_peer)
 
 # Start Scheduler
 cron = BackgroundScheduler()
