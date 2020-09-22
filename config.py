@@ -46,4 +46,4 @@ OVERWRITE_REDIRECT_URI = 'http://localhost:8080/auth/callback/lodur'
 
 # Lodur Settings
 LODUR_USERNAME = 'andsche'
-LODUR_PASSWORD = '9SG2uxqnfhQafwiM3qYT'
+LODUR_PASSWORD = ''
