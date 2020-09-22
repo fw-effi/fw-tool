@@ -3,11 +3,12 @@ import flask
 import json
 import requests
 import collections
-from flask import Blueprint,Flask, render_template
+from flask import Blueprint,Flask, render_template, make_response
+from sqlalchemy.sql import text
 # Import objects from the main app module
 from app import auth_module, oidc, db
+# Import module models (i.e. User)
 from ..mod_lodur import controller as lodur
-from .appelliste import *
 
 # Define the blueprint: 'pdf', set its url prefix: app.url/pdf
 mod_pdf = Blueprint('mod_pdf',__name__, url_prefix='/pdf')
@@ -18,31 +19,116 @@ mod_pdf = Blueprint('mod_pdf',__name__, url_prefix='/pdf')
 @auth_module.check_role_permission('Alarm_Report')
 def pdf_appellliste(gruppe):
 
-    if gruppe == 'bag':
-        content = {
-            "bag1": lodur.getFirefightersPerAlarm('BAG1'),
-            "bag2": lodur.getFirefightersPerAlarm('BAG2'),
-            "bag3": lodur.getFirefightersPerAlarm('BAG3'),
-            "konf": lodur.getFirefightersPerAlarm('Konf')
-        }
-    elif gruppe == 'spezZug':
-        content = {
-            "stab": lodur.getFirefightersPerAlarm('Stab'),
-            "va": lodur.getFirefightersPerAlarm('VA'),
-            "san": lodur.getFirefightersPerAlarm('San')
-        }
-    elif gruppe == 'spezGrp':
-        content = {
-            "stab": lodur.getFirefightersPerAlarm('Stab'),
-            "fu": lodur.getFirefightersPerAlarm('Fu'),
-            "srt": lodur.getFirefightersPerAlarm('SRT'),
-            "adl": lodur.getFirefightersPerAlarm('ADL')
-        }
+    if gruppe == 'BAG':
+        result = db.engine.execute("SELECT Firefighter.id AS id,"
+        "Firefighter.vorname AS vorname,"
+        "Firefighter.name AS name,"
+        "Firefighter.grad AS grad,"
+        "Firefighter.grad_sort AS grad_sort, "
+        "(SELECT Name FROM AlarmGroup WHERE AlarmGroup.id = alarmgroups.alarmgroup_id) AS gruppe "
+        "FROM Firefighter, alarmgroups "
+        "WHERE alarmgroups.firefighter_id = Firefighter.id "
+        "AND (alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG1') "
+            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG2') "
+            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG3') "
+            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Konf') ) "
+        "AND Firefighter.is_deleted = 0 "
+        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
+
+        req_jsondata = json.loads('{"template":{"shortid":"Bkeu4GNwBD"}}')
+        
+    elif gruppe == 'Spez-Zug':
+        result = db.engine.execute("SELECT Firefighter.id AS id,"
+        "Firefighter.vorname AS vorname,"
+        "Firefighter.name AS name,"
+        "Firefighter.grad AS grad,"
+        "Firefighter.grad_sort AS grad_sort, "
+        "(SELECT Name FROM AlarmGroup WHERE AlarmGroup.id = alarmgroups.alarmgroup_id) AS gruppe "
+        "FROM Firefighter, alarmgroups "
+        "WHERE alarmgroups.firefighter_id = Firefighter.id "
+        "AND (alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Stab') "
+            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'VA') "
+            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'San') ) "
+        "AND Firefighter.is_deleted = 0 "
+        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
+
+        req_jsondata = json.loads('{"template":{"shortid":"Bkeu4GNwBD"}}')
+
+    elif gruppe == 'Spez-Gruppen':
+        result = db.engine.execute("SELECT Firefighter.id AS id,"
+        "Firefighter.vorname AS vorname,"
+        "Firefighter.name AS name,"
+        "Firefighter.grad AS grad,"
+        "Firefighter.grad_sort AS grad_sort, "
+        "(SELECT Name FROM AlarmGroup WHERE AlarmGroup.id = alarmgroups.alarmgroup_id) AS gruppe "
+        "FROM Firefighter, alarmgroups "
+        "WHERE alarmgroups.firefighter_id = Firefighter.id "
+        "AND (alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Stab') "
+            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Fu') "
+            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'ADL') "
+            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'SRT') ) "
+        "AND Firefighter.is_deleted = 0 "
+        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
+
+        req_jsondata = json.loads('{"template":{"shortid":"Bkeu4GNwBD"}}')
+
+    elif gruppe == 'Alle':
+        result = db.engine.execute("SELECT Firefighter.id AS id,"
+        "Firefighter.vorname AS vorname,"
+        "Firefighter.name AS name,"
+        "Firefighter.grad AS grad,"
+        "Firefighter.grad_sort AS grad_sort, "
+        "'' AS gruppe "
+        "FROM Firefighter, alarmgroups "
+        "WHERE alarmgroups.firefighter_id = Firefighter.id "
+        "AND Firefighter.is_deleted = 0 "
+        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
+
+        req_jsondata = json.loads('{"template":{"shortid":"BJlXA4rzSD"}}')
+
     else:
-        content = lodur.getFirefightersPerAlarm(gruppe)
+        result = db.engine.execute("SELECT Firefighter.id AS id,"
+        "Firefighter.vorname AS vorname,"
+        "Firefighter.name AS name,"
+        "Firefighter.grad AS grad,"
+        "Firefighter.grad_sort AS grad_sort, "
+        "'' AS gruppe "
+        "FROM Firefighter, alarmgroups "
+        "WHERE alarmgroups.firefighter_id = Firefighter.id "
+        "AND alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = '"+gruppe+"') "
+        "AND Firefighter.is_deleted = 0 "
+        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
+
+        req_jsondata = json.loads('{"template":{"shortid":"BJlXA4rzSD"}}')
     
-    print(content)
-    return render_alarmgruppe(content,gruppe)
+    
+    firefighters = result
+
+    json_array = []
+    for row in firefighters:
+        d = collections.OrderedDict()
+        d['id'] = row.id
+        d['grad'] = row.grad.replace("\n        ","")
+        d['name'] = row.name.replace("\n        ","")
+        d['vorname'] = row.vorname.replace("\n        ","")
+        d['grad_sort'] = row.grad_sort
+        d['gruppe'] = row.gruppe
+        json_array.append(d)
+    
+    req_jsondata['data'] = json.loads('{"items": []}')
+    req_jsondata['data'] = json.loads('{"header": []}')
+    json_data = json.dumps(json_array, ensure_ascii=False)
+    req_jsondata['data']['header'] = json.loads('{"title":"'+gruppe+'"}')
+    req_jsondata['data']['items'] = json.loads(json_data)
+    result.close()
+    
+    req_report_header = {'Authorization':'Basic b2ZlZTQyQGdtYWlsLmNvbTp0cGZmSndNVTc2SkpLTjR5TTdWNkxqaVRmRDZkY3hxNmZOUVBVTlZNSjlkNEc3V284', 'Content-Type':'application/json'}
+    res_report = requests.post("https://fw-effi.jsreportonline.net/api/report",headers=req_report_header,json=req_jsondata)
+    response = make_response(res_report.content)
+
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=%s.pdf' % gruppe
+    return response
 
 @mod_pdf.route("/atemschutz/jahrauswertung",methods=['GET'])
 @oidc.require_login
