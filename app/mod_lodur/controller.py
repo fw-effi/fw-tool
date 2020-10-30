@@ -14,6 +14,7 @@ mod_lodur = Blueprint('lodur', __name__, url_prefix='/lodur')
 @oidc.require_login
 def update_data():
     fetch_update_lodur()
+    fetch_kurse()
     return "OK"
 
 @mod_lodur.route("/reports/alarmgruppe", methods=['GET'])

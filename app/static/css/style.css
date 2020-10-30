@@ -38,7 +38,8 @@ Don't cut the Dropdown menu in the bootstrap card */
     text-overflow: ellipsis;
     overflow: hidden; }
   .navbar .navbar-custom-right-menu {
-    float: right; }
+    float: right;
+    padding: 10px 7px; }
   .navbar .navbar-toggle {
     text-decoration: none;
     color: #fff;
@@ -2345,7 +2346,7 @@ Don't cut the Dropdown menu in the bootstrap card */
   .navbar .navbar-header {
     display: inline-block;
     margin-bottom: -6px;
-    width: calc(100% + 30px); }
+    width: 90%; }
   .navbar .nav > li {
     display: inline-block; }
   .navbar .navbar-nav {

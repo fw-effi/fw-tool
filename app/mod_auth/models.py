@@ -1,6 +1,7 @@
 import typing
 # Import the database object (db. from the main application module
 from app import db
+from time import time
 
 # Define a base model for other database tables to inherit
 class Base(db.Model):
@@ -35,9 +36,11 @@ class Base(db.Model):
 # Define a User model
 class User(Base):
     __tablename__ = 'Auth_users'
-    open_id = db.Column(db.String(64), nullable=False, unique=True)
+    open_id = db.Column(db.String(64), nullable=False)
     username = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
+    notification_lastread = db.Column(db.DateTime, nullable=True)
+    #notifications = db.relationship('Notifications_category', secondary="Notifications_recipients", lazy='subquery', backref=db.backref('recipients', lazy=True))
 
     def __init__(self, username, email, open_id):
         self.username = username
@@ -75,6 +78,7 @@ class auth_groups(Base):
     beschreibung = db.Column(db.String(64), nullable=False)
     is_deleted = db.Column(db.Boolean, nullable=False, default=0)
     #roles = db.relationship('Auth_roles', secondary=Auth_grouprole, lazy='subquery', backref=db.backref('groups', lazy=True))
+    
 
     def __init__(self,name,beschreibung):
         self.is_deleted = 0

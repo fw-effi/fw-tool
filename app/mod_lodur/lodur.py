@@ -5,7 +5,8 @@ import uuid
 from flask import session
 from flask import current_app as app
 from app import db
-from app.mod_lodur.models import Firefighter, AlarmGroup, FF_Zug, Lodur_General
+from app.mod_core.controller import notifications
+from app.mod_lodur.models import Firefighter, AlarmGroup, FF_Zug, Lodur_General, Kurs_Definitions, Kurs_Members
 
 def lodur_init():
     sess_login = requests.session()
@@ -55,7 +56,6 @@ def fetch_kurse():
     resp = do_lodur_request(url='https://lodur-zh.ch/iel/index.php?modul=59', method="GET")
     resp.encoding = 'latin-1'
     html_page = resp.text
-    print(html_page)
     tbl_root = lxml.html.fromstring(html_page)
 
     for row in tbl_root.xpath('//*[@id="teilnehmerlisten"]/tbody/tr'):
@@ -65,11 +65,54 @@ def fetch_kurse():
         datum = row.xpath('.//td[4]//text()')[0]
         datum = datetime.datetime.strptime(datum.split('\n')[0], "%d.%m.%Y")
         dauer = row.xpath('.//td[5]//text()')[0]
-        kurs = row.xpath('.//td[6]//text()')[0]
-        status = row.xpath('.//td[8]//text()')[0]
+        kurs = row.xpath('.//td[7]//text()')[0]
+        kurs = kurs.split('/')[1]
+        status = row.xpath('.//td[9]//text()')[0]
     
-        print(datum)
+        # Get Firefighter from given information
+        member = Firefighter.query.filter_by(grad=grad,name=name,vorname=vorname).first()
+
+        # Check if Kurs already exist
+        if db.session.query(Kurs_Definitions.id).filter_by(name=kurs).scalar() is None:
+            # Create new Kurs
+            db_kurs = Kurs_Definitions(
+                kurs,
+                0
+            )
+            db.session.add(db_kurs)
+            notifications.create("AS_general","Neuer Kurs","Kurs: %s"%kurs,"/atemschutz/settings")
+        db.session.flush()
+        db_kurs = Kurs_Definitions.query.filter_by(name=kurs).first()
+
+        # Check if Entry already exist
+        if db.session.query(Kurs_Members.id).filter_by(datum=datum,dauer=dauer,kurs_id=db_kurs.id,member_id=member.id).scalar() is None:
+            # Create new Kurs Member Entry
+            kurs_member = Kurs_Members(
+                member.id,
+                datum,
+                dauer,
+                db_kurs.id,
+                status,
+                sync_id,
+                datetime.datetime.now() #Set last sync DateTime
+            )
+            db.session.add(kurs_member)
+        else:
+            # Update existing Entry
+            kurs_member = Kurs_Members.query.filter_by(datum=datum,dauer=dauer,kurs_id=db_kurs.id,member_id=member.id).first()
+            kurs_member.datum = datum
+            kurs_member.dauer = dauer
+            kurs_member.status = status
+            kurs_member.sync_id = sync_id
+            kurs_member.last_sync = datetime.datetime.now() #Set last sync DateTime
+
+    # Mark all not updated entry as deleted
+    result = db.session.query(Kurs_Members)\
+        .filter(db.or_(Kurs_Members.sync_uid!=sync_id, Kurs_Members.sync_uid == None))\
+        .update(dict(is_deleted=True))
     
+    db.session.commit()
+
 def fetch_update_lodur():
     """ Get the excel list from Lodur used for the 'Appellblaetter'
 

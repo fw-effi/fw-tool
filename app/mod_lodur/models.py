@@ -104,6 +104,38 @@ class FF_Zug(Base):
     def __repr__(self):
         return self._repr(name=self.name)
 
+# Define Kurs Teilnehmer
+class Kurs_Members(Base):
+    __tablename__='Kurs_Members'
+    member = db.relationship("Firefighter", backref=db.backref('kurs_members',lazy=True))
+    member_id = db.Column(db.Integer, db.ForeignKey('Firefighter.id'))
+    datum = db.Column(db.DateTime, nullable=True)
+    dauer = db.Column(db.Integer,nullable=True)
+    kurs = db.relationship("Kurs_Definitions", backref=db.backref('kurs_members',lazy=True))
+    kurs_id = db.Column(db.Integer, db.ForeignKey('Kurs_Definitions.id'))
+    status = db.Column(db.String(64), nullable=True)
+    sync_uid = db.Column(db.Integer, nullable=True) # Wird bei jedem Sync überschrieben und geprüft ob der Datensatz aktualisiert wurde
+    last_sync = db.Column(db.DateTime, nullable=True)
+
+    def __init__(self,member_id,datum,dauer,kurs_id,status,sync_uid,last_sync):
+        self.member_id = member_id
+        self.datum = datum
+        self.dauer = dauer
+        self.kurs_id = kurs_id
+        self.status = status
+        self.sync_uid = sync_uid
+        self.last_sync = last_sync
+
+# Define Kurs Definitionen
+class Kurs_Definitions(Base):
+    __tablename__='Kurs_Definitions'
+    name = db.Column(db.String(64),nullable=True)
+    as_time = db.Column(db.Integer,nullable=True)
+
+    def __init__(self,name,as_time):
+        self.name = name
+        self.as_time = as_time
+
 # Define General Lodur Table
 class Lodur_General(Base):
     __tablename__ = 'Lodur_general'

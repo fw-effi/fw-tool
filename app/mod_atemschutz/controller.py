@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import exc, func
 # Import module models (i.e. User)
 from app.mod_atemschutz.models import *
-from app.mod_lodur.models import Firefighter, FF_Zug
+from app.mod_lodur.models import Firefighter, FF_Zug, Kurs_Definitions
 # Import objects from the main app module
 from app import auth_module, oidc, db
 import collections
@@ -100,7 +100,7 @@ def auswertung():
 @oidc.require_login
 @auth_module.check_role_permission('AS_Setting')
 def settings():
-    return render_template("mod_atemschutz/settings.html", user=auth_module.get_userobject(), categories=db.session.query(Category).all())
+    return render_template("mod_atemschutz/settings.html", user=auth_module.get_userobject(), categories=db.session.query(Category).all(), kurse=db.session.query(Kurs_Definitions).filter_by(is_deleted=0).all())
 
 @mod_atemschutz.route("/category",methods=['POST'])
 @oidc.require_login
@@ -134,6 +134,20 @@ def category_Delete(id):
         Category.query.filter_by(id=id).delete()
         db.session.commit()
 
+        return make_response(jsonify(message='OK'),200)
+    except Exception as e:
+        return make_response(jsonify(message=str(e)),500)
+
+@mod_atemschutz.route("/kurs",methods=['POST'])
+@oidc.require_login
+@auth_module.check_role_permission('AS_Setting')
+def kurs_Edit():
+    try:
+        kurs = Kurs_Definitions.query.get(request.form.get('kurs_id'))
+        kurs.id = request.form.get('kurs_id')
+        kurs.as_time = request.form.get('kurs_as')
+
+        db.session.commit()
         return make_response(jsonify(message='OK'),200)
     except Exception as e:
         return make_response(jsonify(message=str(e)),500)

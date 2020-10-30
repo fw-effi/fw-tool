@@ -103,7 +103,7 @@ class check_role_permission:
             #Lese gültige Rollen für die Berechtigungsgruppe
             
             auth_group = db.session.query(auth_groups).filter_by(name=self.role_required).first() # Find auth_group DB Entry with that name
-            print("oauth role. needed roles: ", auth_group.roles)
+
             #Lese die verfügbaren Rollen vom Benutzer
             access_token = oidc.get_access_token()
             user_permission = oidc.user_getfield('role',access_token)
@@ -116,14 +116,13 @@ class check_role_permission:
             if 'admin' in user_permission:
                 print("oauth role. User has Admin Permission")
                 #Welcher return Befehl muss hier hin??!!!
-            
-            print("oauth role. User Roles: ", user_permission)
+
             for role in auth_group.roles:
                 if role.name in user_permission:
-                    print("oauth role. User has required Permission")
+                    print("Oauth role. User has required Permission")
                     return func(*args,**kwargs)
                 else:
-                    print("oauth role: User has no Role ")
+                    print("Oauth role: User has no Role ")
             return render_template("mod_auth/403.html", user=get_userobject())
         
         #Rename function namen, otherwise got error "override existing endpoint function"
