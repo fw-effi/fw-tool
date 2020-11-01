@@ -4,5 +4,6 @@
 bin/
 app/mod_auth/client_secret.json
 app/migrations
-app.db
-config.py
+/app.db
+/config.py
+/venv/

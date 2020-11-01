@@ -36,7 +36,7 @@ def gvz_init():
     # extract csrf token from response page
     lxml_root = lxml.html.fromstring(req_login.text)
     #print(req_login.text)
-    csrf = lxml_root.xpath('//input[@id="readiness_report__token"]/@value')[0]
+    csrf = lxml_root.xpath('//input[@id="organization_report__token"]/@value')[0]
     print('GVZinit - CSRF After Login: %s' % (csrf))
 
     #save the PHPSESSID Cookie after the login (it should be different from the first one)
@@ -50,9 +50,9 @@ def do_gvz_request(url,method,params=None):
 
     req_form = requests.get(url,cookies=phpsess_after)
     lxml_root = lxml.html.fromstring(req_form.text)
-    csrf = lxml_root.xpath('//input[@id="readiness_report__token"]/@value')[0]
+    csrf = lxml_root.xpath('//input[@id="organization_report__token"]/@value')[0]
     print('GVZrequest - CSRF: ' + csrf)
-    postdata = params + '&readiness_report%5B_token%5D='+csrf
+    postdata = params + '&organization_report%5B_token%5D='+csrf
     if method == "POST":
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -83,23 +83,23 @@ def send_FwStatus():
         mat_ready ="1"
 
     # Create object for the POST Request
-    post_data = 'readiness_report%5BauxiliaryServices%5D%5B%5D=28&'\
-        'readiness_report%5BauxiliaryServices%5D%5B%5D=30&'\
-        'readiness_report%5Bcomment%5D=&'\
-        'readiness_report%5BdriversC1%5D='+str(generalSettings.anzahlFahrer - NaDriver)+'&'\
-        'readiness_report%5BequipmentOperational%5D='+mat_ready+'&'\
-        'readiness_report%5BequipmentRequiredInfo%5D=&'\
-        'readiness_report%5BmemberNonOperationalCadre%5D='+str(NaKader)+'&'\
-        'readiness_report%5BmemberNonOperational%5D='+str(NaAdf)+'&'\
-        'readiness_report%5Boperational%5D='+einsatzbereit+'&'\
-        'readiness_report%5BotherAuxiliaryServicesInfo%5D='
+    post_data = 'organization_report%5BauxiliaryServices%5D%5B%5D=28&'\
+        'organization_report%5BauxiliaryServices%5D%5B%5D=30&'\
+        'organization_report%5Bcomment%5D=&'\
+        'organization_report%5BdriversC1%5D='+str(generalSettings.anzahlFahrer - NaDriver)+'&'\
+        'organization_report%5BequipmentOperational%5D='+mat_ready+'&'\
+        'organization_report%5BequipmentRequiredInfo%5D=&'\
+        'organization_report%5BmemberNonOperationalCadre%5D='+str(NaKader)+'&'\
+        'organization_report%5BmemberNonOperational%5D='+str(NaAdf)+'&'\
+        'organization_report%5Boperational%5D='+einsatzbereit+'&'\
+        'organization_report%5BotherAuxiliaryServicesInfo%5D='
     
     if(generalSettings.rd_fahrer):
-        post_data += '&readiness_report%5BauxiliaryServices%5D%5B%5D=29'
+        post_data += '&organization_report%5BauxiliaryServices%5D%5B%5D=29'
     
     print(post_data)
     # Do the POST request for the table with the information
-    resp = do_gvz_request(url='https://status.feuerwehr-gvz.ch', method="POST", params=post_data)
+    resp = do_gvz_request(url='https://status.feuerwehr-gvz.ch/organization', method="POST", params=post_data)
     #resp.encoding = 'latin-1'
     #html_page = resp.text
     #print(html_page)

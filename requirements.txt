@@ -1,7 +1,7 @@
-pdfkit==0.6.1
 flask==1.1.0
+requests==2.24.0
 flask_debugtoolbar==0.10.1
-lxml==4.3.4
+lxml==4.6.1
 Flask_SQLAlchemy==2.4.0
 flask_login==0.4.1
 flask_oidc==1.4.0
