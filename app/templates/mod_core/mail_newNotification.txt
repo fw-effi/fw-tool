@@ -1,0 +1,10 @@
+Guten Tag
+
+Du hast eine neue Benachrichtigung über die FW-Effi App erhalten:
+
+=======================================
+{{ title }}
+=======================================
+{{ message }}
+
+Für weitere Details öffne bitte die App oder gehe auf folgende URL: {{ url }}

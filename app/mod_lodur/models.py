@@ -9,8 +9,8 @@ class Base(db.Model):
     __abstract__  = True
 
     id            = db.Column(db.Integer, primary_key=True)
-    date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
-    date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(),
+    date_created  = db.Column(db.DateTime(timezone=True),  default=db.func.current_timestamp())
+    date_modified = db.Column(db.DateTime(timezone=True),  default=db.func.current_timestamp(),
                                            onupdate=db.func.current_timestamp())
     is_deleted = db.Column(db.Boolean, default=0,nullable=True)
     

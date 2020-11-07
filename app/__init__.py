@@ -8,6 +8,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_oidc import OpenIDConnect
+from flask_mail import Mail
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
@@ -25,6 +26,9 @@ db_migrate = Migrate(app,db)
 
 # Register OpenID Library
 oidc = OpenIDConnect(app)
+
+# Register Flask_Mail Library
+mail = Mail(app)
 
 # Import a module / component using its blueprint handler variable (mod_auth)
 from .mod_core import jinja_filters as jinja_filters

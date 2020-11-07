@@ -21,7 +21,7 @@ function reloadLodurData() {
             showNotification('alert-success','Lodur Daten aktualisiert');
             console.log(response);
             $("#topRightLodurSyncIcon").removeClass("fa-spin");
-            $("#topRightLodurSyncTime").text(moment(new Date()).format('DD.MM.YYYY hh:mm:ss'));
+            $("#topRightLodurSyncTime").text(moment(new Date()).format('DD.MM.YYYY HH:mm:ss'));
         },
         error: function(error) {
             showNotification('alert-danger','Fehler bei Lodurdaten: ' + error)
@@ -72,7 +72,7 @@ function notificationsLoad(onLoad=false) {
                 element = "<li><a href='"+notifications[i]["url"]+"' class='wave-effect wave-block'>"
                 element += symbol
                 element += message
-                element += "<p><i class='material-icons'>access_time</i>"+moment(create_date).format('DD.MM.YYYY hh:mm')+"</p></div></a>"
+                element += "<p><i class='material-icons'>access_time</i>"+moment(create_date).format('DD.MM.YYYY HH:mm')+"</p></div></a>"
 
                 $("#notifications_messages").append(
                     element

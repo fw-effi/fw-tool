@@ -6,7 +6,7 @@ from datetime import datetime
 import lxml.html
 from app import db
 from app.mod_alarm.models import GVZupdate, GVZnotAvailable
-
+from app.mod_core.controller import notifications
 
 def gvz_init():
     sess_login = requests.session()
@@ -14,7 +14,7 @@ def gvz_init():
     url_form = "https://status.feuerwehr-gvz.ch/login"
     # Url for the POST Request with the form data
     url_login = "https://status.feuerwehr-gvz.ch/login"
-    
+
     #request the login from - genereate PHPSESSID cookie and read the csrf token
     req_form = sess_login.get(url_form)
     lxml_root = lxml.html.fromstring(req_form.text)
@@ -93,13 +93,12 @@ def send_FwStatus():
         'organization_report%5BmemberNonOperational%5D='+str(NaAdf)+'&'\
         'organization_report%5Boperational%5D='+einsatzbereit+'&'\
         'organization_report%5BotherAuxiliaryServicesInfo%5D='
-    
+
     if(generalSettings.rd_fahrer):
         post_data += '&organization_report%5BauxiliaryServices%5D%5B%5D=29'
-    
+
     print(post_data)
     # Do the POST request for the table with the information
     resp = do_gvz_request(url='https://status.feuerwehr-gvz.ch/organization', method="POST", params=post_data)
-    #resp.encoding = 'latin-1'
-    #html_page = resp.text
-    #print(html_page)
+
+    notifications.create("Lodur", "Einsatzbereitschaft", "Info an GVZ gesendet", "/alarm/statusUpdate")

@@ -6,6 +6,7 @@ from flask import session
 from flask import current_app as app
 from app import db
 from app.mod_core.controller import notifications
+from app.mod_atemschutz.controller import entry_AutoNew
 from app.mod_lodur.models import Firefighter, AlarmGroup, FF_Zug, Lodur_General, Kurs_Definitions, Kurs_Members
 
 def lodur_init():
@@ -68,6 +69,7 @@ def fetch_kurse():
         kurs = row.xpath('.//td[7]//text()')[0]
         kurs = kurs.split('/')[1]
         status = row.xpath('.//td[9]//text()')[0]
+        status = status.split('\n')[0]
     
         # Get Firefighter from given information
         member = Firefighter.query.filter_by(grad=grad,name=name,vorname=vorname).first()
@@ -80,7 +82,8 @@ def fetch_kurse():
                 0
             )
             db.session.add(db_kurs)
-            notifications.create("AS_general","Neuer Kurs","Kurs: %s"%kurs,"/atemschutz/settings")
+
+            notifications.create("AS_general", "Neuer Kurs", "Kurs: %s" % kurs, "/atemschutz/settings")
         db.session.flush()
         db_kurs = Kurs_Definitions.query.filter_by(name=kurs).first()
 
@@ -98,13 +101,20 @@ def fetch_kurse():
             )
             db.session.add(kurs_member)
         else:
+            firefighter = Kurs_Members.query.filter_by(datum=datum,dauer=dauer,kurs_id=db_kurs.id,member_id=member.id).first()
+            kurs_member = firefighter
+            # Check if Kurs new Status "bestanden"
+            if kurs_member.status != "bestanden" and status == "bestanden":
+                entry_AutoNew(firefighter.member_id,datum,db_kurs)
+
             # Update existing Entry
-            kurs_member = Kurs_Members.query.filter_by(datum=datum,dauer=dauer,kurs_id=db_kurs.id,member_id=member.id).first()
             kurs_member.datum = datum
             kurs_member.dauer = dauer
             kurs_member.status = status
             kurs_member.sync_id = sync_id
             kurs_member.last_sync = datetime.datetime.now() #Set last sync DateTime
+
+
 
     # Mark all not updated entry as deleted
     result = db.session.query(Kurs_Members)\
