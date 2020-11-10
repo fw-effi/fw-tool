@@ -121,7 +121,7 @@ def pdf_appellliste(gruppe):
     req_jsondata['data']['items'] = json.loads(json_data)
     result.close()
     
-    req_report_header = {'Authorization':'Basic b2ZlZTQyQGdtYWlsLmNvbTp0cGZmSndNVTc2SkpLTjR5TTdWNkxqaVRmRDZkY3hxNmZOUVBVTlZNSjlkNEc3V284', 'Content-Type':'application/json'}
+    req_report_header = {'Authorization': app.config['JSREPORT_AUTH'], 'Content-Type': 'application/json'}
     res_report = requests.post("https://fw-effi.jsreportonline.net/api/report",headers=req_report_header,json=req_jsondata)
     response = make_response(res_report.content)
 
@@ -200,7 +200,7 @@ def pdf_atemschutz_jahrauswertung():
     json_data = json.dumps(json_array, ensure_ascii=False)
     req_jsondata['data']['items'] = json.loads(json_data)
     
-    req_report_header = {'Authorization':'Basic b2ZlZTQyQGdtYWlsLmNvbTp0cGZmSndNVTc2SkpLTjR5TTdWNkxqaVRmRDZkY3hxNmZOUVBVTlZNSjlkNEc3V284', 'Content-Type':'application/json'}
+    req_report_header = {'Authorization': app.config['JSREPORT_AUTH'], 'Content-Type': 'application/json'}
     res_report = requests.post("https://fw-effi.jsreportonline.net/api/report",headers=req_report_header,json=req_jsondata)
     response = make_response(res_report.content)
 
@@ -238,10 +238,10 @@ def pdf_atemschutz_personalauswertung(id):
     json_data = json.dumps(json_array, ensure_ascii=False)
     req_jsondata['data']['items'] = json.loads(json_data)
 
-    req_report_header = {'Authorization':'Basic b2ZlZTQyQGdtYWlsLmNvbTp0cGZmSndNVTc2SkpLTjR5TTdWNkxqaVRmRDZkY3hxNmZOUVBVTlZNSjlkNEc3V284', 'Content-Type':'application/json'}
+    req_report_header = {'Authorization': app.config['JSREPORT_AUTH'], 'Content-Type': 'application/json'}
     res_report = requests.post("https://fw-effi.jsreportonline.net/api/report",headers=req_report_header,json=req_jsondata)
     response = make_response(res_report.content)
 
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'inline; filename=%s.pdf' % 'yourfilename'
+    response.headers['Content-Disposition'] = 'inline; filename=%s.pdf' % 'Persönliche Auswertung'
     return response
