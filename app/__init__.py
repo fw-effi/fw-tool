@@ -9,12 +9,16 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_oidc import OpenIDConnect
 from flask_mail import Mail
+from flask_compress import Compress
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
 
 # Configurations
 app.config.from_object('config')
+
+# HTML Compress Response
+Compress(app)
 
 #app.debug = True
 #toolbar = DebugToolbarExtension(app)
