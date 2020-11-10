@@ -2346,7 +2346,7 @@ Don't cut the Dropdown menu in the bootstrap card */
   .navbar .navbar-header {
     display: inline-block;
     margin-bottom: -6px;
-    width: 90%; }
+    width: 80%; }
   .navbar .nav > li {
     display: inline-block; }
   .navbar .navbar-nav {
@@ -2357,7 +2357,7 @@ Don't cut the Dropdown menu in the bootstrap card */
       background-color: #fff;
       position: absolute; }
   .navbar .dropdown-menu {
-    margin-left: -50px; }
+    margin-left: -200px; }
   .navbar .js-right-sidebar {
     margin-top: 15px; }
   .dt-buttons {
@@ -6814,7 +6814,7 @@ fieldset[disabled] .form-control {
   margin-left: 5px; }
 
 .navbar-nav .dropdown-menu {
-  margin-top: -40px !important; }
+  margin-top: -0px !important; }
 
 .label-count {
   position: absolute;
