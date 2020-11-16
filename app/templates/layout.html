@@ -21,41 +21,48 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/static/images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/static/images/icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="/static/images/icons/manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/static/images/icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <!-- Font Awesome Kit -->
     <script src="https://kit.fontawesome.com/91db221ff3.js" crossorigin="anonymous"></script>
     
     <!-- Bootstrap Core Css -->
-    <link href="/static/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
 
     <!-- Waves Effect Css -->
-    <link href="/static/plugins/node-waves/waves.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.css">
+    <!--<link href="/static/plugins/node-waves/waves.css" rel="stylesheet" />-->
 
     <!-- Animation Css -->
-    <link href="/static/plugins/animate-css/animate.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/plugins/animate-css/animate.css">
 
     <!-- Morris Chart Css-->
-    <link href="/static/plugins/morrisjs/morris.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 
     <!-- Bootstrap Tagsinput Css -->
-    <link href="/static/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
 
     <!-- Bootstrap Material Datetime Picker Css -->
-    <link href="/static/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
-    
-    <!-- Custom Css -->
-    <link href="/static/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.min.css">
 
-    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="/static/css/themes/all-themes.css" rel="stylesheet" />
+    <!-- Bootstrap Material Select Css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- AdminBSB Themes -->
+    <link rel="stylesheet" href="/static/css/themes/theme-red.css">
+
 </head>
 
 <body class="theme-red">
@@ -96,7 +103,7 @@
                             <i class="fa-lg fas fa-bell"></i>
                             <span id="notifications_count" class="label-count" style="display: none;">0</span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu animated fadeIn">
                             <li class="header">BENACHRICHTIGUNGEN</li>
                             <li class="body">
                                 <ul id="notifications_messages" class="menu">
@@ -125,7 +132,7 @@
                             <i id="topRightLodurSyncIcon" class="fa-lg fas fa-sync"></i>
                             <span class="label-count"></span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu animated fadeIn">
                             <li class="header">LODUR</li>
                             <li class="body">
                                 <ul class="menu">
@@ -165,12 +172,12 @@
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user[1].vorname }} {{ user[1].name }}</div>
                     <div class="email">{{ user[0].email }}</div>
-                    <div class="btn-group user-helper-dropdown">
-                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="https://oauth.scherer.me/oxauth/restv1/end_session?post_logout_redirect_uri=https://app.feuerwehr-effi.ch/auth/logout"><i class="material-icons">input</i>Abmelden</a></li>
-                            <li><a href="/core/settings"><i class="material-icons">settings</i>Einstellungen</a></li>
-                        </ul>
+                    <div class="btn-group dropleft user-helper-dropdown">
+                        <i class="material-icons" id="menu_settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">keyboard_arrow_down</i>
+                        <div class="dropdown-menu" aria-labelledby="menu_settings">
+                            <a href="https://oauth.scherer.me/oxauth/restv1/end_session?post_logout_redirect_uri=https://app.feuerwehr-effi.ch/auth/logout" class="dropdown-item"><i class="material-icons">input</i>Abmelden</a>
+                            <a href="/core/settings" class="dropdown-item"><i class="material-icons">settings</i>Einstellungen</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -268,277 +275,7 @@
                             </li>
                         </ul>
                     </li>
-<!--
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">swap_calls</i>
-                            <span>User Interface (UI)</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="pages/ui/alerts.html">Alerts</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/animations.html">Animations</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/badges.html">Badges</a>
-                            </li>
-
-                            <li>
-                                <a href="pages/ui/breadcrumbs.html">Breadcrumbs</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/buttons.html">Buttons</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/collapse.html">Collapse</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/colors.html">Colors</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/dialogs.html">Dialogs</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/icons.html">Icons</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/labels.html">Labels</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/list-group.html">List Group</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/media-object.html">Media Object</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/modals.html">Modals</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/notifications.html">Notifications</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/pagination.html">Pagination</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/preloaders.html">Preloaders</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/progressbars.html">Progress Bars</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/range-sliders.html">Range Sliders</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/sortable-nestable.html">Sortable & Nestable</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/tabs.html">Tabs</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/thumbnails.html">Thumbnails</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/tooltips-popovers.html">Tooltips & Popovers</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/waves.html">Waves</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">assignment</i>
-                            <span>Forms</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="pages/forms/basic-form-elements.html">Basic Form Elements</a>
-                            </li>
-                            <li>
-                                <a href="pages/forms/advanced-form-elements.html">Advanced Form Elements</a>
-                            </li>
-                            <li>
-                                <a href="pages/forms/form-examples.html">Form Examples</a>
-                            </li>
-                            <li>
-                                <a href="pages/forms/form-validation.html">Form Validation</a>
-                            </li>
-                            <li>
-                                <a href="pages/forms/form-wizard.html">Form Wizard</a>
-                            </li>
-                            <li>
-                                <a href="pages/forms/editors.html">Editors</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">view_list</i>
-                            <span>Tables</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="pages/tables/normal-tables.html">Normal Tables</a>
-                            </li>
-                            <li>
-                                <a href="pages/tables/jquery-datatable.html">Jquery Datatables</a>
-                            </li>
-                            <li>
-                                <a href="pages/tables/editable-table.html">Editable Tables</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">perm_media</i>
-                            <span>Medias</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="pages/medias/image-gallery.html">Image Gallery</a>
-                            </li>
-                            <li>
-                                <a href="pages/medias/carousel.html">Carousel</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">pie_chart</i>
-                            <span>Charts</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="pages/charts/morris.html">Morris</a>
-                            </li>
-                            <li>
-                                <a href="pages/charts/flot.html">Flot</a>
-                            </li>
-                            <li>
-                                <a href="pages/charts/chartjs.html">ChartJS</a>
-                            </li>
-                            <li>
-                                <a href="pages/charts/sparkline.html">Sparkline</a>
-                            </li>
-                            <li>
-                                <a href="pages/charts/jquery-knob.html">Jquery Knob</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">content_copy</i>
-                            <span>Example Pages</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="pages/examples/sign-in.html">Sign In</a>
-                            </li>
-                            <li>
-                                <a href="pages/examples/sign-up.html">Sign Up</a>
-                            </li>
-                            <li>
-                                <a href="pages/examples/forgot-password.html">Forgot Password</a>
-                            </li>
-                            <li>
-                                <a href="pages/examples/blank.html">Blank Page</a>
-                            </li>
-                            <li>
-                                <a href="pages/examples/404.html">404 - Not Found</a>
-                            </li>
-                            <li>
-                                <a href="pages/examples/500.html">500 - Server Error</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">map</i>
-                            <span>Maps</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="pages/maps/google.html">Google Map</a>
-                            </li>
-                            <li>
-                                <a href="pages/maps/yandex.html">YandexMap</a>
-                            </li>
-                            <li>
-                                <a href="pages/maps/jvectormap.html">jVectorMap</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">trending_down</i>
-                            <span>Multi Level Menu</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <span>Menu Item - 2</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" class="menu-toggle">
-                                    <span>Level - 2</span>
-                                </a>
-                                <ul class="ml-menu">
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <span>Menu Item</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);" class="menu-toggle">
-                                            <span>Level - 3</span>
-                                        </a>
-                                        <ul class="ml-menu">
-                                            <li>
-                                                <a href="javascript:void(0);">
-                                                    <span>Level - 4</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="pages/changelogs.html">
-                            <i class="material-icons">update</i>
-                            <span>Changelogs</span>
-                        </a>
-                    </li>
-                    <li class="header">LABELS</li>
-                    <li>
-                        <a href="javascript:void(0);">
-                            <i class="material-icons col-red">donut_large</i>
-                            <span>Important</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);">
-                            <i class="material-icons col-amber">donut_large</i>
-                            <span>Warning</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);">
-                            <i class="material-icons col-light-blue">donut_large</i>
-                            <span>Information</span>
-                        </a>
-                    </li>
                 </ul>
--->
             </div>
             <!-- #Menu -->
             <!-- Footer -->
@@ -547,159 +284,17 @@
                     <p><button id="installBtn" type="button" class="btn bg-deep-orange waves-effect">INSTALLIEREN</button></p>
                 </div>
                 <div class="copyright">
-                    <p><a href="https://gitlab.com/scan5415/fw-tool/-/issues" target="_blank">Idee oder Fehler gefunden?</a></p>
+                    <p><a href="https://github.com/fw-effi/fw-tool" target="_blank">Idee oder Fehler gefunden?</a></p>
                     &copy; 2019 <a href="javascript:void(0);">FW Backend (AdminBSB Template)</a>.
                 </div>
                 <div class="version">
-                    <b>Version: </b> 0.5.0 / {{ user[2]|upper }}
+                    <b>Version: </b> 0.5.1 / {{ user[2]|upper }}
                 </div>
             </div>
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
-        <!-- Right Sidebar -->
-        <aside id="rightsidebar" class="right-sidebar">
-            <ul class="nav nav-tabs tab-nav-right" role="tablist">
-                <li role="presentation" class="active"><a href="#skins" data-toggle="tab">SKINS</a></li>
-                <li role="presentation"><a href="#settings" data-toggle="tab">SETTINGS</a></li>
-            </ul>
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
-                    <ul class="demo-choose-skin">
-                        <li data-theme="red" class="active">
-                            <div class="red"></div>
-                            <span>Red</span>
-                        </li>
-                        <li data-theme="pink">
-                            <div class="pink"></div>
-                            <span>Pink</span>
-                        </li>
-                        <li data-theme="purple">
-                            <div class="purple"></div>
-                            <span>Purple</span>
-                        </li>
-                        <li data-theme="deep-purple">
-                            <div class="deep-purple"></div>
-                            <span>Deep Purple</span>
-                        </li>
-                        <li data-theme="indigo">
-                            <div class="indigo"></div>
-                            <span>Indigo</span>
-                        </li>
-                        <li data-theme="blue">
-                            <div class="blue"></div>
-                            <span>Blue</span>
-                        </li>
-                        <li data-theme="light-blue">
-                            <div class="light-blue"></div>
-                            <span>Light Blue</span>
-                        </li>
-                        <li data-theme="cyan">
-                            <div class="cyan"></div>
-                            <span>Cyan</span>
-                        </li>
-                        <li data-theme="teal">
-                            <div class="teal"></div>
-                            <span>Teal</span>
-                        </li>
-                        <li data-theme="green">
-                            <div class="green"></div>
-                            <span>Green</span>
-                        </li>
-                        <li data-theme="light-green">
-                            <div class="light-green"></div>
-                            <span>Light Green</span>
-                        </li>
-                        <li data-theme="lime">
-                            <div class="lime"></div>
-                            <span>Lime</span>
-                        </li>
-                        <li data-theme="yellow">
-                            <div class="yellow"></div>
-                            <span>Yellow</span>
-                        </li>
-                        <li data-theme="amber">
-                            <div class="amber"></div>
-                            <span>Amber</span>
-                        </li>
-                        <li data-theme="orange">
-                            <div class="orange"></div>
-                            <span>Orange</span>
-                        </li>
-                        <li data-theme="deep-orange">
-                            <div class="deep-orange"></div>
-                            <span>Deep Orange</span>
-                        </li>
-                        <li data-theme="brown">
-                            <div class="brown"></div>
-                            <span>Brown</span>
-                        </li>
-                        <li data-theme="grey">
-                            <div class="grey"></div>
-                            <span>Grey</span>
-                        </li>
-                        <li data-theme="blue-grey">
-                            <div class="blue-grey"></div>
-                            <span>Blue Grey</span>
-                        </li>
-                        <li data-theme="black">
-                            <div class="black"></div>
-                            <span>Black</span>
-                        </li>
-                    </ul>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="settings">
-                    <div class="demo-settings">
-                        <p>GENERAL SETTINGS</p>
-                        <ul class="setting-list">
-                            <li>
-                                <span>Report Panel Usage</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked><span class="lever"></span></label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Email Redirect</span>
-                                <div class="switch">
-                                    <label><input type="checkbox"><span class="lever"></span></label>
-                                </div>
-                            </li>
-                        </ul>
-                        <p>SYSTEM SETTINGS</p>
-                        <ul class="setting-list">
-                            <li>
-                                <span>Notifications</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked><span class="lever"></span></label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Auto Updates</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked><span class="lever"></span></label>
-                                </div>
-                            </li>
-                        </ul>
-                        <p>ACCOUNT SETTINGS</p>
-                        <ul class="setting-list">
-                            <li>
-                                <span>Offline</span>
-                                <div class="switch">
-                                    <label><input type="checkbox"><span class="lever"></span></label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Location Permission</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked><span class="lever"></span></label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </aside>
-        <!-- #END# Right Sidebar -->
+
     </section>
 
     <section class="content">
@@ -712,48 +307,43 @@
     <script src="/static/js/pwa.js"></script>
 
     <!-- Jquery Core Js -->
-    <script src="/static/plugins/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 
     <!-- Bootstrap Core Js -->
-    <script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
-
-    <!-- Select Plugin Js -->
-    <script src="/static/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js" integrity="sha512-iceXjjbmB2rwoX93Ka6HAHP+B76IY1z0o3h+N1PeDtRSsyeetU3/0QKJqGyPJcX63zysNehggFwMC/bi7dvMig==" crossorigin="anonymous"></script>
 
     <!-- Slimscroll Plugin Js -->
-    <script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js" integrity="sha512-cJMgI2OtiquRH4L9u+WQW+mz828vmdp9ljOcm/vKTQ7+ydQUktrPVewlykMgozPP+NUBbHdeifE6iJ6UVjNw5Q==" crossorigin="anonymous"></script>
 
     <!-- Waves Effect Plugin Js -->
-    <script src="/static/plugins/node-waves/waves.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js" integrity="sha512-MzXgHd+o6pUd/tm8ZgPkxya3QUCiHVMQolnY3IZqhsrOWQaBfax600esAw3XbBucYB15hZLOF0sKMHsTPdjLFg==" crossorigin="anonymous"></script>
 
     <!-- Jquery CountTo Plugin Js -->
-    <script src="/static/plugins/jquery-countto/jquery.countTo.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-countto/1.2.0/jquery.countTo.min.js" integrity="sha512-RXuJVZbGztKGYMNgmWU6oOHbUwYu+NnzovhT4lyW1kfmEfRK6CD1xL8U+0xACFqSkC3cxMugaaNEP8wWmvl4Jw==" crossorigin="anonymous"></script>
 
     <!-- Morris Plugin Js -->
-    <script src="/static/plugins/raphael/raphael.min.js"></script>
-    <script src="/static/plugins/morrisjs/morris.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js" integrity="sha512-tBzZQxySO5q5lqwLWfu8Q+o4VkTcRGOeQGVQ0ueJga4A1RKuzmAu5HXDOXLEjpbKyV7ow9ympVoa6wZLEzRzDg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js" integrity="sha512-6Cwk0kyyPu8pyO9DdwyN+jcGzvZQbUzQNLI0PadCY3ikWFXW9Jkat+yrnloE63dzAKmJ1WNeryPd1yszfj7kqQ==" crossorigin="anonymous"></script>
 
     <!-- Moment Plugin Js -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
 
     <!-- ChartJs -->
-    <script src="/static/plugins/chartjs/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous"></script>
 
     <!-- Bootstrap Notify Plugin Js -->
-    <script src="/static/plugins/bootstrap-notify/bootstrap-notify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap Select Css -->
-    <link href="/static/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
     <!-- Flot Charts Plugin Js -->
-    <script src="/static/plugins/flot-charts/jquery.flot.js"></script>
-    <script src="/static/plugins/flot-charts/jquery.flot.resize.js"></script>
-    <script src="/static/plugins/flot-charts/jquery.flot.pie.js"></script>
-    <script src="/static/plugins/flot-charts/jquery.flot.categories.js"></script>
-    <script src="/static/plugins/flot-charts/jquery.flot.time.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js" integrity="sha512-eO1AKNIv7KSFl5n81oHCKnYLMi8UV4wWD1TcLYKNTssoECDuiGhoRsQkdiZkl8VUjoms2SeJY7zTSw5noGSqbQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.resize.min.js" integrity="sha512-9zhTD6cZrwSp3aSDtC2dM9RPiRylLkHphz2DcBPElrql8QK/WVg3iHl2yC/imytI9BpKFzvzHzYHDM/8K9GPeA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.pie.min.js" integrity="sha512-jMP1biHEi+eAK+dGbOLAmabdBzVTUjHpryY1vsILFGYatR5i55+ZuXZXBOdbz/KzvTstnsu6+TJCTZ79/PMjbA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.categories.min.js" integrity="sha512-x4QGSZkQ57pNuICMFFevIhDer5NVB5eJCRmENlCdJukMs8xWFH8OHfzWQVSkl9VQ4+4upPPTkHSAewR6KNMjGA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min.js" integrity="sha512-lcRowrkiQvFli9HkuJ2Yr58iEwAtzhFNJ1Galsko4SJDhcZfUub8UxGlMQIsMvARiTqx2pm7g6COxJozihOixA==" crossorigin="anonymous"></script>
 
     <!-- Sparkline Chart Plugin Js -->
-    <script src="/static/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js" integrity="sha512-3PRVLmoBYuBDbCEojg5qdmd9UhkPiyoczSFYjnLhFb2KAFsWWEMlAPt0olX1Nv7zGhDfhGEVkXsu51a55nlYmw==" crossorigin="anonymous"></script>
 
     <!-- Custom Js -->
     <script src="/static/js/admin.js"></script>

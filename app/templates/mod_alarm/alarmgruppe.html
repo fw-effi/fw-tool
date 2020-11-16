@@ -29,61 +29,65 @@
         <h2>MANNSCHAFTSEINTEILUNG</h2>
     </div>
     <div class="body">
-        <div class="panel-group" id="accordion_19" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-col-teal">
-                <div class="panel-heading" role="tab" id="headingOne_ka">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" href="#collapse_ka" aria-expanded="false" aria-controls="collapse_ka" class="collapsed">Kleinalarme</a>
-                    </h4>
+        <div id="accordion">
+            <div class="card accordion">
+                <div class="card-header" id="headingKA">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseKA" aria-expanded="true" aria-controls="collapseKA">
+                            Kleinalarme
+                        </button>
+                    </h5>
                 </div>
-                <div id="collapse_ka" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_ka" aria-expanded="false" style="height: 0px;">
-                    <div class="panel-body">
-                        <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                <div id="collapseKA" class="collapse show" aria-labelledby="headingKA" data-parent="#accordion">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs">
                             {% for group in groups %}
-                            {% if 'KA' in group.name %}
-                            <li role="presentation" class=""><a href="" data-target="#{{ group.name }}" data-toggle="tab">{{ group.name}} <span class="badge bg-cyan">{{ group.members|length }}</span></a></li>
-                            {% endif %}
+                                {% if 'KA' in group.name %}
+                                <li class="nav-item"><a href="#{{ group.name }}" class="nav-link" data-toggle="tab">{{ group.name}} <span class="badge bg-cyan">{{ group.members|length }}</span></a></li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                         <div class="tab-content">
                             {% for group in groups %}
-                            {% if 'KA' in group.name %}
-                            <div role="tabpanel" class="tab-pane fade in" id="{{ group.name }}">
-                                <ul class="list-group">
-                                    {% for member in group.members %}
-                                        <li class="list-group-item">{{ member.grad }} {{ member.name }} {{ member.vorname }}
-                                            {% if 'San' in member.alarmgroups|string %} <span class="badge bg-pink">SAN</span> {% endif %}
-                                            {% if 'VA' in member.alarmgroups|string %} <span class="badge bg-orange">VA</span> {% endif %}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            {% endif %}
+                                {% if 'KA' in group.name %}
+                                <div class="tab-pane fade" id="{{ group.name }}">
+                                    <ul class="list-group">
+                                        {% for member in group.members %}
+                                           <li class="list-group-item">{{ member.grad }} {{ member.name }} {{ member.vorname }}
+                                               {% if 'San' in member.alarmgroups|string %} <span class="badge bg-pink">SAN</span> {% endif %}
+                                               {% if 'VA' in member.alarmgroups|string %} <span class="badge bg-orange">VA</span> {% endif %}
+                                           </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                               {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="panel panel-col-teal">
-                <div class="panel-heading" role="tab" id="headingOne_bag">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" href="#collapse_bag" aria-expanded="false" aria-controls="collapse_bag" class="collapsed">Bagatellgruppen</a>
-                    </h4>
+            <div class="card accordion">
+                <div class="card-header" id="headingBAG">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseBAG" aria-expanded="true" aria-controls="collapseKA">
+                            Bagatellgruppen
+                        </button>
+                    </h5>
                 </div>
-                <div id="collapse_bag" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_bag" aria-expanded="false" style="height: 0px;">
-                    <div class="panel-body">
-                        <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                <div id="collapseBAG" class="collapse" aria-labelledby="headingBAG" data-parent="#accordion">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs">
                                 {% for group in groups %}
                                 {% if 'BAG' in group.name %}
-                                <li role="presentation" class=""><a href="" data-target="#{{ group.name }}" data-toggle="tab">{{ group.name}} <span class="badge bg-cyan">{{ group.members|length }}</span></a></li>
+                                <li class="nav-item"><a href="#{{ group.name }}" class="nav-link" data-toggle="tab">{{ group.name}} <span class="badge bg-cyan">{{ group.members|length }}</span></a></li>
                                 {% endif %}
                                 {% endfor %}
                             </ul>
                             <div class="tab-content">
                                 {% for group in groups %}
                                 {% if 'BAG' in group.name %}
-                                <div role="tabpanel" class="tab-pane fade in" id="{{ group.name }}">
+                                <div class="tab-pane fade" id="{{ group.name }}">
                                     <ul class="list-group">
                                         {% for member in group.members %}
                                             <li class="list-group-item">{{ member.grad }} {{ member.name }} {{ member.vorname }}
@@ -100,25 +104,27 @@
                     </div>
                 </div>
 
-                <div class="panel panel-col-teal">
-                <div class="panel-heading" role="tab" id="headingOne_spez">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" href="#collapse_spez" aria-expanded="false" aria-controls="collapse_spez" class="collapsed">Speziallisten</a>
-                    </h4>
-                </div>
-                <div id="collapse_spez" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne_spez" aria-expanded="false" style="height: 0px;">
-                        <div class="panel-body">
-                                <ul class="nav nav-tabs tab-nav-right" role="tablist">
-                                    {% for group in groups %}
+                <div class="card accordion">
+                    <div class="card-header" id="headingSpez">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSpez" aria-expanded="true" aria-controls="collapseKA">
+                                Spezialisten
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseSpez" class="collapse" aria-labelledby="headingSpez" data-parent="#accordion">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs">
+                                {% for group in groups %}
                                     {% if ('KA' not in group.name and 'BAG' not in group.name) %}
-                                    <li role="presentation" class=""><a href="" data-target="#{{ group.name }}" data-toggle="tab">{{ group.name}} <span class="badge bg-cyan">{{ group.members|length }}</span></a></li>
+                                    <li class="nav-item"><a href="#{{ group.name }}" class="nav-link" data-toggle="tab">{{ group.name}} <span class="badge bg-cyan">{{ group.members|length }}</span></a></li>
                                     {% endif %}
-                                    {% endfor %}
-                                </ul>
-                                <div class="tab-content">
-                                    {% for group in groups %}
+                                {% endfor %}
+                            </ul>
+                            <div class="tab-content">
+                                {% for group in groups %}
                                     {% if ('KA' not in group.name and 'BAG' not in group.name) %}
-                                    <div role="tabpanel" class="tab-pane fade in" id="{{ group.name }}">
+                                    <div class="tab-pane fade" id="{{ group.name }}">
                                         <ul class="list-group">
                                             {% for member in group.members %}
                                                 <li class="list-group-item">{{ member.grad }} {{ member.name }} {{ member.vorname }}
@@ -129,15 +135,13 @@
                                         </ul>
                                     </div>
                                     {% endif %}
-                                    {% endfor %}
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 {% endblock %}

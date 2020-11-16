@@ -16,14 +16,13 @@ if ("serviceWorker" in navigator) {
 
 var deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', function (e) {
-  // Prevent Chrome 67 and earlier from automatically showing the prompt
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing on mobile
   e.preventDefault();
   // Stash the event so it can be triggered later.
   deferredPrompt = e;
-
-  showAddToHomeScreen();
-
+  // Update UI notify the user they can install the PWA
+  deferredPrompt.prompt();  // Wait for the user to respond to the prompt
 });
 
 function showAddToHomeScreen() {

@@ -3,6 +3,7 @@ import json
 import requests
 import collections
 from flask import Blueprint,Flask, render_template, make_response
+from flask import current_app as app
 from sqlalchemy.sql import text
 # Import objects from the main app module
 from app import auth_module, oidc, db

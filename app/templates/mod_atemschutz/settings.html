@@ -87,30 +87,30 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="CategoryModalLabel">Neue Kategorie hinzufügen</h4>
+				<h5 class="modal-title" id="CategoryModalLabel">Neue Kategorie hinzufügen</h5>
+                <button type="button" class="close" data-dismiss="modal" >
+                    <span aria-hidden="true">&times;</span>
+                </button>
 			</div>
 			<form id="frmCategory" class="form" data-category="category">
 				<div class="modal-body" id="CategoryModalBody">
-					
+					<input type="hidden" id="txtCategoryId" />
+
+                    <label for="txtCategoryName">Kategorie Name</label>
 					<div class="form-group">
-						<div class="form-line">
-							<input type="hidden" id="txtCategoryId" />
-							<label for="txtCategoryName">Kategorie Name</label>
-							<input type="text" class="form-control" id="txtCategoryName" placeholder="Kategorie Name" required />
-						</div>
+						<input type="text" class="form-control" id="txtCategoryName" placeholder="Kategorie Name" required />
 					</div>
+
+                    <label for="bolType">Typ</label>
 					<div class="form-group">
-						<div class="form-line">
-							<label for="bolType">Typ (Art der Ausbildungsstunden)</label>
-							<div class="switch">
-								<label>Einsatz <input id="bolType" type="checkbox"><span class="lever switch-col-blue"></span> Ausbildung</label>
-							</div>
-						</div>
+                        <input type="checkbox" id="bolType" >
+                        <label for="bolType">Ausbildungsstunden</label>
+
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-link waves-effect">SPEICHERN</button>
-				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ABBRECHEN</button>
+					<button type="submit" class="btn btn-primary">SPEICHERN</button>
+				    <button type="button" class="btn btn-light" data-dismiss="modal">ABBRECHEN</button>
 				</div>
 			</form>
 		</div>
@@ -123,15 +123,15 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content modal-col-red">
 			<div class="modal-header">
-				<h4 class="modal-title" id="DeleteCategoryModalLabel">Kategorie löschen</h4>
+				<h5 class="modal-title" id="DeleteCategoryModalLabel">Kategorie löschen</h5>
 			</div>
 			<div class="modal-body" id="DeleteCategoryModalBody">
 				<input type="hidden" name="categoryId" />
 				Soll die Kategorie <span id="labelDeleteCategoryName"></span> defintiv gelöscht werden?
 			</div>
 			<div class="modal-footer">
-				<button type="button" id="btnDeleteCategory" class="btn btn-link waves-effect">LÖSCHEN</button>
-				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ABBRECHEN</button>
+				<button type="button" id="btnDeleteCategory" class="btn btn-danger">LÖSCHEN</button>
+				<button type="button" class="btn btn-light" data-dismiss="modal">ABBRECHEN</button>
 			</div>
 		</div>
 	</div>
@@ -143,28 +143,28 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="KursModalLabel">Atemschutz Minuten definieren</h4>
+				<h5 class="modal-title" id="KursModalLabel">Atemschutz Minuten definieren</h5>
+                <button type="button" class="close" data-dismiss="modal" >
+                    <span aria-hidden="true">&times;</span>
+                </button>
 			</div>
 			<form id="frmKurs" class="form" data-category="kurs">
 				<div class="modal-body" id="KursModalBody">
-					
+					<input type="hidden" id="txtKursId" />
+
+                    <label for="txtKursName">Kurs Name</label>
 					<div class="form-group">
-						<div class="form-line">
-							<input type="hidden" id="txtKursId" />
-							<label for="txtKursName">Kurs Name</label>
-							<input type="text" class="form-control" id="txtKursName" disabled />
-						</div>
+						<input type="text" class="form-control" id="txtKursName" disabled />
 					</div>
+
+                    <label for="txtKursAS">Atemschutz Minuten</label>
 					<div class="form-group">
-						<div class="form-line">
-							<label for="txtKursAS">Atemschutz Minuten</label>
-							<input type="number" class="form-control" id="txtKursAS" />
-						</div>
+						<input type="number" class="form-control" id="txtKursAS" />
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-link waves-effect">SPEICHERN</button>
-				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ABBRECHEN</button>
+					<button type="submit" class="btn btn-primary">SPEICHERN</button>
+				<button type="button" class="btn btn-light" data-dismiss="modal">ABBRECHEN</button>
 				</div>
 			</form>
 		</div>
@@ -173,8 +173,9 @@
 <!-- Edit Kurs Modal END -->
 {% endblock %}
 {% block javascript %}
-<script>
-$('#DeleteCategoryModal').on('show.bs.modal', function(e) {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js" integrity="sha512-F636MAkMAhtTplahL9F6KmTfxTmYcAcjcCkyu0f0voT3N/6vzAuJ4Num55a0gEJ+hRLHhdz3vDvZpf6kqgEa5w==" crossorigin="anonymous"></script><script>
+
+    $('#DeleteCategoryModal').on('show.bs.modal', function(e) {
 	// Get data-category-name attribute of the entry 
 	$('#labelDeleteCategoryName').html($(e.relatedTarget).data('category-name'));
 	$("input[name='categoryId']").val($(e.relatedTarget).data('category-id'))
@@ -183,8 +184,7 @@ $('#DeleteCategoryModal').on('show.bs.modal', function(e) {
 $('#CategoryModal').on('show.bs.modal', function(e) {
 	//get data-id attribute of the clicked element
 	var categoryId = $(e.relatedTarget).data('category-id');
-	var categoryName = $(e.relatedTarget).data('category-name');
-	var categoryTraining = ($(e.relatedTarget).data('category-training').toLowerCase() == "true")
+
 
 	$("#txtCategoryName").val("")
 	$("#txtCategoryId").val()
@@ -193,6 +193,10 @@ $('#CategoryModal').on('show.bs.modal', function(e) {
 
 	//If Category Id avaiable Edit Button was pressed.
 	if(categoryId > -1) {
+	    //get data attribute of the clicked element
+	    var categoryName = $(e.relatedTarget).data('category-name');
+	    var categoryTraining = ($(e.relatedTarget).data('category-training').toLowerCase() == "true")
+
 		$('#CategoryModalLabel').html("Kategorie ändern")
 		$("#txtCategoryId").val(categoryId)
 		$("#txtCategoryName").val(categoryName)

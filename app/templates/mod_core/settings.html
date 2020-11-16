@@ -68,7 +68,7 @@
 							{% for notification in notifications %}
 							<tr>
 								<td>{{ notification.beschreibung}} </td>
-								<td><select class="select form-control show-tick" name="roles['{{notification.name}}']'" data-live-search="false" multiple >
+								<td><select class="select form-control show-tick" id="roles['{{notification.name}}']'" name="roles['{{notification.name}}']'" data-live-search="false" multiple>
 									<option data-hidden="true">Benutzerrolle auswählen</option>
                                     {% for user in notifications_users %}
                                         <option value="{{ user.id }}" {% if notification.recipients|selectattr("id", "equalto", user.id)|list|length > 0 %}selected{%endif%}>{{ user.username }}</option>
@@ -91,10 +91,15 @@
 </div>
 {% endblock %}
 {%block javascript %}
-<!-- Bootstrap Tags Input Plugin Js -->
-<script src="/static/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+
+<!-- Select Plugin Js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous"></script>
 
 <script>
+$(document).ready(function() {
+    $('.select').selectpicker();
+});
+
 $('#permissions').submit('click', function () {
 	event.preventDefault();
 	console.log($('input[name="roles[]"]').serialize());

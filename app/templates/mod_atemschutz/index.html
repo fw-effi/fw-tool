@@ -1,7 +1,7 @@
 {% extends "layout.html" %} 
 {% block content %}
 <!-- JQuery DataTable Css -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap.min.css"/>
@@ -144,7 +144,6 @@
                 </ul>
             </div>
             <div class="body">
-                    
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover table-all dataTable">
                         <thead>
@@ -188,50 +187,50 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="EntryModalLabel">Neuer Atemschutzeintrag hinzufügen </h4>
+                    <h5 class="modal-title" id="EntryModalLabel">Neuer Atemschutzeintrag hinzufügen </h5>
+                    <button type="button" class="close" data-dismiss="modal" >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <form class="form" data-category="entry">
                     <input type="hidden" id="entryId" />
                     <div class="modal-body mx-3" id="EntryModalBody">
+                        <label for="datum">Datum:</label>
                         <div class="form-group">
-                            <div class="form-line">
-                                <label for="datum">Datum:</label>
-                                <input type="text" id="datum" class="datepicker form-control" placeholder="Datum" required />
-                            </div>
+                            <input type="text" id="datum" class="datepicker form-control" placeholder="Datum" required />
                         </div>
+
+                        <label for="category">Kategorie:</label>
                         <div class="form-group">
-                            <div class="form-line">
-                                <label for="category">Kategorie:</label>
-                                <select class="select form-control show-tick" id="category" required>
-                                    <option data-hidden="true">Kategorie auswählen</option>
-                                    {% for category in categories %}
-                                        <option value="{{ category.id }}">{{ category.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <select class="select form-control show-tick" id="category" required>
+                                <option data-hidden="true">Kategorie auswählen</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
+
+                        <label for="firefighters">Personen:</label>
                         <div class="form-group">
-                            <div class="form-line">
-                                <label for="firefighters">Personen:</label>
-                                <select class="select form-control show-tick" id="firefighters" data-live-search="true" multiple>
-                                    <option data-hidden="true">Personen auswählen</option>
-                                    {% for firefighter in firefighters %}
-                                        <option value="{{ firefighter.id }}">{{ firefighter.vorname }} {{ firefighter.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <select class="select form-control show-tick" id="firefighters" data-live-search="true" multiple>
+                                <option data-hidden="true">Personen auswählen</option>
+                                {% for firefighter in firefighters %}
+                                    <option value="{{ firefighter.id }}">{{ firefighter.vorname }} {{ firefighter.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
+
+                        <label for="dauer">Dauer:</label>
                         <div class="input-group">
-                            <div class="form-line">
-                                <label for="dauer">Dauer:</label>
-                                <input type="number" class="form-control" id="dauer" placeholder="Dauer" required>
+                            <input type="number" class="form-control" id="dauer" placeholder="Dauer" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">Minuten</span>
                             </div>
-                            <span class="input-group-addon">Minuten</span>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-link waves-effect">SPEICHERN</button>
-                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ABBRECHEN</button>
+                        <button type="submit" class="btn btn-primary">SPEICHERN</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ABBRECHEN</button>
                     </div>
                 </form>
             </div>
@@ -242,7 +241,7 @@
 <!-- Delete Entry Modal START-->
 <div class="modal fade" id="DeleteEntryModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content modal-col-red">
+		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="DeleteEntryModalLabel">Eintrag löschen</h4>
 			</div>
@@ -251,8 +250,8 @@
 				Soll der Eintrag defintiv gelöscht werden?
 			</div>
 			<div class="modal-footer">
-				<button type="button" id="btnDeleteEntry" class="btn btn-link waves-effect">LÖSCHEN</button>
-				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ABBRECHEN</button>
+				<button type="button" id="btnDeleteEntry" class="btn btn-danger">LÖSCHEN</button>
+				<button type="button" class="btn btn-light" data-dismiss="modal">ABBRECHEN</button>
 			</div>
 		</div>
 	</div>
@@ -261,26 +260,27 @@
 {% endblock %}
 
 {% block javascript %}
-<!-- Moment Plugin Js -->
-<script src="/static/plugins/momentjs/moment.js"></script>
 
 <!-- Bootstrap Material Datetime Picker Plugin Js -->
-<script src="/static/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.min.js" integrity="sha512-LRkOtikKE2LFHPWiWh0/bfFynswxRwCZ5O7PkXTVFPcprw376xfOemiEHEOmCCmiwS6eLFUh2fb+Gqxc0waTSg==" crossorigin="anonymous"></script>
+
+<!-- Select Plugin Js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js" integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg==" crossorigin="anonymous"></script>
 
 <!-- Datatable-->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js" integrity="sha512-gYUM+7JjtBqPPGOgwgOZ+NwjGl+11/EP124oB+ihjlBpLgP5LTh7R/Iwcdy//cgH+QzrjspBiJI5iUegTNww3w==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.min.js" integrity="sha512-VIF8OqBWob/wmCvrcQs27IrQWwgr3g+iA4QQ4hH/YeuYBIoAUluiwr/NX5WQAQgUaVx39hs6l05cEOIGEB+dmA==" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-<script type="text/javascript"  src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
+<script type="text/javascript"  src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>-->
 
 <script>
 var curday = function(sp){
