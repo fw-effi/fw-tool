@@ -30,7 +30,7 @@ def pdf_appellliste(gruppe):
         "WHERE alarmgroups.firefighter_id = Firefighter.id "
         "AND (alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG1') "
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG2') "
-            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG3') "
+            "OR alarmgroups.alarmgroup_Spez-Zugid = (SELECT ID From AlarmGroup WHERE Name = 'BAG3') "
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Konf') ) "
         "AND Firefighter.is_deleted = 0 "
         "ORDER BY Firefighter.grad_sort, Firefighter.name")
@@ -52,7 +52,7 @@ def pdf_appellliste(gruppe):
         "AND Firefighter.is_deleted = 0 "
         "ORDER BY Firefighter.grad_sort, Firefighter.name")
 
-        req_jsondata = json.loads('{"template":{"shortid":"Bkeu4GNwBD"}}')
+        req_jsondata = json.loads('{"template":{"shortid":"6HPNqvHv7J"}}')
 
     elif gruppe == 'Spez-Gruppen':
         result = db.engine.execute("SELECT Firefighter.id AS id,"
@@ -70,7 +70,7 @@ def pdf_appellliste(gruppe):
         "AND Firefighter.is_deleted = 0 "
         "ORDER BY Firefighter.grad_sort, Firefighter.name")
 
-        req_jsondata = json.loads('{"template":{"shortid":"Bkeu4GNwBD"}}')
+        req_jsondata = json.loads('{"template":{"shortid":"m8R8y56FnE"}}')
 
     elif gruppe == 'Alle':
         result = db.engine.execute("SELECT Firefighter.id AS id,"
