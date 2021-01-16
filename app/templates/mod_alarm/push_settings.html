@@ -1,0 +1,369 @@
+{% extends "layout.html" %}
+{% block style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
+{% endblock %}
+
+{% block content %}
+<div class="block-header">
+	<h2>PUSH ALARM EINSTELLUNGEN</h2>
+</div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="card">
+            <div class="header">
+                <h2>AKTUELLE INFORMATIONEN</h2>
+                <small></small>
+                <ul class="header-dropdown m-r--5">
+
+                </ul>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover table-all dataTable">
+                        <thead>
+                            <tr>
+                                <th>Selektor</th>
+                                <th>Kategorie</th>
+                                <th>Information</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in entries %}
+                            <tr>
+                                <td>{{ entry.selector }}</td>
+                                <td>{{ entry.category.name }}</td>
+                                <td>{{ entry.message }}</td>
+                                <td><a href="#" class="menu-toggle" data-toggle="modal"
+                                        data-entry-id="{{ entry.id }}"
+                                        data-entry-selektor="{{ entry.selector }}"
+                                        data-entry-category="{{ entry.category_id }}"
+                                        data-entry-info="{{ entry.message }}"
+                                        data-target="#EntryModal"><i class="material-icons">edit</i></a>
+									<a href="#" class="menu-toggle" data-toggle="modal" data-entry-id="{{ entry.id }}" data-target="#DeleteEntryModal"><i class="material-icons">delete</i></a>
+								</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="card">
+            <div class="header">
+                <h2>KATEGORIEN</h2>
+                <small></small>
+                <ul class="header-dropdown m-r--5">
+
+                </ul>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover table-all dataTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Tag</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category in categories %}
+                            <tr>
+                                <td>{{ category.name }}</td>
+                                <td>{{ category.tag }}</td>
+                                <td><a href="#" class="menu-toggle" data-toggle="modal"
+                                        data-category-id="{{ category.id }}"
+                                        data-category-name="{{ category.name }}"
+                                        data-category-tag="{{ category.tag }}"
+                                        data-target="#CategoryModal"><i class="material-icons">edit</i></a>
+									<a href="#" class="menu-toggle" data-toggle="modal" data-category-id="{{ category.id }}" data-target="#DeleteCategoryModal"><i class="material-icons">delete</i></a>
+								</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Floating Action Button -->
+    <div class="btn-group-fab" role="group" aria-label="FAB Menu">
+      <div>
+        <button type="button" class="btn btn-main btn-primary has-tooltip" data-placement="left" title="Menu"> <i class="fa fa-plus"></i> </button>
+        <button type="button" class="btn btn-sub btn-info has-tooltip" rel="tooltip" data-placement="left" title="Neue Kategorie" data-toggle="modal" data-entry-id="-1" data-target="#CategoryModal"> <i class="fa fa-folder-plus"></i> </button>
+        <button type="button" class="btn btn-sub btn-danger has-tooltip" rel="tooltip" data-placement="left" title="Neuer Eintrag" data-toggle="modal" data-entry-id="-1" data-target="#EntryModal"> <i class="fa fa-file"></i> </button>
+      </div>
+    </div>
+</div>
+
+<!-- New / Edit Entry Modal START -->
+<div class="modal fade" id="EntryModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="EntryModalLabel">Neue Information hinzufügen </h5>
+                    <button type="button" class="close" data-dismiss="modal" >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form" data-category="entry">
+                    <input type="hidden" id="entryId" value="-1" />
+                    <div class="modal-body mx-3" id="EntryModalBody">
+                        <label for="selektor">Selektor:</label>
+                        <div class="form-group">
+                            <input type="text" id="selektor" name="selektor" class="form-control" data-role="tagsinput" placeholder="Selektor">
+                            <small>Bei welchen Adressen oder Teile davon soll die Information versendet werden. <br />
+                                <strong>Beispiele:</strong><br />
+                                Illnau-Effretikon = Gesamte Ortschaft Effretikon <br />
+                                Effretikonerstrasse = Alle Adressen an der Effretikonerstrasse</small>
+                        </div>
+
+                        <label for="category">Kategorie:</label>
+                        <div class="form-group">
+                            <select class="select form-control show-tick" id="category" required>
+                                <option data-hidden="true">Kategorie auswählen</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <label for="info">Information:</label>
+                        <div class="form-group">
+                            <input type="text" id="info" class="form-control" placeholder="Information" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">SPEICHERN</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ABBRECHEN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- New / Edit Entry Modal END -->
+
+<!-- New / Edit Category Modal START -->
+<div class="modal fade" id="CategoryModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="CategoryModalLabel">Neue Kategorie hinzufügen </h5>
+                    <button type="button" class="close" data-dismiss="modal" >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="form" data-category="category">
+                    <input type="hidden" id="categoryId" value="-1" />
+                    <div class="modal-body mx-3" id="CategoryModalBody">
+                        <label for="name">Name:</label>
+                        <div class="form-group">
+                            <input type="text" id="name" class="form-control" placeholder="Name" required />
+                        </div>
+
+                        <label for="tag">Tag:</label>
+                        <div class="form-group">
+                            <input type="text" id="tag" class="form-control" placeholder="Tag" required />
+                            <small id="tagHelp" class="form-text text-muted">Tag muss mit Kategorie in OneSignal übereinstimmen.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">SPEICHERN</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ABBRECHEN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- New / Edit Entry Modal END -->
+
+<!-- Delete Entry Modal START-->
+<div class="modal fade" id="DeleteEntryModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content modal-col-red">
+			<div class="modal-header">
+				<h4 class="modal-title" id="DeleteEntryModalLabel">Eintrag löschen</h4>
+			</div>
+			<div class="modal-body" id="DeleteEntryModalBody">
+				<input type="hidden" name="entryId" />
+				Soll der Eintrag defintiv gelöscht werden?
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteEntry" class="btn btn-link waves-effect">LÖSCHEN</button>
+				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ABBRECHEN</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Delete Entry Modal END -->
+
+<!-- Delete Category Modal START-->
+<div class="modal fade" id="DeleteCategoryModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content modal-col-red">
+			<div class="modal-header">
+				<h4 class="modal-title" id="DeleteCategoryModalLabel">Kategorie löschen</h4>
+			</div>
+			<div class="modal-body" id="DeleteCategoryModalBody">
+				<input type="hidden" name="categoryId" />
+				Soll der Eintrag defintiv gelöscht werden?
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="btnDeleteCategory" class="btn btn-link waves-effect">LÖSCHEN</button>
+				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ABBRECHEN</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Delete Category Modal END -->
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous"></script>
+
+<script>
+
+$(function() {
+  $('.btn-group-fab').on('click', '.btn', function() {
+    $('.btn-group-fab').toggleClass('active');
+  });
+  $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+});
+$('#selektor').tagsinput({
+  tagClass: 'tag-label label-info'
+});
+
+$('#EntryModal').on('show.bs.modal', function(e) {
+
+    //get data-id attribute of the clicked element
+	var entryId = $(e.relatedTarget).data('entry-id');
+
+    $('#EntryModalLabel').html("Neuer Eintrag hinzufügen")
+    $("#name").val('')
+    $("#tag").val('')
+
+    //If Entry Id avaiable Edit Button was pressed.
+	if(entryId > -1) {
+	    // Create Tags for existings Selectors
+	    var tags = $(e.relatedTarget).data('entry-selektor').split(",")
+        var i;
+        for (i = 0; i < tags.length; i++) {
+          $('#selektor').tagsinput('add', tags[i]);
+        }
+        $('#selektor').tagsinput('refresh');
+		$('#EntryModalLabel').html("Eintrag ändern")
+        $("#entryId").val($(e.relatedTarget).data('entry-id'))
+        $("#selektor").val($(e.relatedTarget).data('entry-selektor'))
+        $("#category").val($(e.relatedTarget).data('entry-category'))
+        $("#info").val($(e.relatedTarget).data('entry-info'))
+
+    }
+});
+
+$('#CategoryModal').on('show.bs.modal', function(e) {
+
+    //get data-id attribute of the clicked element
+	var categoryId = $(e.relatedTarget).data('category-id');
+
+    $('#CategoryModalLabel').html("Neue Kategorie hinzufügen")
+    $("#name").val('')
+    $("#tag").val('')
+
+    //If Category Id avaiable Edit Button was pressed.
+	if(categoryId > -1) {
+		$('#CategoryModalLabel').html("Eintrag ändern")
+        $("#categoryId").val($(e.relatedTarget).data('category-id'))
+        $("#name").val($(e.relatedTarget).data('category-name'))
+        $("#tag").val($(e.relatedTarget).data('category-tag'))
+    }
+});
+
+
+$('.form').submit('click', function () {
+	event.preventDefault();
+
+	if($(this).data('category') === 'entry') {
+		$.ajax({
+			url: '/alarm/push/entry',
+			type: 'POST',
+			data: { entry_id: $('#entryId').val(), selektor: $('#selektor').val(), category: $('#category').val(), info: $('#info').val() },
+			success: function(response) {
+				$('#EntryModal').modal('hide')
+				location.reload();
+			},
+			error: function(error) {
+				var errorJson = JSON.parse(error.responseText);
+				console.log(errorJson)
+				$('#EntryModalBody').addClass('error');
+				$('#EntryModalBody').prepend('<div class="alert alert-danger">' + errorJson.message + '</div>');
+			}
+		});
+	} else if($(this).data('category') === 'category') {
+	    $.ajax({
+			url: '/alarm/push/category',
+			type: 'POST',
+			data: { category_id: $('#categoryId').val(), name: $('#name').val(), tag: $('#tag').val() },
+			success: function(response) {
+				$('#CategoryModal').modal('hide')
+				location.reload();
+			},
+			error: function(error) {
+				var errorJson = JSON.parse(error.responseText);
+				console.log(errorJson)
+				$('#CategoryModalBody').addClass('error');
+				$('#CategoryModalBody').prepend('<div class="alert alert-danger">' + errorJson.message + '</div>');
+			}
+		});
+    }
+});
+
+$('#DeleteEntryModal').on('show.bs.modal', function(e) {
+	// Get data-category-name attribute of the entry
+	$("input[name='entryId']").val($(e.relatedTarget).data('entry-id'))
+});
+
+$('#btnDeleteEntry').click(function() {
+	$.ajax({
+		url: '/alarm/push/entry/'+$("input[name='entryId']").val(),
+		type: 'DELETE',
+		success: function(response) {
+			$('#EntryModal').modal('hide')
+			location.reload();
+		},
+		error: function(error) {
+			var errorJson = JSON.parse(error.responseText);
+			console.log(errorJson)
+			$('#EntryModalBody').addClass('error');
+			$('#EntryModalBody').prepend('<div class="alert alert-danger">' + errorJson.message + '</div>');
+		}
+	});
+});
+
+$('#DeleteCategoryModal').on('show.bs.modal', function(e) {
+	// Get data-category-name attribute of the entry
+	$("input[name='categoryId']").val($(e.relatedTarget).data('category-id'))
+});
+
+$('#btnDeleteCategory').click(function() {
+	$.ajax({
+		url: '/alarm/push/category/'+$("input[name='categoryId']").val(),
+		type: 'DELETE',
+		success: function(response) {
+			$('#CategoryModal').modal('hide')
+			location.reload();
+		},
+		error: function(error) {
+			var errorJson = JSON.parse(error.responseText);
+			console.log(errorJson)
+			$('#CategoryModalBody').addClass('error');
+			$('#CategoryModalBody').prepend('<div class="alert alert-danger">' + errorJson.message + '</div>');
+		}
+	});
+});
+</script>
+{% endblock %}

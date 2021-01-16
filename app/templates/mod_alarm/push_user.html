@@ -1,0 +1,151 @@
+{% extends "layout.html" %} 
+{% block content %}
+<div class="block-header">
+	<h2>PUSH ALARM INFORMATIONEN</h2>
+</div>
+    <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+            <div class="header">
+                <h2>ALLGEMEINES</h2>
+                <small></small>
+            </div>
+            <div class="body">
+                <p>Auf dieser Webseite kannst du deine Push Benachrichtigungen ein- / ausstellen sowie verwalten. </p>
+
+                <p><strong>WICHTIG: Die Benachrichtigungen sind nur Zusatzinformationen und ersetzen keine Pager oder SMS
+                Alarmierung!</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+            <div class="header">
+                <h2>STATUS & AKTIVIEREN</h2>
+                <small>Aktivieren oder verwalten der Push Nachrichten</small>
+            </div>
+            <div class="body">
+                <p>Mit dem untenstehenden Button kann für dieses Gerät, sofern dies unterstützt wird, die Aktiviert bzw.
+                Deaktiviert werden. <br />
+                <strong>Beim Aktivieren muss die Berechtigungsanfrage vom Browser akzeptiert werden.</strong></p>
+
+                <button type="submit" id="btnPushActivate" class="btn btn-primary" disabled>Push Nachrichten nicht unterstützt</button>
+            </div> 
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+            <div class="header">
+                <h2>KATEGORIEN</h2>
+                <small>Verfügbare Kategorien sowie Einstellungen</small>
+            </div>
+            <div class="body">
+                <p>Aktuell stehen folgende Informationen via Push zur Verfügung:</p>
+                <ul>
+                    <li>Zusatzinformationen zu Gebäuden</li>
+                    <li>Baustellen auf der Anfahrt</li>
+                </ul>
+                <button type="submit" id="btnPushUpdate" class="btn btn-primary" disabled>Kategorien aktualisieren</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+<script>
+  window.OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "{{ oneSignalKey }}",
+    });
+  });
+
+ function onManageWebPushSubscriptionButtonClicked(event) {
+        getSubscriptionState().then(function(state) {
+            if (state.isPushEnabled) {
+                /* Subscribed, opt them out */
+                OneSignal.setSubscription(false);
+            } else {
+                if (state.isOptedOut) {
+                    /* Opted out, opt them back in */
+                    OneSignal.setSubscription(true);
+                } else {
+                    /* Unsubscribed, subscribe them */
+                    OneSignal.registerForPushNotifications();
+                }
+            }
+        });
+        event.preventDefault();
+    }
+
+    function updateMangeWebPushSubscriptionButton(buttonSelector) {
+        var hideWhenSubscribed = false;
+        var subscribeText = "Push Nachrichen aktivieren";
+        var unsubscribeText = "Push Nachrichten deaktivieren";
+
+
+        getSubscriptionState().then(function(state) {
+            var buttonText = !state.isPushEnabled || state.isOptedOut ? subscribeText : unsubscribeText;
+
+            //Update Category Button
+            if (state.isPushEnabled) { $('#btnPushUpdate').prop('disabled', false); }
+
+            var element = document.querySelector(buttonSelector);
+            if (element === null) {
+                return;
+            }
+
+            element.removeEventListener('click', onManageWebPushSubscriptionButtonClicked);
+            element.addEventListener('click', onManageWebPushSubscriptionButtonClicked);
+            element.innerText = buttonText;
+
+            if (state.hideWhenSubscribed && state.isPushEnabled) {
+                element.disabled = true;
+            } else {
+                element.disabled = false;
+            }
+        });
+    }
+
+    function getSubscriptionState() {
+        return Promise.all([
+          OneSignal.isPushNotificationsEnabled(),
+          OneSignal.isOptedOut()
+        ]).then(function(result) {
+            var isPushEnabled = result[0];
+            var isOptedOut = result[1];
+
+            return {
+                isPushEnabled: isPushEnabled,
+                isOptedOut: isOptedOut
+            };
+        });
+    }
+
+    var OneSignal = OneSignal || [];
+    var buttonSelector = "#btnPushActivate";
+
+    /* This example assumes you've already initialized OneSignal */
+    OneSignal.push(function() {
+        // If we're on an unsupported browser, do nothing
+        if (!OneSignal.isPushNotificationsSupported()) {
+            return;
+        }
+        updateMangeWebPushSubscriptionButton(buttonSelector);
+        OneSignal.on("subscriptionChange", function(isSubscribed) {
+            /* If the user's subscription state changes during the page's session, update the button text */
+            updateMangeWebPushSubscriptionButton(buttonSelector);
+        });
+    });
+
+    $('#btnPushUpdate').click(function() {
+        console.log("Button click");
+        OneSignal.push(function() {
+            OneSignal.showCategorySlidedown();
+        });
+    });
+</script>
+{% endblock %}

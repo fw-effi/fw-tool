@@ -1,0 +1,2 @@
+INSERT INTO Auth_groups (name,beschreibung,is_deleted) VALUES ('Alarm_PushUser','Zugriff auf die Benutzereinstellungen der Push Einsatzinformationen',0)
+INSERT INTO Auth_groups (name,beschreibung,is_deleted) VALUES ('Alarm_PushSettings','Zugriff auf die Einstellungen der Push Benachrichtigungen',0)

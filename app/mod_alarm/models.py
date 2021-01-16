@@ -1,6 +1,7 @@
 # Import the database object (db. from the main application module
 from app import db, auth_module
 
+
 # Define a base model for other database tables to inherit
 class Base(db.Model):
 
@@ -10,7 +11,8 @@ class Base(db.Model):
     date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(),
                                            onupdate=db.func.current_timestamp())
-    
+
+
 # Define general Information
 class GVZupdate(Base):
     __tablename__ = 'Alarm_GVZupdate'
@@ -26,6 +28,7 @@ class GVZupdate(Base):
         self.mat_ready = mat_ready
         self.mat_dringend = mat_dringend
         self.rd_fahrer = rd_fahrer
+
 
 # Define notAvailable AdFs
 class GVZnotAvailable(Base):
@@ -47,3 +50,26 @@ class GVZnotAvailable(Base):
         self.isDriver = isDriver
         self.isKader = isKader
         self.reportedby = reportedby
+
+
+class pushCategory(Base):
+    __tablename__ = "Alarm_PushCategory"
+    name = db.Column(db.String(64), nullable=True)
+    tag = db.Column(db.String(64), nullable=True)
+
+    def __init__(self, name, tag):
+        self.name = name
+        self.tag = tag
+
+
+class pushEntry(Base):
+    __tablename__ = "Alarm_PushEntry"
+    selector = db.Column(db.String(64), nullable=True)
+    message = db.Column(db.String(256), nullable=True)
+    category = db.relationship("pushCategory", backref=db.backref('entries', lazy=True))
+    category_id = db.Column(db.Integer, db.ForeignKey('Alarm_PushCategory.id'))
+
+    def __init__(self, selector, message, category_id):
+        self.selector = selector
+        self.message = message
+        self.category_id = category_id

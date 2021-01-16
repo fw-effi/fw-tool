@@ -83,9 +83,20 @@ def home():
 def get_pwa_service():
 	return app.send_static_file('js/pwa_service.js')
 
+@app.route("/OneSignalSDKWorker.js", methods=['GET'])
+def get_OneSignalWorker():
+	return app.send_static_file('js/OneSignalSDKWorker.js')
+
+
+@app.route("/OneSignalSDKUpdaterWorker.js", methods=['GET'])
+def get_OneSignalUpdaterWorker():
+	return app.send_static_file('js/OneSignalSDKUpdaterWorker.js')
+
+
 @app.route("/manifest.json", methods=['GET'])
 def get_manifest_json():
 	return app.send_static_file('manifest.json')
+
 
 @app.route("/page/communication/sendMail", methods=['GET'])
 def get_page_communicaton_sendMail():

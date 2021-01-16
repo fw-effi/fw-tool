@@ -48,10 +48,7 @@ class notifications:
 
             db.session.add(db_message)
 
-
-
         db.session.commit()
-
         return True
 
     # Return last 10 Messages

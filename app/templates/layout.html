@@ -26,6 +26,8 @@
     <meta name="msapplication-TileImage" content="/static/images/icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
+    {% block style %}
+    {% endblock %}
 
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext">
@@ -47,9 +49,6 @@
 
     <!-- Morris Chart Css-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-
-    <!-- Bootstrap Tagsinput Css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
 
     <!-- Bootstrap Material Datetime Picker Css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.min.css">
@@ -198,12 +197,19 @@
                             <span>Alarmierung</span>
                         </a>
                         <ul class="ml-menu">
+                            <!--<li>
+                                <a href="/alarm/pushUser" class="menupoint">Push Einsatzinfos</a>
+                            </li>
+                            <li>
+                                <a href="/alarm/pushSettings" class="menupoint">Push Einstellungen</a>
+                            </li>-->
                             <li>
                                 <a href="/alarm/alarmgruppe" class="menupoint">Alarmgruppen</a>
                             </li>
                             <li>
                                 <a href="/alarm/statusUpdate" class="menupoint">GVZ Status Meldungen</a>
                             </li>
+
                         </ul>
                     </li>
                     <li>
@@ -347,7 +353,6 @@
 
     <!-- Custom Js -->
     <script src="/static/js/admin.js"></script>
-    <script src="/static/js/pages/index.js"></script>
 
     <!-- Helper Js -->
     <script src="/static/js/helpers.js"></script>

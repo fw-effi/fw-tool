@@ -33,7 +33,7 @@ def pdf_appellliste(gruppe):
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG3') "
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Konf') ) "
         "AND Firefighter.is_deleted = 0 "
-        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
+        "ORDER BY Firefighter.grad_sort, Firefighter.name")
 
         req_jsondata = json.loads('{"template":{"shortid":"Bkeu4GNwBD"}}')
         
@@ -50,7 +50,7 @@ def pdf_appellliste(gruppe):
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'VA') "
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'San') ) "
         "AND Firefighter.is_deleted = 0 "
-        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
+        "ORDER BY Firefighter.grad_sort, Firefighter.name")
 
         req_jsondata = json.loads('{"template":{"shortid":"Bkeu4GNwBD"}}')
 
@@ -68,7 +68,7 @@ def pdf_appellliste(gruppe):
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'ADL') "
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'SRT') ) "
         "AND Firefighter.is_deleted = 0 "
-        "GROUP BY Firefighter.id ORDER BY Firefighter.grad_sort, Firefighter.name")
+        "ORDER BY Firefighter.grad_sort, Firefighter.name")
 
         req_jsondata = json.loads('{"template":{"shortid":"Bkeu4GNwBD"}}')
 

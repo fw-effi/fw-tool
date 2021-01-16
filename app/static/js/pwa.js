@@ -1,5 +1,5 @@
 // Check compatibility for the browser we're running this in
-if ("serviceWorker" in navigator) {
+if ("serviceWorker" in navigator ) {
   if (navigator.serviceWorker.controller) {
     console.log("[PWA] active service worker found, no need to register");
   } else {

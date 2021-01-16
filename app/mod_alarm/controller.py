@@ -77,8 +77,7 @@ def post_statusUpdateEntry():
             isKader = 1
         else:
             isKader = 0
-        
-        print()
+
         if request.form.get('entry_id') == "":
             db.session.add(GVZnotAvailable(
                 request.form.get('firefighters'),
@@ -118,3 +117,91 @@ def delete_statusUpdateEntry(id):
         return make_response(jsonify(message='OK'),200)
     except Exception as e:
         return make_response(jsonify(message=str(e)),500)
+
+
+@mod_alarm.route("/pushUser", methods=['GET'])
+@oidc.require_login
+@auth_module.check_role_permission('Alarm_PushUser')
+def get_pushuser():
+    return render_template("mod_alarm/push_user.html", user=auth_module.get_userobject(), oneSignalKey=app.config['PUSH_APP_ID'])
+
+
+@mod_alarm.route("/pushSettings", methods=['GET'])
+@oidc.require_login
+@auth_module.check_role_permission('Alarm_PushSettings')
+def get_pushsettings():
+    return render_template("mod_alarm/push_settings.html", user=auth_module.get_userobject(),
+                           entries=db.session.query(pushEntry).all(),
+                           categories=db.session.query(pushCategory).all())
+
+
+@mod_alarm.route("/push/entry", methods=['POST'])
+@oidc.require_login
+@auth_module.check_role_permission('Alarm_PushSettings')
+def post_pushentry():
+    try:
+        if request.form.get('entry_id') == "-1":
+            db.session.add(pushEntry(
+                request.form.get('selektor'),
+                request.form.get('info'),
+                request.form.get('category')
+            ))
+        else:
+            entry = pushEntry.query.get(request.form.get('entry_id'))
+            entry.selector = request.form.get('selektor')
+            entry.message = request.form.get('info')
+            entry.category_id = request.form.get('category')
+
+        db.session.commit()
+        return make_response(jsonify(message='OK'), 200)
+
+    except Exception as e:
+        return make_response(jsonify(message=str(e)), 500)
+
+
+@mod_alarm.route("/push/entry/<id>", methods=['DELETE'])
+@oidc.require_login
+@auth_module.check_role_permission('Alarm_PushSettings')
+def delete_pushentry(id):
+    try:
+        pushEntry.query.filter_by(id=id).delete()
+        db.session.commit()
+
+        return make_response(jsonify(message='OK'), 200)
+    except Exception as e:
+        return make_response(jsonify(message=str(e)), 500)
+
+
+@mod_alarm.route("/push/category", methods=['POST'])
+@oidc.require_login
+@auth_module.check_role_permission('Alarm_PushSettings')
+def post_pushcategory():
+    try:
+        if request.form.get('category_id') == "-1":
+            db.session.add(pushCategory(
+                request.form.get('name'),
+                request.form.get('tag')
+            ))
+        else:
+            entry = pushCategory.query.get(request.form.get('category_id'))
+            entry.name = request.form.get('name')
+            entry.tag = request.form.get('tag')
+
+        db.session.commit()
+        return make_response(jsonify(message='OK'), 200)
+
+    except Exception as e:
+        return make_response(jsonify(message=str(e)), 500)
+
+
+@mod_alarm.route("/push/category/<id>", methods=['DELETE'])
+@oidc.require_login
+@auth_module.check_role_permission('Alarm_PushSettings')
+def delete_pushcategory(id):
+    try:
+        pushCategory.query.filter_by(id=id).delete()
+        db.session.commit()
+
+        return make_response(jsonify(message='OK'), 200)
+    except Exception as e:
+        return make_response(jsonify(message=str(e)), 500)
