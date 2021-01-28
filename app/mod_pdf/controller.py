@@ -30,7 +30,7 @@ def pdf_appellliste(gruppe):
         "WHERE alarmgroups.firefighter_id = Firefighter.id "
         "AND (alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG1') "
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG2') "
-            "OR alarmgroups.alarmgroup_Spez-Zugid = (SELECT ID From AlarmGroup WHERE Name = 'BAG3') "
+            "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'BAG3') "
             "OR alarmgroups.alarmgroup_id = (SELECT ID From AlarmGroup WHERE Name = 'Konf') ) "
         "AND Firefighter.is_deleted = 0 "
         "ORDER BY Firefighter.grad_sort, Firefighter.name")
