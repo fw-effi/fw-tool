@@ -118,3 +118,9 @@ def delete_statusUpdateEntry(id):
         return make_response(jsonify(message='OK'),200)
     except Exception as e:
         return make_response(jsonify(message=str(e)),500)
+
+@mod_alarm.route("/appellblatt", methods=['GET'])
+@oidc.require_login
+@auth_module.check_role_permission('Alarm_Appell')
+def get_appellblatt():
+    return render_template("mod_alarm/appellblatt.html", user=auth_module.get_userobject())

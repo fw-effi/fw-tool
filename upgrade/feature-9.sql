@@ -1,0 +1,1 @@
+INSERT INTO Auth_groups (date_created,name,beschreibung,is_deleted) VALUES(CURRENT_TIMESTAMP,'Alarm_Appell','Zugriff auf Appellblätter','0')
