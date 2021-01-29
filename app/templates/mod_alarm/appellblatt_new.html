@@ -1,0 +1,258 @@
+{% extends "layout.html" %}
+{% block CSS %}
+    <!-- Smart Wizard CSS -->
+    <link href="https://unpkg.com/smartwizard@5/dist/css/smart_wizard_all.min.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+    <div class="block-header">
+        <h2>Appellblätter</h2>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>NEUES APPELLBLATT ERSTELLEN</h2>
+                    <small></small>
+                </div>
+                <div class="body">
+                    <form class="form" id="form">
+                        <div id="smartwizard">
+                            <ul class="nav">
+                                <li><a class="nav-link" href="#step-1">
+                                    <strong>Basisdaten</strong><br/>
+                                    Einsatzdetails eintragen
+                                </a></li>
+                                <li><a class="nav-link" href="#step-2">
+                                    <strong>Präsenzliste</strong><br/>
+                                    Präsenzliste führen
+                                </a></li>
+                                <li><a class="nav-link" href="#step-3">
+                                    <strong>Abschliessen</strong><br/>
+                                    Appellblatt sperren
+                                </a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div id="step-1" class="tab-pane" role="tabpanel">
+                                    <h3>Basisdaten</h3>
+                                    <p>Bitte trage hier die Basis Daten vom Einsatz ein. Falls du einen aktiven Einsatz
+                                        ausgewählt hast,
+                                        werden die Daten automatisch ausgefüllt.</p>
+                                    <div class="form-group">
+                                        <label for="einsatz_nr">Einsatz Nr (von ELZ):</label>
+                                        <input type="text" class="form-control" name="einsatz_nr" id="einsatz_nr"
+                                               placeholder="Einsatz Nr">
+                                        <span class="help-block">Einsatznummer aus Alarmausdruck (z.B. F21000400).</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="einsatz_description">Einsatz Bezeichnung:</label>
+                                        <input type="text" class="form-control" name="einsatz_description"
+                                               id="einsatz_description"
+                                               placeholder="Einsatz Bezeichnung">
+                                        <span class="help-block">Verwende das Alarmstichwort (z.B. Brand MFH).</span>
+                                    </div>
+                                </div>
+                                <div id="step-2" class="tab-pane" role="tabpanel">
+                                    <h3>Präsenzliste</h3>
+                                    <p>Trage die nötigen Informationen in das Appellblatt ein. <br/>
+                                        <strong>Nach jeder Änderung speichert das System automatisch.</strong></p>
+                                    <h4>Anwesende Personen</h4>
+                                    <p></p>
+                                    <div class="form-inline">
+                                        Zeit:
+                                            <input type="text" class="form-control timepicker" id="einsatz_von"
+                                                   style="width:6em" placeholder="Von">
+                                            <input type="text" class="form-control timepicker" id="einsatz_bis"
+                                                   style="width:6em" placeholder="Bis">
+                                    </div>
+                                <p></p>
+                                    <div class="list-group list_anwesend" id="list_anwesend">
+                                    </div>
+                                    <p></p>
+                                    <h4>Verfügbare Personen</h4>
+                                    <p>Klicke auf die Persoen, welche du zur Präsenzliste hinzufügen möchtest.</p>
+                                    <div class="form-group">
+                                        <label for="abwesend_search">Suche:</label>
+                                        <input type="text" class="form-control" name="abwesend_search"
+                                               id="abwesend_search">
+                                    </div>
+
+                                    <div class="list-group list_abwesend" id="list_abwesend">
+                                        {% for firefighter in firefighters %}
+                                            <a href="#" class="list-group-item list-group-item-action"
+                                               data-meta="{{ firefighter.alarmgroups }}>"
+                                               id="firefighter-{{ firefighter.id }}">
+                                                {{ firefighter.grad }} {{ firefighter.vorname }} {{ firefighter.name }}
+                                            </a>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <!-- Bootstrap Material Datetime Picker Plugin Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.min.js"
+            integrity="sha512-LRkOtikKE2LFHPWiWh0/bfFynswxRwCZ5O7PkXTVFPcprw376xfOemiEHEOmCCmiwS6eLFUh2fb+Gqxc0waTSg=="
+            crossorigin="anonymous"></script>
+
+    <!-- Smart Wizard JS -->
+    <script src="https://unpkg.com/smartwizard@5/dist/js/jquery.smartWizard.min.js" type="text/javascript"></script>
+    <!-- Jquery Validate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+            integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
+            crossorigin="anonymous"></script>
+    <!-- Select Plugin Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"
+            integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg=="
+            crossorigin="anonymous"></script>
+
+    <!-- Datatable -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Select initialize
+            $('.select').selectpicker();
+
+            // Tooltip initialize
+            $("[rel='tooltip']").tooltip();
+
+            // SmartWizard initialize
+            $('#smartwizard').smartWizard({
+                theme: 'arrows',
+                transition: {
+                    anmiation: 'slide-horizontal',
+                    speed: '400'
+                },
+                backButtonSupport: true,
+                lang: {
+                    next: 'Weiter',
+                    previous: 'Zurück'
+                }
+            });
+
+            // Timepicker initalize
+            $('.timepicker').bootstrapMaterialDatePicker({
+                format: 'HH:mm',
+                shortTime: false,
+                date: false,
+                time: true,
+                monthPicker: false,
+                year: false,
+                switchOnClick: true
+            });
+            // Form validation
+            var validator = $('#form').validate({
+                debug: true,
+                rules: {
+                    einsatz_nr: "required",
+                    einsatz_description: "required"
+                },
+                messages: {
+                    einsatz_nr: "Bitte trage die Einsatznummer der ELZ ein.",
+                    einsatz_description: "Bitte trage eine Einsatzbeschreibung ein."
+                }
+            });
+
+            // SmartWizard LeaveStep Event for validating Forms
+            $('#smartwizard').on("leaveStep", function (e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
+                // Only check validation if user go forward, otherwise you have issues with going backward
+                if (stepDirection === 'forward') {
+                    var currentStep = currentStepIndex + 1
+                    var validation = true;
+                    $('#step-' + currentStep + ' input').each(function () {
+                        validation = validator.element(this);
+                    })
+                    return validation;
+                }
+            });
+        });
+
+
+        // Search Function in List Groups
+        $('#abwesend_search').on('input', function (e) {
+            let input = $(this).val()
+            let filter = input.toUpperCase()
+            $('.list_abwesend .list-group-item').each(function () {
+                let li = $(this)
+                let text = li[0].outerText
+                let meta = li[0].getAttribute('data-meta')
+
+                if (text.toUpperCase().indexOf(filter) > -1 || meta.toUpperCase().indexOf(filter) > -1) {
+                    li.removeClass('d-none')
+                } else {
+                    li.addClass('d-none');
+                }
+            });
+        });
+
+        // Add Person to Presentlist
+        $('.list_abwesend .list-group-item').on('click', function (e) {
+            let li = $(this)
+            $(this).addClass('disabled')
+            let element = '<li class="list-group-item" data-id="' + li[0].getAttribute('id') + '"> ' +
+                '<div class="d-flex w-100 justify-content-between">' +
+                '<p class="mb-1"><strong>' + li[0].outerText + '</strong></p>' +
+                '<a href="#" class="text-danger btn-delete_list"><span class="material-icons">delete</span></a></div>' +
+                '<p>Abwechende Einsatzzeiten: ' +
+                '<input type="text" style="width:4em" class="form-control timepicker form-control-sm" placeholder="Von" id="einsatz_von">' +
+        '<input type="text" style="width:4em" class="form-control timepicker form-control-sm" placeholder="Bis" id="einsatz_von"></p>' +
+                '<p>Atemschutz:' +
+        '<input type="text" style="width:6em" class="form-control form-control-sm" placeholder="Minuten" id="einsatz_von"></p>' +
+
+                '</li>'
+
+            $('#list_anwesend').append(element)
+        });
+
+        // Remove Person from Resentlist
+        $('#list_anwesend').on('click', '.btn-delete_list', function (e) {
+            let li = $(this).parent().parent()
+            let id = li[0].getAttribute('data-id')
+
+            $('#' + id).removeClass('disabled')
+            li.remove()
+
+
+        });
+
+        var table = $('.table-all').DataTable({
+            dom: "<'top'f>rt",
+            paging: false,
+            responsive: true,
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+            },
+            order: [[0, "asc"]],
+            columnDefs: [
+                {
+                    "targets": 0,
+                    "visible": false
+                },
+                {
+                    "targets": 1,
+                    "orderable": false
+                }
+            ]
+        });
+    </script>
+{% endblock %}

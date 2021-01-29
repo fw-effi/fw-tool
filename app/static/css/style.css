@@ -3875,15 +3875,19 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     float: right;
     font-size: 12px;
     margin-top: 5px;
-    color: #999; }
+    color: #999; } */
   .input-group label.error {
     font-size: 12px;
     display: block;
     margin-top: 5px;
     font-weight: normal;
     color: #F44336; }
+  .input-group input.error {
+    border-bottom: 2px solid #F44336;
+  }
   .input-group .form-line.error:after {
     border-bottom: 2px solid #F44336; }
+  /*
   .input-group .form-line.success:after {
     border-bottom: 2px solid #4CAF50; }
   .input-group .form-line.warning:after {
@@ -3953,13 +3957,17 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     float: right;
     font-size: 12px;
     margin-top: 5px;
-    color: #999; }
+    color: #999; } */
   .form-group label.error {
     font-size: 12px;
     display: block;
     margin-top: 5px;
     font-weight: normal;
     color: #F44336; }
+  .form-group input.error {
+    border: 2px solid #F44336;
+  }
+/*
   .form-group .form-line {
     width: 100%;
     position: relative;
@@ -3991,9 +3999,9 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
       -moz-transition: 0.2s;
       -o-transition: 0.2s;
       -webkit-transition: 0.2s;
-      transition: 0.2s; }
+      transition: 0.2s; } */
   .form-group .form-line.error:after {
-    border-bottom: 2px solid #F44336; }
+    border-bottom: 2px solid #F44336; } /*
   .form-group .form-line.success:after {
     border-bottom: 2px solid #4CAF50; }
   .form-group .form-line.warning:after {
@@ -4820,6 +4828,7 @@ fieldset[disabled] .form-control {
       color: #333; }
 
 /* Form Wizard ================================= */
+/*
 .wizard,
 .tabcontrol {
   display: block;
@@ -4840,7 +4849,7 @@ fieldset[disabled] .form-control {
   display: block;
   padding: 0; }
 
-/* Accessibility */
+/* Accessibility */ /*
 .wizard > .steps .current-info,
 .tabcontrol > .steps .current-info,
 .wizard > .content > .title,
@@ -5080,6 +5089,7 @@ fieldset[disabled] .form-control {
   background-color: #009688; }
   .wizard .steps .current a:active, .wizard .steps .current a:focus, .wizard .steps .current a:hover {
     background-color: #009688; }
+*/
 
 /* Waves ======================================= */
 .waves-effect.waves-red .waves-ripple {

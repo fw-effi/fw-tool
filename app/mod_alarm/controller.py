@@ -124,3 +124,12 @@ def delete_statusUpdateEntry(id):
 @auth_module.check_role_permission('Alarm_Appell')
 def get_appellblatt():
     return render_template("mod_alarm/appellblatt.html", user=auth_module.get_userobject())
+
+
+@mod_alarm.route("/appellblatt/new", methods=['GET'])
+@oidc.require_login
+@auth_module.check_role_permission('Alarm_Appell')
+def get_appellblatt_new():
+    return render_template("mod_alarm/appellblatt_new.html", user=auth_module.get_userobject(),
+                           alarmGroups=AlarmGroup.query.all(),
+                           firefighters=db.session.query(Firefighter).filter_by(is_deleted=0).order_by(Firefighter.grad_sort).all())
