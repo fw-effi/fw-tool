@@ -22,7 +22,10 @@ window.addEventListener('beforeinstallprompt', (e) => {
   // Stash the event so it can be triggered later.
   deferredPrompt = e;
   // Update UI notify the user they can install the PWA
-  deferredPrompt.prompt();  // Wait for the user to respond to the prompt
+  var path = window.location.pathname
+  if(path.length === 1) {
+    deferredPrompt.prompt();  // Wait for the user to respond to the prompt
+  }
 });
 
 function showAddToHomeScreen() {

@@ -24,12 +24,16 @@
                                     Einsatzdetails eintragen
                                 </a></li>
                                 <li><a class="nav-link" href="#step-2">
-                                    <strong>Präsenzliste</strong><br/>
-                                    Präsenzliste führen
+                                    <strong>Personen</strong><br/>
+                                    Anwesende Personen auswählen
                                 </a></li>
                                 <li><a class="nav-link" href="#step-3">
+                                    <strong>Einsatzzeiten</strong><br/>
+                                    Einsatzzeiten festlegen
+                                </a></li>
+                                <li><a class="nav-link" href="#step-4">
                                     <strong>Abschliessen</strong><br/>
-                                    Appellblatt sperren
+                                    Appellblatt finalisieren
                                 </a></li>
                             </ul>
 
@@ -55,31 +59,16 @@
                                     </div>
                                 </div>
                                 <div id="step-2" class="tab-pane" role="tabpanel">
-                                    <h3>Präsenzliste</h3>
-                                    <p>Trage die nötigen Informationen in das Appellblatt ein. <br/>
+                                    <h3>Personen</h3>
+                                    <p>Wähle die anwesenden Personen aus. <br/>
                                         <strong>Nach jeder Änderung speichert das System automatisch.</strong></p>
-                                    <h4>Anwesende Personen</h4>
-                                    <p></p>
-                                    <div class="form-inline">
-                                        Zeit:
-                                            <input type="time" class="form-control timepicker" id="einsatz_von"
-                                                   style="width:8em" placeholder="Von">
-                                            <input type="time" class="form-control timepicker" id="einsatz_bis"
-                                                   style="width:8em" placeholder="Bis">
-                                    </div>
-                                <p></p>
-                                    <div class="list-group list_anwesend" id="list_anwesend">
-                                    </div>
-                                    <p></p>
-                                    <h4>Verfügbare Personen</h4>
-                                    <p>Klicke auf die Persoen, welche du zur Präsenzliste hinzufügen möchtest.</p>
                                     <div class="form-group">
-                                        <label for="abwesend_search">Suche:</label>
-                                        <input type="text" class="form-control" name="abwesend_search"
-                                               id="abwesend_search">
+                                        <label for="firefighter_search">Suche:</label>
+                                        <input type="text" class="form-control" name="firefighter_search"
+                                               id="firefighter_search">
                                     </div>
 
-                                    <div class="list-group list_abwesend" id="list_abwesend">
+                                    <div class="list-group list_firefighter" id="list_firefighter">
                                         {% for firefighter in firefighters %}
                                             <a href="#" class="list-group-item list-group-item-action"
                                                data-meta="{{ firefighter.alarmgroups }}>"
@@ -90,6 +79,44 @@
                                         {% endfor %}
                                     </div>
                                 </div>
+                                <div id="step-3" class="tab-pane" role="tabpanel">
+                                    <h3>Einsatzzeiten</h3>
+
+                                    <p><a href="#" class="btn btn-primary" id="btnGeneralTimes" data-toggle="modal"
+                                          data-target="#TimesModal">Allgemeine Einsatzzeiten festlegen</a></p>
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <label for="txtTimeFrom">Allgemeine Einsatzzeiten</label>
+                                            <p class="input-group">
+                                                <input type="text" id="txtTimeFrom" readonly
+                                                       class="form-control-plaintext form-control-sm" style="width:3em;">
+                                            </p>
+                                            <label for="txtTimeTo">bis</label>
+                                            <p class="input-group">
+                                                <input type="text" id="txtTimeTo" readonly
+                                                       class="form-control-plaintext form-control-sm" style="width:3em;">
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p>Bei Personen ohne Einsatzzeiten in der Tabelle, werden automatisch die Allgemeinen Zeiten übernommen.</p>
+                                    <table class="table table-bordered table-striped table-hover table-all dataTable" id="table-times" style="width:100%">
+                                        <thead>
+                                        <th>Name</th>
+                                        <th>Einsatz von</th>
+                                        <th>Einsatz bis</th>
+                                        <th>Atemschutz</th>
+                                        <th/>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="step-4" class="tab-pane" role="tabpanel">
+                                    <h3>Abschliessen</h3>
+                                    <p>Die Daten wurden erfolgreich gespeichert.<br />Zum Abschluss stehen folgende Optionen zur Verfügung:</p>
+                                    <a href="#" class="btn btn-primary">An Lodur Einsatz anheften</a> <br/>
+                                    <a href="#" class="btn btn-secondary">Zurück zur Startseite</a>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -98,12 +125,78 @@
         </div>
     </div>
 
+    <!-- Edit Row Modal START -->
+    <div class="modal fade" id="EditRowModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="EditRowLabel">Einsatzzeiten bearbeiten </h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <input type="hidden" id="rowId"/>
+                    <div class="modal-body mx-3" id="EditRowBody">
+                        <label for="person">Person:</label>
+                        <div class="form-group">
+                            <input type="text" id="person" readonly class="form-control-plaintext" placeholder="Person" disabled/>
+                        </div>
+
+                        <label for="einsatz_from">Einsatzzeiten:</label>
+                        <div class="form-group">
+                            <input type="time" id="einsatz_from" class="form-control" placeholder="Von" required/> -
+                            <input type="time" id="einsatz_to" class="form-control" placeholder="Bis" required/>
+                        </div>
+
+                        <label for="atemschutz">Atemschutz:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="atemschutz" placeholder="Atemschutz" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">Minuten</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnEditRowSave" class="btn btn-primary">SPEICHERN</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">ABBRECHEN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Row Modal Modal END -->
+
+    <!-- General Times Modal START -->
+    <div class="modal fade" id="TimesModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TimesModalLabel">Allgemeine Einsatzzeiten festlegen </h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body mx-3" id="TimesModalBody">
+
+                        <label for="einsatz_from">Einsatzzeiten:</label>
+                        <div class="form-group">
+                            <input type="time" id="gen_einsatz_from" class="form-control" placeholder="Von" required/> -
+                            <input type="time" id="gen_einsatz_to" class="form-control" placeholder="Bis" required/>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnTimesModalSave" class="btn btn-primary">SPEICHERN</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">ABBRECHEN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- General Times Modal END -->
+
 {% endblock %}
 {% block javascript %}
-    <!-- Bootstrap Material Datetime Picker Plugin Js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.min.js"
-            integrity="sha512-LRkOtikKE2LFHPWiWh0/bfFynswxRwCZ5O7PkXTVFPcprw376xfOemiEHEOmCCmiwS6eLFUh2fb+Gqxc0waTSg=="
-            crossorigin="anonymous"></script>
 
     <!-- Smart Wizard JS -->
     <script src="https://unpkg.com/smartwizard@5/dist/js/jquery.smartWizard.min.js" type="text/javascript"></script>
@@ -119,166 +212,9 @@
     <!-- Datatable -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.bootstrap4.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.min.js"></script>
-    <script type="text/javascript"
-            src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
-    <script type="text/javascript"
-            src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            // Select initialize
-            $('.select').selectpicker();
 
-            // Tooltip initialize
-            $("[rel='tooltip']").tooltip();
+    <!-- Page Javascripts -->
+    <script type="text/javascript" src="/static/js/mod_alarm/appellliste_indexeddb.js"></script>
+    <script type="text/javascript" src="/static/js/mod_alarm/appellliste.js"></script>
 
-            // SmartWizard initialize
-            $('#smartwizard').smartWizard({
-                theme: 'arrows',
-                transition: {
-                    anmiation: 'slide-horizontal',
-                    speed: '400'
-                },
-                backButtonSupport: true,
-                lang: {
-                    next: 'Weiter',
-                    previous: 'Zurück'
-                }
-            });
-
-            // Timepicker initalize
-            $('.timepicker').bootstrapMaterialDatePicker({
-                format: 'HH:mm',
-                shortTime: false,
-                date: false,
-                time: true,
-                monthPicker: false,
-                year: false,
-                switchOnClick: true
-            });
-            // Form validation
-            var validator = $('#form').validate({
-                debug: true,
-                rules: {
-                    einsatz_nr: "required",
-                    einsatz_description: "required"
-                },
-                messages: {
-                    einsatz_nr: "Bitte trage die Einsatznummer der ELZ ein.",
-                    einsatz_description: "Bitte trage eine Einsatzbeschreibung ein."
-                }
-            });
-
-            // SmartWizard LeaveStep Event for validating Forms
-            $('#smartwizard').on("leaveStep", function (e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
-                // Only check validation if user go forward, otherwise you have issues with going backward
-                if (stepDirection === 'forward') {
-                    var currentStep = currentStepIndex + 1
-                    var validation = true;
-                    $('#step-' + currentStep + ' input').each(function () {
-                        validation = validator.element(this);
-                    })
-                    return validation;
-                }
-            });
-        });
-
-
-        // Search Function in List Groups
-        $('#abwesend_search').on('input', function (e) {
-            let input = $(this).val()
-            let filter = input.toUpperCase()
-            $('.list_abwesend .list-group-item').each(function () {
-                let li = $(this)
-                let text = li[0].outerText
-                let meta = li[0].getAttribute('data-meta')
-
-                if (text.toUpperCase().indexOf(filter) > -1 || meta.toUpperCase().indexOf(filter) > -1) {
-                    li.removeClass('d-none')
-                } else {
-                    li.addClass('d-none');
-                }
-            });
-        });
-
-        // Add Person to Presentlist
-        $('.list_abwesend .list-group-item').on('click', function (e) {
-            let li = $(this)
-            let id = li[0].getAttribute('id')
-            $(this).addClass('disabled')
-            let element = `<li class="list-group-item" data-id="${id}">
-                <div class="d-flex w-100 justify-content-between">
-                    <p class="mb-1"><strong>${li[0].outerText}</strong></p>
-                    <a href="#" class="text-danger btn-delete_list"><span class="material-icons">delete</span></a>
-                </div>
-                <div class="form-group row" style="margin-bottom:0;">
-                    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Abweichende Einsatzzeiten:</label>
-                    <div class="col-sm-10 form-inline">
-                        <input class="form-check-input form-control-sm position-static changetime" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-                        <input type="time" style="width:8em; display:none;" class="form-control timepicker form-control-sm" placeholder="Von" id="person[${id}][timefrom]">
-                        <input type="time" style="width:8em; display:none;" class="form-control timepicker form-control-sm" placeholder="Bis" id="person[${id}][timeto]">
-                    </div>
-                </div>
-                <div class="form-group row" style="margin-bottom:0;">
-                    <label for="einsatz_von" class="col-sm-2 col-form-label col-form-label-sm">Atemschutz:</label>
-                    <div class="col-sm-10 form-inline">
-                        <input type="text" style="width:6em" class="form-control-sm form-control" value="0" id="einsatz_von">
-                        <div class="input-group-append">
-                            <span class="input-group-text form-control-sm">Minuten</span>
-                        </div>
-                    </div>
-                </div>
-            </li>`
-
-            $('#list_anwesend').append(element)
-        });
-
-        // Remove Person from Resentlist
-        $('#list_anwesend').on('click', '.btn-delete_list', function (e) {
-            let li = $(this).parent().parent()
-            let id = li[0].getAttribute('data-id')
-
-            $('#' + id).removeClass('disabled')
-            li.remove()
-        });
-
-
-        // Presentlist Chane time from person
-        $('#list_anwesend').on('change', '.changetime', function(e) {
-            let li = $(this).parent().parent().parent()
-            let id = li[0].getAttribute('data-id')
-
-            if($(this).is(":checked")) {
-                $('input[id="person[' + id + '][timefrom]"]').show()
-                $('input[id="person[' + id + '][timeto]"]').show()
-            } else {
-                $('input[id="person[' + id + '][timefrom]"]').hide()
-                $('input[id="person[' + id + '][timeto]"]').hide()
-            }
-        })
-        var table = $('.table-all').DataTable({
-            dom: "<'top'f>rt",
-            paging: false,
-            responsive: true,
-            language: {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
-            },
-            order: [[0, "asc"]],
-            columnDefs: [
-                {
-                    "targets": 0,
-                    "visible": false
-                },
-                {
-                    "targets": 1,
-                    "orderable": false
-                }
-            ]
-        });
-    </script>
 {% endblock %}
