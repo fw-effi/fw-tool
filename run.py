@@ -6,11 +6,11 @@ from app import app
 if os.environ['FWAPP_ENV'] == "dev":
     print("# Starting in DEVELOPMENT Mode")
     print("####################")
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=4433, debug=True, ssl_context='adhoc')
 elif os.environ['FWAPP_ENV'] == "test":
     print("Starting in TEST Mode")
     print("####################")
-    app.run(host='0.0.0.0', port=8081, debug=True)
+    app.run(host='0.0.0.0', port=4434, debug=True, ssl_context='adhoc')
 else:
     print("Starting in PRODUCTION Mode")
     print("####################")

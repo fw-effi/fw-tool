@@ -10,3 +10,4 @@ flask_mail==0.9.1
 flask-migrate==2.5.2
 flask-compress==1.8.0
 apscheduler==3.6.3
+pyopenssl==20.0.1
